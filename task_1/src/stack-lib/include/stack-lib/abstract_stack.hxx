@@ -1,67 +1,60 @@
 #ifndef STACK_LIB_ABSTRACT_STACK_HXX
 #define STACK_LIB_ABSTRACT_STACK_HXX
 
-
 #include <cstddef>
 #include <exception>
 
-
 namespace stack_lib {
-    class ExtractFromEmptyStackException : public std::exception {
-        public:
-        [[nodiscard]]
-        const char* what() const noexcept override {
-            return "Cannot extract value from empty stack";
-        }
-    };
 
+class ExtractFromEmptyStackException final : public std::exception {
+  public:
+    [[nodiscard]] const char* what() const noexcept override {
+        return "Cannot extract value from empty stack";
+    }
+};
 
-    template <typename T>
-    class AbstractStack {
-        public:
-        /*
-            Constructors & destructors
-        */
+template <typename T>
+class AbstractStack {
+  public:
+    /*
+        Constructors & destructors
+    */
 
-        AbstractStack() = default;
+    AbstractStack() = default;
 
-        AbstractStack(const AbstractStack<T>& other) = delete;
+    AbstractStack(const AbstractStack<T>& other) = delete;
 
-        AbstractStack(AbstractStack<T>&& other) = delete;
+    AbstractStack(AbstractStack<T>&& other) = delete;
 
-        virtual ~AbstractStack() = default;
+    virtual ~AbstractStack() = default;
 
-        /*
-            Operators
-        */
+    /*
+        Operators
+    */
 
-        auto& operator=(const AbstractStack<T>& other) = delete;
+    auto& operator=(const AbstractStack<T>& other) = delete;
 
-        auto& operator=(AbstractStack<T>&& other) noexcept = delete;
+    auto& operator=(AbstractStack<T>&& other) noexcept = delete;
 
-        /*
-            Member functions
-        */
+    /*
+        Member functions
+    */
 
-        [[nodiscard]]
-        virtual bool empty() const = 0;
+    [[nodiscard]] virtual bool IsEmpty() const noexcept = 0;
 
-        [[nodiscard]]
-        virtual std::size_t size() const = 0;
+    [[nodiscard]] virtual std::size_t Size() const noexcept = 0;
 
-        [[nodiscard]]
-        virtual T& top() = 0;
+    [[nodiscard]] virtual T& Top() = 0;
 
-        [[nodiscard]]
-        virtual const T& top() const = 0;
+    [[nodiscard]] virtual const T& Top() const = 0;
 
-        virtual void push(const T& elem) = 0;
-    
-        virtual void push(T&& elem) = 0;
+    virtual void Push(const T& elem) = 0;
 
-        virtual void pop() = 0;
-    };
+    virtual void Push(T&& elem) = 0;
 
-} // namespace stack_lib
+    virtual void Pop() = 0;
+};
 
-#endif
+}  // namespace stack_lib
+
+#endif  // STACK_LIB_ABSTRACT_STACK_HXX
