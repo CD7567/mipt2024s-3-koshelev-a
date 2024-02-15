@@ -1,6 +1,6 @@
 #include <string>
 
-#include "../doctest/doctest.h"
+#include <doctest/doctest.h>
 
 #include "../common_definitions.hxx"
 #include "stack-lib/array_stack.hxx"
