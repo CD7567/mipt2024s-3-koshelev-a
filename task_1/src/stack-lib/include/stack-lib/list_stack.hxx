@@ -27,12 +27,12 @@ class ListStack final : public AbstractStack<T> {
     ListStack(const ListStack& other) : size_(other.size_) {
         if (other.top_ != nullptr) {
             Node<T>* other_it = other.top_;
-            auto* this_it = new Node<T>{other.top_->elem_, nullptr};
+            auto* this_it = new Node<T>{other_it->elem_, nullptr};
 
             top_ = this_it;
 
             while (other_it->prev_ != nullptr) {
-                this_it->prev_ = new Node<T>{other.top_->prev_->elem_, nullptr};
+                this_it->prev_ = new Node<T>{other_it->prev_->elem_, nullptr};
                 other_it = other_it->prev_;
                 this_it = this_it->prev_;
             }
@@ -59,14 +59,21 @@ class ListStack final : public AbstractStack<T> {
     */
 
     auto& operator=(const ListStack& other) {
+        while (top_ != nullptr) {
+            Node<T>* tmp = top_;
+            top_ = top_->prev_;
+
+            delete tmp;
+        }
+
         if (this != &other && other.top_ != nullptr) {
             Node<T>* other_it = other.top_;
-            auto* this_it = new Node<T>{other.top_->elem_, nullptr};
+            auto* this_it = new Node<T>{other_it->elem_, nullptr};
 
             top_ = this_it;
 
             while (other_it->prev_ != nullptr) {
-                this_it->prev_ = new Node<T>{other.top_->prev_->elem_, nullptr};
+                this_it->prev_ = new Node<T>{other_it->prev_->elem_, nullptr};
                 other_it = other_it->prev_;
                 this_it = this_it->prev_;
             }
