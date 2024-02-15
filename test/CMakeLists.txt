@@ -1,0 +1,30 @@
+###############################################################################
+## target definitions #########################################################
+###############################################################################
+
+file(
+    GLOB_RECURSE
+    TEST_RUNNER_HEADERS
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.hxx
+)
+
+file(
+    GLOB_RECURSE
+    TEST_RUNNER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx
+)
+
+add_executable(
+    test-runner
+    ${TEST_RUNNER_HEADERS}
+    ${TEST_RUNNER_SOURCES}
+)
+
+###############################################################################
+## test autorun ###############################################################
+###############################################################################
+
+add_custom_target(
+        run-tests ALL
+        COMMAND test-runner
+)

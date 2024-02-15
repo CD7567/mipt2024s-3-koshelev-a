@@ -31,12 +31,3 @@ target_include_directories(
 )
 
 set_target_properties(stack-lib PROPERTIES LINKER_LANGUAGE CXX)
-
-###############################################################################
-## testing ####################################################################
-###############################################################################
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    enable_testing()
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
-endif()
