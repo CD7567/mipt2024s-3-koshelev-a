@@ -1,0 +1,39 @@
+name: CMake on a single platform
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  build-debug:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y ninja-build doctest-dev
+
+    - name: Configure CMake
+      run: cmake -DCMAKE_BUILD_TYPE=Debug -GNinja -B ${{github.workspace}}/cmake-build-debug
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/cmake-build-debug
+
+  build-release:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y ninja-build doctest-dev
+
+    - name: Configure CMake
+      run: cmake -DCMAKE_BUILD_TYPE=Release -GNinja -B ${{github.workspace}}/cmake-build-release
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/cmake-build-release
