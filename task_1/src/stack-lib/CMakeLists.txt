@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(stack-lib LANGUAGES CXX)
+###############################################################################
+## project definition #########################################################
+###############################################################################
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+project(stack-lib LANGUAGES CXX)
 
 ###############################################################################
 ## sources definitions ########################################################
@@ -16,12 +16,6 @@ file(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hxx
 )
 
-file(
-    GLOB_RECURSE
-    STACK_LIB_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx
-)
-
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -29,7 +23,6 @@ file(
 add_library(
     stack-lib
     ${STACK_LIB_HEADERS}
-    ${STACK_LIB_SOURCES}
 )
 
 target_include_directories(

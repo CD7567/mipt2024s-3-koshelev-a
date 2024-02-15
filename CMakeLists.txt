@@ -4,36 +4,23 @@ cmake_minimum_required(VERSION 3.5)
 ## project definition #########################################################
 ###############################################################################
 
-project(task_1)
+project(mipt2024s-3-koshelev-a)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ###############################################################################
-## sources definitions ########################################################
+## profiles settings ##########################################################
 ###############################################################################
 
-file(
-    GLOB_RECURSE
-    RUNNER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
-)
-
-###############################################################################
-## target definitions #########################################################
-###############################################################################
-
-add_executable(
-    runner
-    ${RUNNER_SOURCES}
-)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+    set(CMAKE_CXX_FLAGS "-fno-omit-frame-pointer -fsanitize=address")
+endif()
 
 ###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
 
-add_subdirectory(
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stack-lib
-)
-
-target_link_libraries(
-    runner PRIVATE
-    stack-lib
-)
+add_subdirectory(task_1)
