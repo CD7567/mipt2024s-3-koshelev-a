@@ -41,7 +41,7 @@ void testSTL(FILE* f_out_csv, size_t test_max_size, const char* tag,
 
         // Measuring copy construction time
         start = std::chrono::high_resolution_clock::now();
-        std::stack<T, C> copied(stack);
+        const std::stack<T, C> copied(stack);
         end = std::chrono::high_resolution_clock::now();
 
         (void)fprintf(
