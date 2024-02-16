@@ -2,17 +2,19 @@
 #include <cstddef>
 #include <cstdio>
 #include <cstring>
+#include <string>
 
 #include "stack-lib/abstract_stack.hxx"
 #include "stack-lib/array_stack.hxx"
 #include "stack-lib/list_stack.hxx"
 
 constexpr size_t TEST_STRING_SIZE_LIMIT = 4096L;
+constexpr size_t TEST_NUMBER_STUB = 1000L;
 constexpr const char* PRINT_FORMAT = "%15s,%10lu,%20s,%10ld\n";
 constexpr const char* PRINT_HEADER_FORMAT = "%15s,%10s,%20s,%10s\n";
 
 struct TestStruct {
-    size_t number_ = 1000L;
+    size_t number_ = TEST_NUMBER_STUB;
     std::string string_ = "I am string";
 };
 
@@ -84,12 +86,18 @@ void testStackVirtual(FILE* f_out_csv, const size_t test_max_size,
 }
 
 int main(int argc, char** argv) {
-    if (argc < 3) {
+    if (argc < 6) {
+        (void)std::fprintf(stderr, "Wrong amount of arguments detected!\n");
         return 1;
     }
 
-    FILE* f_out_csv = fopen("./data/data.csv", "a");
-    FILE* f_in_txt = fopen("./data/test_string.txt", "r");
+    FILE* f_in_txt = fopen(argv[1], "r");
+    FILE* f_out_csv = fopen(argv[2], "a");
+
+    if (f_in_txt == nullptr || f_out_csv == nullptr) {
+        (void)std::fprintf(stderr, "Couldn't open files!\n");
+        return 1;
+    }
 
     char* test_string = new char[TEST_STRING_SIZE_LIMIT];
 
@@ -101,21 +109,22 @@ int main(int argc, char** argv) {
                       "DURATION");
     }
 
-    for (size_t i = 0; i < std::stoul(argv[1]); ++i) {
+    for (size_t i = 0; i < std::stoul(argv[4]); ++i) {
         testStack<TestStruct, stack_lib::ArrayStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[2]), "CUSTOM_ARRAY",
-            TestStruct{1000L, test_string});
+            f_out_csv, std::stoul(argv[5]), "CUSTOM_ARRAY",
+            TestStruct{TEST_NUMBER_STUB, test_string});
         testStack<TestStruct, stack_lib::ListStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[2]), "CUSTOM_LIST",
-            TestStruct{1000L, test_string});
+            f_out_csv, std::stoul(argv[5]), "CUSTOM_LIST",
+            TestStruct{TEST_NUMBER_STUB, test_string});
         testStackVirtual<TestStruct, stack_lib::ArrayStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[2]), "V_CUSTOM_ARRAY",
-            TestStruct{1000L, test_string});
+            f_out_csv, std::stoul(argv[5]), "V_CUSTOM_ARRAY",
+            TestStruct{TEST_NUMBER_STUB, test_string});
         testStackVirtual<TestStruct, stack_lib::ListStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[2]), "V_CUSTOM_List",
-            TestStruct{1000L, test_string});
+            f_out_csv, std::stoul(argv[5]), "V_CUSTOM_LIST",
+            TestStruct{TEST_NUMBER_STUB, test_string});
     }
 
     (void)fclose(f_out_csv);
     delete[] test_string;
+    return 0;
 }
