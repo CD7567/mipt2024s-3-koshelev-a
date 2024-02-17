@@ -80,10 +80,10 @@ int main(int argc, char** argv) {
     for (size_t i = 0; i < std::stoul(argv[4]); ++i) {
         testSTL<TestStruct, std::vector<TestStruct>>(
             f_out_csv, std::stoul(argv[5]), "ARRAY",
-            TestStruct(TEST_NUMBER_STUB, test_string));
+            TestStruct{TEST_NUMBER_STUB, test_string});
         testSTL<TestStruct, std::list<TestStruct>>(
             f_out_csv, std::stoul(argv[5]), "LIST",
-            TestStruct(TEST_NUMBER_STUB, test_string));
+            TestStruct{TEST_NUMBER_STUB, test_string});
     }
 
     (void)fclose(f_out_csv);
