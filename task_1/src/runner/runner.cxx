@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
     }
 
     FILE* f_in_txt = fopen(argv[1], "r");
-    FILE* f_out_csv = fopen(argv[2], "a");
+    FILE* f_out_csv = fopen(argv[2], "w");
 
     if (f_in_txt == nullptr || f_out_csv == nullptr) {
         (void)std::fprintf(stderr, "Couldn't open files!\n");
@@ -111,16 +111,16 @@ int main(int argc, char** argv) {
 
     for (size_t i = 0; i < std::stoul(argv[4]); ++i) {
         testStack<TestStruct, stack_lib::ArrayStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "CUSTOM_ARRAY",
+            f_out_csv, std::stoul(argv[5]), "ARRAY",
             TestStruct{TEST_NUMBER_STUB, test_string});
         testStack<TestStruct, stack_lib::ListStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "CUSTOM_LIST",
+            f_out_csv, std::stoul(argv[5]), "LIST",
             TestStruct{TEST_NUMBER_STUB, test_string});
         testStackVirtual<TestStruct, stack_lib::ArrayStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "V_CUSTOM_ARRAY",
+            f_out_csv, std::stoul(argv[5]), "VIRT_ARRAY",
             TestStruct{TEST_NUMBER_STUB, test_string});
         testStackVirtual<TestStruct, stack_lib::ListStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "V_CUSTOM_LIST",
+            f_out_csv, std::stoul(argv[5]), "VIRT_LIST",
             TestStruct{TEST_NUMBER_STUB, test_string});
     }
 
