@@ -4,6 +4,7 @@
 #include <cstring>
 #include <list>
 #include <stack>
+#include <string>
 
 constexpr size_t TEST_STRING_SIZE_LIMIT = 4096L;
 constexpr size_t TEST_NUMBER_STUB = 1000L;
