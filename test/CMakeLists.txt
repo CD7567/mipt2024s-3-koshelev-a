@@ -36,7 +36,9 @@ target_link_libraries(
 ## test autorun ###############################################################
 ###############################################################################
 
-add_custom_target(
-    run-tests ALL
-    COMMAND test-runner
-)
+if(DO_AUTORUN_TESTS)
+    add_custom_target(
+        run-tests ALL
+        COMMAND test-runner
+    )
+endif()
