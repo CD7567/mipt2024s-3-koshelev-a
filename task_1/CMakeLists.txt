@@ -16,6 +16,12 @@ file(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
 )
 
+file(
+    GLOB_RECURSE
+    STL_RUNNER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stl-runner/*.cxx
+)
+
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -23,6 +29,11 @@ file(
 add_executable(
     runner
     ${RUNNER_SOURCES}
+)
+
+add_executable(
+    stl-runner
+    ${STL_RUNNER_SOURCES}
 )
 
 ###############################################################################
