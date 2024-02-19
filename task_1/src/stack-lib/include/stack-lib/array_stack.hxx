@@ -103,7 +103,10 @@ class ArrayStack final : public AbstractStack<T> {
         if (size_ == capacity_) {
             T* new_buffer = new T[2 * capacity_];
 
-            std::copy(buffer_, buffer_ + capacity_, new_buffer);
+            for (size_t i = 0; i < capacity_; ++i) {
+                new_buffer[i] = T(std::move(buffer_[i]));
+            }
+
             delete[] buffer_;
             buffer_ = new_buffer;
             capacity_ *= 2;
@@ -116,7 +119,10 @@ class ArrayStack final : public AbstractStack<T> {
         if (size_ == capacity_) {
             T* new_buffer = new T[2 * capacity_];
 
-            std::copy(buffer_, buffer_ + capacity_, new_buffer);
+            for (size_t i = 0; i < capacity_; ++i) {
+                new_buffer[i] = T(std::move(buffer_[i]));
+            }
+
             delete[] buffer_;
             buffer_ = new_buffer;
             capacity_ *= 2;
@@ -137,7 +143,10 @@ class ArrayStack final : public AbstractStack<T> {
         if (size_ != capacity_ && size_ != 0) {
             T* new_buffer = new T[size_];
 
-            std::copy(buffer_, buffer_ + size_, new_buffer);
+            for (size_t i = 0; i < size_; ++i) {
+                new_buffer[i] = T(std::move(buffer_[i]));
+            }
+
             delete[] buffer_;
             buffer_ = new_buffer;
             capacity_ = size_;
