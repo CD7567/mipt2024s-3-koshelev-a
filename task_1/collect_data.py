@@ -1,122 +1,170 @@
 import subprocess
 import sys
-import math
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
+
+# Setup base data directory
+BASE_DATA_DIR = f'{sys.path[0]}/data'
+
+
 # Run cmake compilation
-subprocess.run(["cmake", "-DCMAKE_BUILD_TYPE=Release", "-B", "build", "."])
-subprocess.run(["cmake", "--build", "build"])
+subprocess.run(
+    [
+        'cmake',
+        '-DCMAKE_BUILD_TYPE=Release',
+        '-GNinja',
+        '-B',
+        f'{sys.path[0]}/../cmake-build-release',
+        f'{sys.path[0]}/../'
+    ]
+)
+subprocess.run(
+    [
+        'cmake',
+        '--build',
+        f'{sys.path[0]}/../cmake-build-release'
+    ]
+)
 
-# Run data collection runner
-subprocess.run(["./build/runner", sys.argv[1], sys.argv[2]])
 
-# Read collected data from csv
-df = pd.read_csv("./data/data.csv", sep=',', skipinitialspace=True)
+# Register data collection runners
+runners = [
+    [
+        f'{sys.path[0]}/../cmake-build-release/task_1/runner',
+        f'{BASE_DATA_DIR}/test_string.txt',
+        f'{BASE_DATA_DIR}/custom_data.csv',
+        'true',
+        sys.argv[1],
+        sys.argv[2]
+    ],
+    [
+        f'{sys.path[0]}/../cmake-build-release/task_1/stl-runner',
+        f'{BASE_DATA_DIR}/test_string.txt',
+        f'{BASE_DATA_DIR}/stl_data.csv',
+        'true',
+        sys.argv[1],
+        sys.argv[2]
+    ]
+]
+
+
+# Run data collection runners
+procs = [subprocess.Popen(runner) for runner in runners]
+
+for proc in procs:
+    proc.wait()
+
+
+# Read collected data for custom stacks from csv
+df_custom = pd.read_csv(f'{BASE_DATA_DIR}/custom_data.csv', sep=',', skipinitialspace=True)
+df_stl = pd.read_csv(f'{BASE_DATA_DIR}/stl_data.csv', sep=',', skipinitialspace=True)
+
+df_custom_grouped = df_custom.groupby(['TAG', 'METHOD', 'SIZE'], as_index=False).median(numeric_only=True)
+df_stl_grouped = df_stl.groupby(['TAG', 'METHOD', 'SIZE'], as_index=False).median(numeric_only=True)
+
 
 # Pyplot params
 plt.ioff()
 plt.rcParams['text.usetex'] = True
 
-# Create push graph for array stack
-METHOD = 'PUSH'
+
+# Plots constructor
+def create_graph(
+        tag: str,
+        method: str,
+        title: str,
+        legend: list,
+        contains_virtual: bool,
+        savefile: str
+):
+    df_custom_plot = df_custom_grouped[
+        np.logical_and(
+            df_custom_grouped['TAG'] == f'{tag}',
+            df_custom_grouped['METHOD'] == method
+        )
+    ]
+    df_stl_plot = df_stl_grouped[
+        np.logical_and(
+            df_stl_grouped['TAG'] == f'{tag}',
+            df_stl_grouped['METHOD'] == method
+        )
+    ]
+
+    fig = plt.figure()
+    plt.grid()
+    plt.title(title)
+    plt.xlabel(r'$\mathrm{size}$')
+    plt.ylabel(r'$\mathrm{time},\ \mathrm{ns}$')
+
+    plt.plot(df_custom_plot['SIZE'], df_custom_plot['DURATION'], color='orange', alpha=0.5)
+
+    if contains_virtual:
+        df_custom_v_array_plot = df_custom_grouped[
+            np.logical_and(
+                df_custom_grouped['TAG'] == f'VIRT_{tag}',
+                df_custom_grouped['METHOD'] == method
+            )
+        ]
+
+        plt.plot(df_custom_v_array_plot['SIZE'], df_custom_v_array_plot['DURATION'], color='magenta', alpha=0.5)
+
+    plt.plot(df_stl_plot['SIZE'], df_stl_plot['DURATION'], color='blue', alpha=0.5)
+
+    plt.legend(legend)
+
+    plt.savefig(savefile, format='png', dpi=300)
+    plt.close(fig)
 
 
-array_df = df[df['TAG'] == 'ARRAY']
-array_method_df = array_df[array_df['METHOD'] == METHOD].dropna()
-array_method_df_median = array_method_df.groupby(['SIZE'], as_index=False).median(numeric_only=True)
+# Create graphs for article
+create_graph(
+    'ARRAY',
+    'PUSH',
+    'Comparison of array-based stacks push performance',
+    [
+        r'\texttt{stack-lib::ArrayStack<T>}',
+        r'\texttt{dynamic_cast<stack-lib::AbstractStack<T>>}',
+        r'\texttt{std::stack<T, std::vector<T>>}'
+    ],
+    True,
+    f'{BASE_DATA_DIR}/array_push_cmp.png'
+)
 
+create_graph(
+    'ARRAY',
+    'COPY_CONSTRUCTOR',
+    'Comparison of array-based stacks copy construction performance',
+    [
+        r'\texttt{stack-lib::ArrayStack<T>}',
+        r'\texttt{std::stack<T, std::vector<T>>}'
+    ],
+    False,
+    f'{BASE_DATA_DIR}/array_copy_constructor_cmp.png'
+)
 
-spike_indices = [2 ** i for i in range(math.ceil(math.log(max(array_method_df_median['SIZE']), 2)))]
-spikes = [array_method_df_median['DURATION'][i] for i in spike_indices]
-coef = np.polyfit(spike_indices, spikes, 1)
-poly = np.poly1d(coef)
+create_graph(
+    'LIST',
+    'PUSH',
+    'Comparison of list-based stacks push performance',
+    [
+        r'\texttt{stack-lib::ListStack<T>}',
+        r'\texttt{dynamic_cast<stack-lib::AbstractStack<T>>}',
+        r'\texttt{std::stack<T, std::list<T>>}'
+    ],
+    True,
+    f'{BASE_DATA_DIR}/list_push_cmp.png'
+)
 
-
-fig = plt.figure()
-plt.grid()
-
-plt.title(r'Time measurement of push for array stack')
-plt.xlabel(r'size')
-plt.ylabel(r'time, $\mathrm{ns}$')
-
-plt.plot(array_method_df_median['SIZE'], array_method_df_median['DURATION'], color='orange')
-plt.errorbar(spike_indices, spikes, fmt='.', color='black')
-plt.plot(array_method_df_median['SIZE'], poly(array_method_df_median['SIZE']), color='red', linestyle='--')
-plt.axhline(y=np.median([i for i in array_method_df_median['SIZE'] if not i in spike_indices]), color='green', linestyle='--')
-
-plt.legend(['Estimated time', 'Linear fit of spikes', 'Median of bottom values'])
-plt.savefig('./data/array_push.png', format = 'png')
-plt.close(fig)
-
-
-# Create push graph for list_stack
-
-list_df = df[df['TAG'] == 'LIST']
-list_method_df = list_df[list_df['METHOD'] == METHOD].dropna()
-list_method_df_median = list_method_df.groupby(['SIZE'], as_index=False).median(numeric_only=True)
-
-fig = plt.figure()
-plt.grid()
-
-plt.title(r'Time measurement of push for list stack')
-plt.xlabel(r'size')
-plt.ylabel(r'time, $\mathrm{ns}$')
-
-plt.plot(list_method_df_median['SIZE'], list_method_df_median['DURATION'], color="blue")
-
-plt.savefig('./data/list_push.png', format = 'png')
-plt.close(fig)
-
-
-# Create copy constructor graph for array stack
-METHOD = 'COPY_CONSTRUCTOR'
-
-
-array_df = df[df['TAG'] == 'ARRAY']
-array_method_df = array_df[array_df['METHOD'] == METHOD].dropna()
-array_method_df_median = array_method_df.groupby(['SIZE'], as_index=False).median(numeric_only=True)
-
-
-spike_indices = [2 ** i for i in range(math.ceil(math.log(max(array_method_df_median['SIZE']), 2)))]
-spikes = [array_method_df_median['DURATION'][i] for i in spike_indices]
-coef = np.polyfit(array_method_df_median['SIZE'], array_method_df_median['DURATION'], 1)
-poly = np.poly1d(coef)
-
-
-fig = plt.figure()
-plt.grid()
-
-plt.title(r'Time measurement of copy constructor for array stack')
-plt.xlabel(r'size')
-plt.ylabel(r'time, $\mathrm{ns}$')
-
-plt.plot(array_method_df_median['SIZE'], array_method_df_median['DURATION'], color='orange')
-plt.errorbar(spike_indices, spikes, fmt='.', color='black')
-plt.plot(array_method_df_median['SIZE'], poly(array_method_df_median['SIZE']), color='green', linestyle='--')
-
-plt.legend(['Estimated time', 'Linear fit'])
-plt.savefig('./data/array_copy_constructor.png', format = 'png')
-plt.close(fig)
-
-
-# Create copy constructor graph for list_stack
-
-list_df = df[df['TAG'] == 'LIST']
-list_method_df = list_df[list_df['METHOD'] == METHOD].dropna()
-list_method_df_median = list_method_df.groupby(['SIZE'], as_index=False).median(numeric_only=True)
-
-
-fig = plt.figure()
-plt.grid()
-
-plt.title(r'Time measurement of copy constructor for list stack')
-plt.xlabel(r'size')
-plt.ylabel(r'time, $\mathrm{ns}$')
-
-plt.plot(list_method_df_median['SIZE'], list_method_df_median['DURATION'], color="blue")
-
-
-plt.savefig('./data/list_copy_constructor.png', format = 'png')
-plt.close(fig)
+create_graph(
+    'LIST',
+    'COPY_CONSTRUCTOR',
+    'Comparison of list-based stacks copy construction performance',
+    [
+        r'\texttt{stack-lib::ListStack<T>}',
+        r'\texttt{std::stack<T, std::list<T>>}'
+    ],
+    False,
+    f'{BASE_DATA_DIR}/list_copy_constructor_cmp.png'
+)
