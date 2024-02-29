@@ -1,11 +1,10 @@
 #include <chrono>
-#include <cstddef>
 #include <cstdio>
 #include <cstring>
 #include <list>
-#include <vector>
 #include <stack>
 #include <string>
+#include <vector>
 
 constexpr size_t TEST_STRING_SIZE_LIMIT = 4096L;
 constexpr size_t TEST_NUMBER_STUB = 1000L;
@@ -26,8 +25,8 @@ struct TestStruct {
  * @param elem Element to store in stack
  */
 template <typename T, typename C>
-void testSTL(FILE* f_out_csv, size_t test_max_size, const char* tag,
-             const T& elem) {
+inline void testSTL(FILE* f_out_csv, size_t test_max_size, const char* tag,
+                    const T& elem) {
     std::stack<T, C> stack;
 
     for (size_t i = 0; i < test_max_size; ++i) {
