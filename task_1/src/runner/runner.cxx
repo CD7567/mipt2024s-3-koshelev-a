@@ -1,5 +1,4 @@
 #include <chrono>
-#include <cstddef>
 #include <cstdio>
 #include <cstring>
 #include <string>
@@ -27,8 +26,8 @@ struct TestStruct {
  * @param elem Element to store in stack
  */
 template <typename T, typename Stack>
-void testStack(FILE* f_out_csv, const size_t test_max_size, const char* tag,
-               const T& elem) {
+inline void testStack(FILE* f_out_csv, const size_t test_max_size,
+                      const char* tag, const T& elem) {
     static_assert(std::is_base_of_v<stack_lib::AbstractStack<T>, Stack>);
 
     Stack stack;
@@ -65,8 +64,8 @@ void testStack(FILE* f_out_csv, const size_t test_max_size, const char* tag,
  * @param elem Element to store in stack
  */
 template <typename T, typename Stack>
-void testStackVirtual(FILE* f_out_csv, const size_t test_max_size,
-                      const char* tag, const T& elem) {
+inline void testStackVirtual(FILE* f_out_csv, const size_t test_max_size,
+                             const char* tag, const T& elem) {
     static_assert(std::is_base_of_v<stack_lib::AbstractStack<T>, Stack>);
 
     Stack raw_stack;
