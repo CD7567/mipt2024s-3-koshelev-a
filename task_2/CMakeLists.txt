@@ -12,8 +12,8 @@ project(task_2)
 
 file(
     GLOB_RECURSE
-    LIBRARY_RUNNER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/library-runner/*.cxx
+    TASK_2_RUNNER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
 )
 
 ###############################################################################
@@ -21,8 +21,8 @@ file(
 ###############################################################################
 
 add_executable(
-    library-runner
-    ${LIBRARY_RUNNER_SOURCES}
+    task-2-runner
+    ${TASK_2_RUNNER_SOURCES}
 )
 
 ###############################################################################
@@ -38,6 +38,6 @@ find_package(
 #)
 
 target_link_libraries(
-    library-runner PRIVATE
+    task-2-runner PRIVATE
     nlohmann_json::nlohmann_json
 )

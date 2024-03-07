@@ -12,13 +12,13 @@ project(task_1)
 
 file(
     GLOB_RECURSE
-    RUNNER_SOURCES
+    TASK_1_RUNNER_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
 )
 
 file(
     GLOB_RECURSE
-    STL_RUNNER_SOURCES
+    TASK_1_STL_RUNNER_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stl-runner/*.cxx
 )
 
@@ -27,13 +27,13 @@ file(
 ###############################################################################
 
 add_executable(
-    runner
-    ${RUNNER_SOURCES}
+    task-1-runner
+    ${TASK_1_RUNNER_SOURCES}
 )
 
 add_executable(
-    stl-runner
-    ${STL_RUNNER_SOURCES}
+    task-1-stl-runner
+    ${TASK_1_STL_RUNNER_SOURCES}
 )
 
 ###############################################################################
@@ -45,6 +45,6 @@ add_subdirectory(
 )
 
 target_link_libraries(
-    runner PRIVATE
+    task-1-runner PRIVATE
     stack-lib
 )
