@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <chrono>
 #include <nlohmann/json.hpp>
 
 #include "json-lib/stream_parser.hxx"
