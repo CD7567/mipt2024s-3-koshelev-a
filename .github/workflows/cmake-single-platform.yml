@@ -9,13 +9,13 @@ on:
 
 jobs:
   build-release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build doctest-dev
+      run: sudo apt-get update && sudo apt-get install -y ninja-build doctest-dev nlohmann-json3-dev
 
     - name: Configure CMake
       run: cmake -DCMAKE_BUILD_TYPE=Release -DDO_COMPILE_TESTS=ON -GNinja -B ${{github.workspace}}/cmake-build-release
