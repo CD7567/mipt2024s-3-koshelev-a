@@ -30,7 +30,7 @@ add_executable(
 ###############################################################################
 
 find_package(
-    nlohmann_json 3.7.3 REQUIRED
+    nlohmann_json 3.10.5 REQUIRED
 )
 
 add_subdirectory(

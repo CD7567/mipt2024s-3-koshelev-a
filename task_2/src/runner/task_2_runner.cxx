@@ -73,7 +73,7 @@ class SAXEventConsumer : public json::json_sax_t {
         return true;
     }
 
-    bool binary(json::binary_t& val) {
+    bool binary(json::binary_t& val) override {
         events.emplace_back("binary(val=[...])");
         return true;
     }
