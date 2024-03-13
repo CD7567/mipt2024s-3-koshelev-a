@@ -4,41 +4,37 @@ cmake_minimum_required(VERSION 3.5)
 ## project definition #########################################################
 ###############################################################################
 
-project(task_2)
+project(json-lib LANGUAGES CXX)
 
 ###############################################################################
 ## sources definitions ########################################################
 ###############################################################################
 
 file(
-    GLOB_RECURSE
-    TASK_2_RUNNER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
+        GLOB_RECURSE
+        JSON_LIB_HEADERS
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hxx
+)
+
+file(
+        GLOB_RECURSE
+        JSON_LIB_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx
 )
 
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
 
-add_executable(
-    task-2-runner
-    ${TASK_2_RUNNER_SOURCES}
+add_library(
+        json-lib
+        ${JSON_LIB_HEADERS}
+        ${JSON_LIB_SOURCES}
 )
 
-###############################################################################
-## dependencies ###############################################################
-###############################################################################
-
-find_package(
-    nlohmann_json 3.7.3 REQUIRED
+target_include_directories(
+        json-lib PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/
 )
 
-add_subdirectory(
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/json-lib
-)
-
-target_link_libraries(
-    task-2-runner PRIVATE
-    nlohmann_json::nlohmann_json
-    json-lib
-)
+set_target_properties(json-lib PROPERTIES LINKER_LANGUAGE CXX)
