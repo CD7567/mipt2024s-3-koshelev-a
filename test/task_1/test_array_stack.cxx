@@ -1,6 +1,6 @@
-#include <string>
-
 #include <doctest/doctest.h>
+
+#include <string>
 
 #include "../common_definitions.hxx"
 #include "stack-lib/array_stack.hxx"
@@ -46,7 +46,8 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestShrink") {
@@ -72,7 +73,8 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestCopyConstructorEmpty") {
@@ -81,11 +83,13 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
 
         REQUIRE(copied.IsEmpty());
         REQUIRE_EQ(copied.Size(), 0);
-        REQUIRE_THROWS_AS(copied.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(copied.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestCopyConstructorNotEmpty") {
@@ -115,7 +119,8 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(copied.IsEmpty());
         REQUIRE_EQ(copied.Size(), 0);
-        REQUIRE_THROWS_AS(copied.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(copied.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestCopyAssignmentEmpty") {
@@ -126,11 +131,13 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
 
         REQUIRE(copy_assigned.IsEmpty());
         REQUIRE_EQ(copy_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(copy_assigned.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(copy_assigned.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestCopyAssignmentNotEmpty") {
@@ -162,7 +169,8 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(copy_assigned.IsEmpty());
         REQUIRE_EQ(copy_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(copy_assigned.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(copy_assigned.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestMoveConstructorEmpty") {
@@ -171,11 +179,13 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
 
         REQUIRE(moved.IsEmpty());
         REQUIRE_EQ(moved.Size(), 0);
-        REQUIRE_THROWS_AS(moved.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(moved.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestMoveConstructorNotEmpty") {
@@ -191,7 +201,8 @@ TEST_SUITE("TestArrayStack") {
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(moved.Size(), 10);
         REQUIRE_FALSE(moved.IsEmpty());
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
 
         for (size_t i = 10; i > 0; --i) {
             REQUIRE_EQ(moved.Top().number_, i);
@@ -200,7 +211,8 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(moved.IsEmpty());
         REQUIRE_EQ(moved.Size(), 0);
-        REQUIRE_THROWS_AS(moved.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(moved.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestMoveAssignmentEmpty") {
@@ -211,11 +223,13 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
 
         REQUIRE(move_assigned.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(move_assigned.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(move_assigned.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 
     TEST_CASE("TestMoveAssignmentNotEmpty") {
@@ -233,7 +247,8 @@ TEST_SUITE("TestArrayStack") {
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 10);
         REQUIRE_FALSE(move_assigned.IsEmpty());
-        REQUIRE_THROWS_AS(stack.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
 
         for (size_t i = 10; i > 0; --i) {
             REQUIRE_EQ(move_assigned.Top().number_, i);
@@ -242,6 +257,7 @@ TEST_SUITE("TestArrayStack") {
 
         REQUIRE(move_assigned.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(move_assigned.Pop(), stack_lib::ExtractFromEmptyStackException&);
+        REQUIRE_THROWS_AS(move_assigned.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);
     }
 }
