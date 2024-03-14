@@ -3,96 +3,76 @@
 namespace json_lib {
 
 void StreamParser::ParseUserEntry(JSONEntry<std::string>& entry) {
-    char symb = 0;
-
-    // Read label
-    for (size_t i = 0; i < USER_LABEL_LENGTH; ++i) {
-        f_in_stream_.read(&symb, 1);
-    }
-
-    // Read colon
-    f_in_stream_.read(&symb, 1);
+    // Skip label and colon
+    std::advance(f_in_it_, USER_LABEL_LENGTH + 1);
 
     // Read value
-    for (size_t i = 0; i < USER_VALUE_LENGTH; ++i) {
-        f_in_stream_.read(&symb, 1);
-        entry.value_.push_back(symb);
+    for (size_t i = 0; i < USER_VALUE_LENGTH; ++i, ++f_in_it_) {
+#ifndef DO_JSON_SKIP_WRITING
+        entry.value_.push_back(*f_in_it_);
+#endif
     }
 }
 
 void StreamParser::ParseQuestionEntry(JSONEntry<std::string>& entry) {
-    char symb = 0;
-
-    // Read label
-    for (size_t i = 0; i < QUESTION_LABEL_LENGTH; ++i) {
-        f_in_stream_.read(&symb, 1);
-    }
-
-    // Read colon
-    f_in_stream_.read(&symb, 1);
+    // Skip label and colon
+    std::advance(f_in_it_, QUESTION_LABEL_LENGTH + 1);
 
     // Read value
-    for (size_t i = 0; i < QUESTION_VALUE_LENGTH; ++i) {
-        f_in_stream_.read(&symb, 1);
-        entry.value_.push_back(symb);
+    for (size_t i = 0; i < QUESTION_VALUE_LENGTH; ++i, ++f_in_it_) {
+#ifndef DO_JSON_SKIP_WRITING
+        entry.value_.push_back(*f_in_it_);
+#endif
     }
 }
 
 void StreamParser::ParseScoreEntry(JSONEntry<int>& entry) {
-    char symb = 0;
-
     entry.value_ = 0;
 
-    // Read label
-    for (size_t i = 0; i < SCORE_LABEL_LENGTH; ++i) {
-        f_in_stream_.read(&symb, 1);
-    }
-
-    // Read colon
-    f_in_stream_.read(&symb, 1);
+    // Skip label and colon
+    std::advance(f_in_it_, SCORE_LABEL_LENGTH + 1);
 
     // Read value
-    for (size_t i = 0; i < SCORE_VALUE_LENGTH; ++i) {
-        f_in_stream_.read(&symb, 1);
-        entry.value_ = entry.value_ * 10 + (symb - 48);
+    for (size_t i = 0; i < SCORE_VALUE_LENGTH; ++i, ++f_in_it_) {
+#ifndef DO_JSON_SKIP_WRITING
+        entry.value_ = entry.value_ * 10 + (*f_in_it_ - 48);
+#endif
     }
 }
 
 inline void StreamParser::ParseBlock(JSONBlock& block) {
-    char symb = 0;
-
-    // Read opening bracket
-    f_in_stream_.read(&symb, 1);
+    // Skip opening bracket
+    ++f_in_it_;
 
     ParseUserEntry(block.user_);
 
-    // Read comma
-    f_in_stream_.read(&symb, 1);
+    // Skip comma
+    ++f_in_it_;
 
     ParseQuestionEntry(block.question_);
 
-    // Read comma
-    f_in_stream_.read(&symb, 1);
+    // Skip comma
+    ++f_in_it_;
 
     ParseScoreEntry(block.score_);
 
-    // Read closing bracket
-    f_in_stream_.read(&symb, 1);
+    // Skip closing bracket
+    ++f_in_it_;
 }
 
 void StreamParser::Parse() {
-    char symb = 0;
+    f_in_it_ = std::istreambuf_iterator<char>(f_in_stream_);
 
-    // Read opening square bracket
-    f_in_stream_.read(&symb, 1);
+    // Skip opening square bracket
+    ++f_in_it_;
 
     // Read blocks
     while (!f_in_stream_.eof() && f_in_stream_.peek() != ']') {
         auto last = blocks_.emplace_back();
         ParseBlock(last);
 
-        if (f_in_stream_.peek() == ',') {
-            f_in_stream_.read(&symb, 1);
+        if (*f_in_it_ == ',') {
+            ++f_in_it_;
         }
     }
 }
