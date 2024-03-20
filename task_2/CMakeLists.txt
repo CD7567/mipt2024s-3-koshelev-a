@@ -16,6 +16,12 @@ endif()
 
 file(
     GLOB_RECURSE
+    TASK_2_RUNNER_HEADERS
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.hxx
+)
+
+file(
+    GLOB_RECURSE
     TASK_2_RUNNER_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
 )
@@ -26,6 +32,7 @@ file(
 
 add_executable(
     task-2-runner
+    ${TASK_2_RUNNER_HEADERS}
     ${TASK_2_RUNNER_SOURCES}
 )
 
