@@ -148,10 +148,10 @@ TEST_SUITE("TestListStack") {
         stack_lib::ListStack<TestStruct> stack;
         stack_lib::ListStack<TestStruct> moved(std::move(stack));
 
-        REQUIRE(stack.IsEmpty());
-        REQUIRE_EQ(stack.Size(), 0);
+        REQUIRE(stack.IsEmpty());                                           // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
         REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);
+                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
 
         REQUIRE(moved.IsEmpty());
         REQUIRE_EQ(moved.Size(), 0);
@@ -168,12 +168,13 @@ TEST_SUITE("TestListStack") {
 
         stack_lib::ListStack<TestStruct> moved(std::move(stack));
 
-        REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE(stack.IsEmpty());
+        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
+        REQUIRE(stack.IsEmpty());                                           // NOLINT
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
+
         REQUIRE_EQ(moved.Size(), 10);
         REQUIRE_FALSE(moved.IsEmpty());
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);
 
         for (size_t i = 10; i > 0; --i) {
             REQUIRE_EQ(moved.Top().number_, i);
@@ -192,10 +193,10 @@ TEST_SUITE("TestListStack") {
 
         move_assigned = std::move(stack);
 
-        REQUIRE(stack.IsEmpty());
-        REQUIRE_EQ(stack.Size(), 0);
+        REQUIRE(stack.IsEmpty());                                           // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
         REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);
+                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
 
         REQUIRE(move_assigned.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 0);
@@ -214,12 +215,13 @@ TEST_SUITE("TestListStack") {
 
         move_assigned = std::move(stack);
 
-        REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE(stack.IsEmpty());
+        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
+        REQUIRE(stack.IsEmpty());                                           // NOLINT
+        REQUIRE_THROWS_AS(stack.Pop(),
+                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
+
         REQUIRE_EQ(move_assigned.Size(), 10);
         REQUIRE_FALSE(move_assigned.IsEmpty());
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);
 
         for (size_t i = 10; i > 0; --i) {
             REQUIRE_EQ(move_assigned.Top().number_, i);
