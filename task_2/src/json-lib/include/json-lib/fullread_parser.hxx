@@ -1,8 +1,7 @@
-#ifndef JSON_LIB_STREAM_PARSER_HXX
-#define JSON_LIB_STREAM_PARSER_HXX
+#ifndef JSON_LIB_BUFFERED_PARSER_HXX
+#define JSON_LIB_BUFFERED_PARSER_HXX
 
 #include <fstream>
-#include <iterator>
 #include <string>
 #include <vector>
 
@@ -10,11 +9,12 @@
 
 namespace json_lib {
 
-class StreamParser {
+class FullreadParser {
   private:
     std::ifstream f_in_stream_;
-    std::istreambuf_iterator<char> f_in_it_;
     std::vector<JSONBlock> blocks_;
+    std::string buffer_;
+    std::string::iterator buffer_it_;
 
     inline void ParseUserEntry(JSONEntry<std::string>& entry);
 
@@ -25,8 +25,9 @@ class StreamParser {
     inline void ParseBlock(JSONBlock& block);
 
   public:
-    explicit StreamParser(const char* json_path)
-        : f_in_stream_(json_path), f_in_it_(f_in_stream_) {}
+    explicit FullreadParser(const char* json_path) : f_in_stream_(json_path) {
+        std::getline(f_in_stream_, buffer_);
+    }
 
     void Parse();
 
@@ -35,4 +36,4 @@ class StreamParser {
 
 }  // namespace json_lib
 
-#endif  // JSON_LIB_STREAM_PARSER_HXX
+#endif  // JSON_LIB_BUFFERED_PARSER_HXX

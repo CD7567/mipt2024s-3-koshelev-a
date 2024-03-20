@@ -14,6 +14,13 @@ file(
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx
 )
 
+file(
+    COPY
+    ${CMAKE_CURRENT_SOURCE_DIR}/data
+    DESTINATION
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
 add_executable(
     test-runner
     ${TEST_RUNNER_HEADERS}
@@ -30,6 +37,7 @@ target_link_libraries(
     test-runner PRIVATE
     doctest::doctest
     stack-lib
+    json-lib
 )
 
 ###############################################################################

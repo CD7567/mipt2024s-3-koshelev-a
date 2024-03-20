@@ -5,12 +5,12 @@
 
 namespace json_lib {
 
-constexpr size_t USER_LABEL_LENGTH = 6;
-constexpr size_t QUESTION_LABEL_LENGTH = 10;
-constexpr size_t SCORE_LABEL_LENGTH = 7;
+constexpr size_t USER_LABEL_LENGTH = 4;
+constexpr size_t QUESTION_LABEL_LENGTH = 8;
+constexpr size_t SCORE_LABEL_LENGTH = 5;
 
-constexpr size_t USER_VALUE_LENGTH = 38;
-constexpr size_t QUESTION_VALUE_LENGTH = 38;
+constexpr size_t USER_VALUE_LENGTH = 36;
+constexpr size_t QUESTION_VALUE_LENGTH = 36;
 constexpr size_t SCORE_VALUE_LENGTH = 1;
 
 template <typename T>

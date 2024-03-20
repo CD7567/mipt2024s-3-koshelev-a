@@ -6,6 +6,10 @@ cmake_minimum_required(VERSION 3.5)
 
 project(task_2)
 
+if(DO_JSON_SKIP_WRITING)
+    add_definitions(-DDO_JSON_SKIP_WRITING)
+endif()
+
 ###############################################################################
 ## sources definitions ########################################################
 ###############################################################################
