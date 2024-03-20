@@ -38,6 +38,12 @@ target_link_libraries(
 ###############################################################################
 
 if(DO_AUTORUN_TESTS)
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/data/data-parser-test.json
+        ${CMAKE_CURRENT_BINARY_DIR}/data/data-parser-test.json
+        COPYONLY
+    )
+
     add_custom_target(
         run-tests ALL
         COMMAND test-runner
