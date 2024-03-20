@@ -3,8 +3,8 @@
 namespace json_lib {
 
 void StreamParser::ParseUserEntry(JSONEntry<std::string>& entry) {
-    // Skip label and colon
-    std::advance(f_in_it_, USER_LABEL_LENGTH + 1);
+    // Skip label, colon and opening quote
+    std::advance(f_in_it_, USER_LABEL_LENGTH + 4);
 
     // Read value
     for (size_t i = 0; i < USER_VALUE_LENGTH; ++i, ++f_in_it_) {
@@ -12,11 +12,14 @@ void StreamParser::ParseUserEntry(JSONEntry<std::string>& entry) {
         entry.value_.push_back(*f_in_it_);
 #endif
     }
+
+    // Skip closing quote
+    ++f_in_it_;
 }
 
 void StreamParser::ParseQuestionEntry(JSONEntry<std::string>& entry) {
     // Skip label and colon
-    std::advance(f_in_it_, QUESTION_LABEL_LENGTH + 1);
+    std::advance(f_in_it_, QUESTION_LABEL_LENGTH + 4);
 
     // Read value
     for (size_t i = 0; i < QUESTION_VALUE_LENGTH; ++i, ++f_in_it_) {
@@ -24,13 +27,16 @@ void StreamParser::ParseQuestionEntry(JSONEntry<std::string>& entry) {
         entry.value_.push_back(*f_in_it_);
 #endif
     }
+
+    // Skip closing quote
+    ++f_in_it_;
 }
 
 void StreamParser::ParseScoreEntry(JSONEntry<int>& entry) {
     entry.value_ = 0;
 
     // Skip label and colon
-    std::advance(f_in_it_, SCORE_LABEL_LENGTH + 1);
+    std::advance(f_in_it_, SCORE_LABEL_LENGTH + 3);
 
     // Read value
     for (size_t i = 0; i < SCORE_VALUE_LENGTH; ++i, ++f_in_it_) {
@@ -67,8 +73,8 @@ void StreamParser::Parse() {
     ++f_in_it_;
 
     // Read blocks
-    while (!f_in_stream_.eof() && f_in_stream_.peek() != ']') {
-        auto last = blocks_.emplace_back();
+    while (*f_in_it_ != ']') {
+        JSONBlock& last = blocks_.emplace_back();
         ParseBlock(last);
 
         if (*f_in_it_ == ',') {
