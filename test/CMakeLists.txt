@@ -30,6 +30,7 @@ target_link_libraries(
     test-runner PRIVATE
     doctest::doctest
     stack-lib
+    json-lib
 )
 
 ###############################################################################
