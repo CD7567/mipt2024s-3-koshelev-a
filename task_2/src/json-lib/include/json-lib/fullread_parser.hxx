@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "json-lib//common.hxx"
+#include "json-lib/common.hxx"
 
 namespace json_lib {
 
