@@ -26,6 +26,18 @@ file(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
 )
 
+file(
+    GLOB_RECURSE
+    TASK_2_LIB_RUNNER_HEADERS
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/lib-runner/*.hxx
+)
+
+file(
+    GLOB_RECURSE
+    TASK_2_LIB_RUNNER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/lib-runner/*.cxx
+)
+
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -34,6 +46,12 @@ add_executable(
     task-2-runner
     ${TASK_2_RUNNER_HEADERS}
     ${TASK_2_RUNNER_SOURCES}
+)
+
+add_executable(
+    task-2-lib-runner
+    ${TASK_2_LIB_RUNNER_HEADERS}
+    ${TASK_2_LIB_RUNNER_SOURCES}
 )
 
 ###############################################################################
@@ -50,6 +68,12 @@ add_subdirectory(
 
 target_link_libraries(
     task-2-runner PRIVATE
-    nlohmann_json::nlohmann_json
     json-lib
+    util-lib
+)
+
+target_link_libraries(
+    task-2-lib-runner PRIVATE
+    nlohmann_json::nlohmann_json
+    util-lib
 )
