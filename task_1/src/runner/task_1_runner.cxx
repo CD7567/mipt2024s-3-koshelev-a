@@ -1,33 +1,29 @@
 #include <chrono>
-#include <cstdio>
 #include <cstring>
+#include <fstream>
+#include <iostream>
 #include <string>
 
 #include "stack-lib/abstract_stack.hxx"
 #include "stack-lib/array_stack.hxx"
 #include "stack-lib/list_stack.hxx"
+#include "util-lib/utils.hxx"
 
-constexpr size_t TEST_STRING_SIZE_LIMIT = 4096L;
-constexpr size_t TEST_NUMBER_STUB = 1000L;
-constexpr const char* PRINT_FORMAT = "%15s,%10lu,%20s,%10ld\n";
-constexpr const char* PRINT_HEADER_FORMAT = "%15s,%10s,%20s,%10s\n";
+constexpr const char* PRINT_FORMAT = "{0:>15},{1:>10},{2:>20},{3:>10}";
+constexpr const char* PRINT_H_FORMAT = "{0:>15},{1:>10},{2:>20},{3:>10}";
 
-struct TestStruct {
-    size_t number_ = TEST_NUMBER_STUB;
-    std::string string_ = "I am string";
-};
-
-/** @brief Test custom stack implementations
+/**
+ * Test custom stack implementations
  * @tparam T Template parameter for stack
  * @tparam Stack Stack implementation
- * @param f_out_csv File to store data
- * @param test_max_size Max amount of elements for test
+ * @param out Fstream to store data
  * @param tag Discriminator for data processing
  * @param elem Element to store in stack
+ * @param test_max_size Max amount of elements for test
  */
 template <typename T, typename Stack>
-inline void testStack(FILE* f_out_csv, const size_t test_max_size,
-                      const char* tag, const T& elem) {
+inline void testStack(std::ofstream& out, std::string tag, const T& elem,
+                      const size_t test_max_size) {
     static_assert(std::is_base_of_v<stack_lib::AbstractStack<T>, Stack>);
 
     Stack stack;
@@ -38,34 +34,37 @@ inline void testStack(FILE* f_out_csv, const size_t test_max_size,
         stack.Push(elem);
         auto end = std::chrono::high_resolution_clock::now();
 
-        (void)fprintf(
-            f_out_csv, PRINT_FORMAT, tag, i, "PUSH",
-            std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
-                .count());
+        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH",
+                          std::chrono::duration_cast<std::chrono::nanoseconds>(
+                              end - start)
+                              .count())
+            << "\n";
 
         // Measuring copy construction time
         start = std::chrono::high_resolution_clock::now();
         Stack copied(stack);
         end = std::chrono::high_resolution_clock::now();
 
-        (void)fprintf(
-            f_out_csv, PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR",
-            std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
-                .count());
+        out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR",
+                          std::chrono::duration_cast<std::chrono::nanoseconds>(
+                              end - start)
+                              .count())
+            << "\n";
     }
 }
 
-/** @brief Test custom stack implementations with virtual calls
+/**
+ * Test custom stack implementations with virtual calls
  * @tparam T Template parameter for stack
  * @tparam Stack Stack implementation
- * @param f_out_csv File to store data
- * @param test_max_size Max amount of elements for test
+ * @param out Fstream to store data
  * @param tag Discriminator for data processing
  * @param elem Element to store in stack
+ * @param test_max_size Max amount of elements for test
  */
 template <typename T, typename Stack>
-inline void testStackVirtual(FILE* f_out_csv, const size_t test_max_size,
-                             const char* tag, const T& elem) {
+inline void testStackVirtual(std::ofstream& out, std::string tag, const T& elem,
+                             const size_t test_max_size) {
     static_assert(std::is_base_of_v<stack_lib::AbstractStack<T>, Stack>);
 
     Stack raw_stack;
@@ -77,53 +76,68 @@ inline void testStackVirtual(FILE* f_out_csv, const size_t test_max_size,
         stack.Push(elem);
         auto end = std::chrono::high_resolution_clock::now();
 
-        (void)fprintf(
-            f_out_csv, PRINT_FORMAT, tag, i, "PUSH",
-            std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
-                .count());
+        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH",
+                          std::chrono::duration_cast<std::chrono::nanoseconds>(
+                              end - start)
+                              .count())
+            << "\n";
     }
 }
 
+/**
+ * Main function of runner
+ * @param argc Number of command line arguments
+ * @param argv[1] Path to file with test string
+ * @param argv[2] Path to file for data output
+ * @param argv[3] Boolean whether to print header
+ * @param argv[4] Amount of iterations
+ * @param argv[5] Max size of stack
+ * @return Program exit code
+ */
 int main(int argc, char** argv) {
+    std::ofstream::sync_with_stdio(false);
+    std::ifstream::sync_with_stdio(false);
+
     if (argc < 6) {
-        (void)std::fprintf(stderr, "Wrong amount of arguments detected!\n");
+        std::cerr << "Wrong amount of arguments detected!"
+                  << "\n";
         return 1;
     }
 
-    FILE* f_in_txt = fopen(argv[1], "r");
-    FILE* f_out_csv = fopen(argv[2], "w");
+    std::ifstream test_string_istream(argv[1], std::ios_base::in);
+    std::ofstream csv_ostream(argv[2], std::ios_base::app);
+    std::string test_string;
 
-    if (f_in_txt == nullptr || f_out_csv == nullptr) {
-        (void)std::fprintf(stderr, "Couldn't open files!\n");
+    const size_t test_max_iter = std::stoul(argv[4]);
+    const size_t test_max_size = std::stoul(argv[5]);
+
+    if (!test_string_istream.good() || !csv_ostream.good()) {
+        std::cerr << "Couldn't open files!"
+                  << "\n";
         return 1;
     }
 
-    char* test_string = new char[TEST_STRING_SIZE_LIMIT];
-
-    (void)fgets(test_string, TEST_STRING_SIZE_LIMIT, f_in_txt);
-    (void)fclose(f_in_txt);
+    std::getline(test_string_istream, test_string);
+    test_string_istream.close();
 
     if (std::strcmp(argv[3], "true") == 0) {
-        (void)fprintf(f_out_csv, PRINT_HEADER_FORMAT, "TAG", "SIZE", "METHOD",
-                      "DURATION");
+        csv_ostream << dyn_format(PRINT_H_FORMAT, "TAG", "SIZE", "METHOD",
+                                  "DURATION")
+                    << "\n";
     }
 
-    for (size_t i = 0; i < std::stoul(argv[4]); ++i) {
+    for (size_t i = 0; i < test_max_iter; ++i) {
         testStack<TestStruct, stack_lib::ArrayStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "ARRAY",
-            TestStruct{TEST_NUMBER_STUB, test_string});
+            csv_ostream, "ARRAY", TestStruct{i, test_string}, test_max_size);
         testStack<TestStruct, stack_lib::ListStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "LIST",
-            TestStruct{TEST_NUMBER_STUB, test_string});
+            csv_ostream, "LIST", TestStruct{i, test_string}, test_max_size);
         testStackVirtual<TestStruct, stack_lib::ArrayStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "VIRT_ARRAY",
-            TestStruct{TEST_NUMBER_STUB, test_string});
+            csv_ostream, "VIRT_ARRAY", TestStruct{i, test_string},
+            test_max_size);
         testStackVirtual<TestStruct, stack_lib::ListStack<TestStruct>>(
-            f_out_csv, std::stoul(argv[5]), "VIRT_LIST",
-            TestStruct{TEST_NUMBER_STUB, test_string});
+            csv_ostream, "VIRT_LIST", TestStruct{i, test_string},
+            test_max_size);
     }
 
-    (void)fclose(f_out_csv);
-    delete[] test_string;
     return 0;
 }
