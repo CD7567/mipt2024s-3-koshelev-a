@@ -11,7 +11,6 @@
 #include "util-lib/utils.hxx"
 
 constexpr const char* PRINT_FORMAT = "{0:>15},{1:>10},{2:>20},{3:>10}";
-constexpr const char* PRINT_H_FORMAT = "{0:>15},{1:>10},{2:>20},{3:>10}";
 
 /**
  * Test custom stack implementations
@@ -108,7 +107,7 @@ int main(int argc, char** argv) {
     test_string_istream.close();
 
     if (std::strcmp(argv[3], "true") == 0) {
-        csv_ostream << dyn_format(PRINT_H_FORMAT, "TAG", "SIZE", "METHOD",
+        csv_ostream << dyn_format(PRINT_FORMAT, "TAG", "SIZE", "METHOD",
                                   "DURATION")
                     << "\n";
     }
