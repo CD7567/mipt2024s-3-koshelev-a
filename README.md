@@ -1,6 +1,6 @@
 # mipt2024s-3-koshelev-a
 
-![Workflow badge](https://github.com/CD7567/mipt2024s-3-koshelev-a/actions/workflows/cmake-single-platform.yml/badge.svg)
+[![CMake on a single platform](https://github.com/CD7567/mipt2024s-3-koshelev-a/actions/workflows/cmake-single-platform.yml/badge.svg?branch=master&event=pull_request)](https://github.com/CD7567/mipt2024s-3-koshelev-a/actions/workflows/cmake-single-platform.yml)
 
 Репозиторий по курсу "Построение и анализ алгоритмов в программировании", МФТИ, ИСА РАН, весна 2024
 
