@@ -9,7 +9,7 @@
 using json = nlohmann::json;
 
 constexpr const char* PRINT_FORMAT = "%15s,%10lu,%20s,%10ld\n";
-constexpr const char* PRINT_HEADER_FORMAT = "%15s,%10s,%20s,%10s\n";
+constexpr const char* PRINT_H_FORMAT = "%15s,%10s,%20s,%10s\n";
 
 class SAXEventConsumer : public json::json_sax_t {
   public:

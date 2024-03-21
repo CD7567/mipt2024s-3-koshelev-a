@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "../common_definitions.hxx"
 #include "stack-lib/array_stack.hxx"
+#include "util-lib/test_struct.hxx"
 
 TEST_SUITE("TestArrayStack") {
     TEST_CASE("TestPushSize") {
@@ -177,10 +177,11 @@ TEST_SUITE("TestArrayStack") {
         stack_lib::ArrayStack<TestStruct> stack;
         stack_lib::ArrayStack<TestStruct> moved(std::move(stack));
 
-        REQUIRE(stack.IsEmpty());                                           // NOLINT
-        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
+        REQUIRE(stack.IsEmpty());     // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
+        REQUIRE_THROWS_AS(
+            stack.Pop(),
+            stack_lib::ExtractFromEmptyStackException&);  // NOLINT
 
         REQUIRE(moved.IsEmpty());
         REQUIRE_EQ(moved.Size(), 0);
@@ -197,10 +198,11 @@ TEST_SUITE("TestArrayStack") {
 
         stack_lib::ArrayStack<TestStruct> moved(std::move(stack));
 
-        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
-        REQUIRE(stack.IsEmpty());                                           // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
+        REQUIRE(stack.IsEmpty());     // NOLINT
+        REQUIRE_THROWS_AS(
+            stack.Pop(),
+            stack_lib::ExtractFromEmptyStackException&);  // NOLINT
 
         REQUIRE_EQ(moved.Size(), 10);
         REQUIRE_FALSE(moved.IsEmpty());
@@ -222,10 +224,11 @@ TEST_SUITE("TestArrayStack") {
 
         move_assigned = std::move(stack);
 
-        REQUIRE(stack.IsEmpty());                                           // NOLINT
-        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
+        REQUIRE(stack.IsEmpty());     // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
+        REQUIRE_THROWS_AS(
+            stack.Pop(),
+            stack_lib::ExtractFromEmptyStackException&);  // NOLINT
 
         REQUIRE(move_assigned.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 0);
@@ -244,10 +247,11 @@ TEST_SUITE("TestArrayStack") {
 
         move_assigned = std::move(stack);
 
-        REQUIRE_EQ(stack.Size(), 0);                                        // NOLINT
-        REQUIRE(stack.IsEmpty());                                           // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          stack_lib::ExtractFromEmptyStackException&);      // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
+        REQUIRE(stack.IsEmpty());     // NOLINT
+        REQUIRE_THROWS_AS(
+            stack.Pop(),
+            stack_lib::ExtractFromEmptyStackException&);  // NOLINT
 
         REQUIRE_EQ(move_assigned.Size(), 10);
         REQUIRE_FALSE(move_assigned.IsEmpty());

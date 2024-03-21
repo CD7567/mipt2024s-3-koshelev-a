@@ -38,6 +38,7 @@ target_link_libraries(
     doctest::doctest
     stack-lib
     json-lib
+    util-lib
 )
 
 ###############################################################################

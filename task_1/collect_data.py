@@ -29,10 +29,20 @@ subprocess.run(
 )
 
 
+# Clear data files if exist
+subprocess.run(
+    [
+        'rm',
+        f'{BASE_DATA_DIR}/custom_data.csv',
+        f'{BASE_DATA_DIR}/stl_data.csv'
+    ]
+)
+
+
 # Register data collection runners
 runners = [
     [
-        f'{sys.path[0]}/../cmake-build-release/task_1/runner',
+        f'{sys.path[0]}/../cmake-build-release/task_1/task-1-runner',
         f'{BASE_DATA_DIR}/test_string.txt',
         f'{BASE_DATA_DIR}/custom_data.csv',
         'true',
@@ -40,7 +50,7 @@ runners = [
         sys.argv[2]
     ],
     [
-        f'{sys.path[0]}/../cmake-build-release/task_1/stl-runner',
+        f'{sys.path[0]}/../cmake-build-release/task_1/task-1-stl-runner',
         f'{BASE_DATA_DIR}/test_string.txt',
         f'{BASE_DATA_DIR}/stl_data.csv',
         'true',
