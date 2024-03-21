@@ -15,10 +15,13 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y ninja-build doctest-dev nlohmann-json3-dev clang
+      run: sudo apt-get update && sudo apt-get install -y ninja-build doctest-dev nlohmann-json3-dev gcc-13 g++-13
+
+    - name: Configure compiler
+      run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
 
     - name: Configure CMake
-      run: cmake -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_BUILD_TYPE=Release -DDO_COMPILE_TESTS=ON -GNinja -B ${{github.workspace}}/cmake-build-release
+      run: cmake -DCMAKE_BUILD_TYPE=Release -DDO_COMPILE_TESTS=ON -GNinja -B ${{github.workspace}}/cmake-build-release
 
     - name: Build
       run: cmake --build ${{github.workspace}}/cmake-build-release
