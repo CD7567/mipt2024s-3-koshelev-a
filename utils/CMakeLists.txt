@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.5)
 ## project definition #########################################################
 ###############################################################################
 
-project(task_1)
+project(util-lib LANGUAGES CXX)
 
 ###############################################################################
 ## sources definitions ########################################################
@@ -12,45 +12,22 @@ project(task_1)
 
 file(
     GLOB_RECURSE
-    TASK_1_RUNNER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/runner/*.cxx
-)
-
-file(
-    GLOB_RECURSE
-    TASK_1_STL_RUNNER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stl-runner/*.cxx
+    UTIL_LIB_HEADERS
+        include/*.hxx
 )
 
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
 
-add_executable(
-    task-1-runner
-    ${TASK_1_RUNNER_SOURCES}
-)
-
-add_executable(
-    task-1-stl-runner
-    ${TASK_1_STL_RUNNER_SOURCES}
-)
-
-###############################################################################
-## dependencies ###############################################################
-###############################################################################
-
-add_subdirectory(
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/stack-lib
-)
-
-target_link_libraries(
-    task-1-runner PRIVATE
-    stack-lib
+add_library(
     util-lib
+    ${UTIL_LIB_HEADERS}
 )
 
-target_link_libraries(
-    task-1-stl-runner PRIVATE
-    util-lib
+target_include_directories(
+    util-lib PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/
 )
+
+set_target_properties(util-lib PROPERTIES LINKER_LANGUAGE CXX)

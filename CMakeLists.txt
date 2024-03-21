@@ -30,5 +30,7 @@ if(DO_COMPILE_TESTS)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
 endif()
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/task_1)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/task_2)
