@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <cstddef>
+#include <format>
 #include <string>
 
 struct TestStruct {
