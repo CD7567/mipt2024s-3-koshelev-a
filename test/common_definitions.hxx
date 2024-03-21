@@ -3,9 +3,4 @@
 
 constexpr const char* TEST_JSON_PATH = "data/data-parser-test.json";
 
-struct TestStruct {
-    size_t number_ = 1000L;
-    std::string string_ = "I am string";
-};
-
 #endif  // TEST_COMMON_DEFINITIONS_HXX
