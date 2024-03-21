@@ -2,14 +2,7 @@
 #define UTILS_LIB_UTILS_HXX
 
 #include <chrono>
-#include <cstddef>
 #include <format>
-#include <string>
-
-struct TestStruct {
-    size_t number_ = 0;
-    std::string string_ = "I am string";
-};
 
 /**
  * Dynamically format string

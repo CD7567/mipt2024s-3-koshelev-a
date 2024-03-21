@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "util-lib/test_struct.hxx"
 #include "util-lib/utils.hxx"
 
 constexpr const char* PRINT_FORMAT = "{0:>15},{1:>10},{2:>20},{3:>10}";
@@ -35,7 +36,7 @@ inline void testSTL(std::ofstream& out, std::string tag, const T& elem,
 
         // Measuring copy construction time
         size_t cpy_c_time = timeit<std::chrono::nanoseconds>(
-            [&stack]() { const std::stack<T, C> _(stack); });
+            [&stack]() { const std::stack<T, C> _(stack); });  // NOLINT
 
         out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", cpy_c_time)
             << "\n";

@@ -3,7 +3,7 @@
 #include <string>
 
 #include "stack-lib/array_stack.hxx"
-#include "util-lib/utils.hxx"
+#include "util-lib/test_struct.hxx"
 
 TEST_SUITE("TestArrayStack") {
     TEST_CASE("TestPushSize") {

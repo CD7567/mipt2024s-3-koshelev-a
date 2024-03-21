@@ -7,6 +7,7 @@
 #include "stack-lib/abstract_stack.hxx"
 #include "stack-lib/array_stack.hxx"
 #include "stack-lib/list_stack.hxx"
+#include "util-lib/test_struct.hxx"
 #include "util-lib/utils.hxx"
 
 constexpr const char* PRINT_FORMAT = "{0:>15},{1:>10},{2:>20},{3:>10}";
@@ -37,7 +38,7 @@ inline void testStack(std::ofstream& out, std::string tag, const T& elem,
 
         // Measuring copy construction time
         size_t cpy_c_time = timeit<std::chrono::nanoseconds>(
-            [&stack]() { const Stack _(stack); });
+            [&stack]() { const Stack _(stack); });  // NOLINT
 
         out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", cpy_c_time)
             << "\n";
