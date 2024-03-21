@@ -2,24 +2,45 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <string>
 
-#include "json-lib/fullread_parser.hxx"
-#include "json-lib/stream_parser.hxx"
-#include "util-lib//utils.hxx"
+#include "sax_event_consumer.hxx"
+#include "util-lib/utils.hxx"
+
+using json = nlohmann::json;
 
 constexpr const char* PRINT_FORMAT = "{0:>15},{1:>10}";
 
-template <typename Parser>
-inline void testCustomParser(std::ofstream& out, std::string tag,
-                             const char* json_path) {
-    Parser parser(json_path);
+/**
+ * Test nlohmann DOM parser
+ * @param out Fstream to store data
+ * @param json_path Data json path
+ */
+inline void testLibraryDOM(std::ofstream& out, const char* json_path) {
+    std::ifstream f_json(json_path);
 
     // Measure parsing time
-    size_t parsing_time =
-        timeit<std::chrono::milliseconds>([&parser]() { parser.Parse(); });
+    size_t parsing_time = timeit<std::chrono::milliseconds>(
+        [&f_json]() { const json parsed = json::parse(f_json); });
 
-    out << dyn_format(PRINT_FORMAT, tag, parsing_time) << "\n";
+    out << dyn_format(PRINT_FORMAT, "DOM", parsing_time) << "\n";
+}
+
+/**
+ * Test nlohmann SAX parser
+ * @param out Fstream to store data
+ * @param json_path Data json path
+ */
+inline void testLibrarySAX(std::ofstream& out, const char* json_path) {
+    std::ifstream f_json(json_path);
+    SAXEventConsumer consumer;
+
+    // Measure parsing time
+    size_t parsing_time = timeit<std::chrono::milliseconds>(
+        [&f_json, &consumer]() { json::sax_parse(f_json, &consumer); });
+
+    out << dyn_format(PRINT_FORMAT, "SAX", parsing_time) << "\n";
 }
 
 /**
@@ -58,10 +79,8 @@ int main(int argc, char** argv) {
     }
 
     for (size_t i = 0; i < test_max_iter; ++i) {
-        testCustomParser<json_lib::StreamParser>(csv_ostream, "STREAM",
-                                                 argv[1]);
-        testCustomParser<json_lib::FullreadParser>(csv_ostream, "FULLREAD",
-                                                   argv[1]);
+        testLibraryDOM(csv_ostream, argv[1]);
+        testLibrarySAX(csv_ostream, argv[1]);
     }
 
     return 0;
