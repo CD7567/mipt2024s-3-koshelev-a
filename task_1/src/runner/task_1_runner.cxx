@@ -30,25 +30,16 @@ inline void testStack(std::ofstream& out, std::string tag, const T& elem,
 
     for (size_t i = 0; i < test_max_size; ++i) {
         // Measuring push time
-        auto start = std::chrono::high_resolution_clock::now();
-        stack.Push(elem);
-        auto end = std::chrono::high_resolution_clock::now();
+        size_t push_time = timeit<std::chrono::nanoseconds>(
+            [&stack](const T& elem) { stack.Push(elem); }, elem);
 
-        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH",
-                          std::chrono::duration_cast<std::chrono::nanoseconds>(
-                              end - start)
-                              .count())
-            << "\n";
+        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", push_time) << "\n";
 
         // Measuring copy construction time
-        start = std::chrono::high_resolution_clock::now();
-        Stack copied(stack);
-        end = std::chrono::high_resolution_clock::now();
+        size_t cpy_c_time = timeit<std::chrono::nanoseconds>(
+            [&stack]() { const Stack _(stack); });
 
-        out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR",
-                          std::chrono::duration_cast<std::chrono::nanoseconds>(
-                              end - start)
-                              .count())
+        out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", cpy_c_time)
             << "\n";
     }
 }
@@ -72,15 +63,10 @@ inline void testStackVirtual(std::ofstream& out, std::string tag, const T& elem,
 
     for (size_t i = 0; i < test_max_size; ++i) {
         // Measuring push time
-        auto start = std::chrono::high_resolution_clock::now();
-        stack.Push(elem);
-        auto end = std::chrono::high_resolution_clock::now();
+        size_t push_time = timeit<std::chrono::nanoseconds>(
+            [&stack](const T& elem) { stack.Push(elem); }, elem);
 
-        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH",
-                          std::chrono::duration_cast<std::chrono::nanoseconds>(
-                              end - start)
-                              .count())
-            << "\n";
+        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", push_time) << "\n";
     }
 }
 
