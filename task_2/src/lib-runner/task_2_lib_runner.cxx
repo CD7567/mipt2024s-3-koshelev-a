@@ -73,9 +73,7 @@ int main(int argc, char** argv) {
     }
 
     if (std::strcmp(argv[3], "true") == 0) {
-        csv_ostream << dyn_format(PRINT_FORMAT, "TAG", "SIZE", "METHOD",
-                                  "DURATION")
-                    << "\n";
+        csv_ostream << dyn_format(PRINT_FORMAT, "TAG", "DURATION") << "\n";
     }
 
     for (size_t i = 0; i < test_max_iter; ++i) {
