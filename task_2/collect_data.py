@@ -188,7 +188,7 @@ def printTable(df: pandas.DataFrame, df_nowrite: pandas.DataFrame):
         }
     ]
 
-    markdown = markdown_table(data).get_markdown()
+    markdown = markdown_table(data).set_params(row_sep='markdown').get_markdown()
     print(markdown)
 
 
