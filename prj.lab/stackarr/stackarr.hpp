@@ -1,5 +1,5 @@
-#ifndef MIPT2024S_3_KOSHELEV_A_STACKARRT_HPP
-#define MIPT2024S_3_KOSHELEV_A_STACKARRT_HPP
+#ifndef MIPT2024S_3_KOSHELEV_A_STACKARR_HPP
+#define MIPT2024S_3_KOSHELEV_A_STACKARR_HPP
 
 #include <algorithm>
 #include <cstddef>
@@ -54,4 +54,4 @@ class StackArr final {
     void Shrink();
 };
 
-#endif  // MIPT2024S_3_KOSHELEV_A_STACKARRT_HPP
+#endif  // MIPT2024S_3_KOSHELEV_A_STACKARR_HPP
