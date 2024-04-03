@@ -82,7 +82,7 @@ class StackArrT final {
 
     [[nodiscard]] std::size_t Capacity() const noexcept { return capacity_; }
 
-    [[nodiscard]] T& Top() override {
+    [[nodiscard]] T& Top() {
         if (size_ == 0) {
             throw StackArrTException("Cannot extract from empty stack!");
         }
