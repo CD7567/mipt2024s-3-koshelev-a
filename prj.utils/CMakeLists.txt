@@ -11,9 +11,9 @@ project(util-lib LANGUAGES CXX)
 ###############################################################################
 
 file(
-    GLOB_RECURSE
-    UTIL_LIB_HEADERS
-        include/*.hxx
+        GLOB_RECURSE
+        UTIL_LIB_HEADERS
+        ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
 ###############################################################################
@@ -21,13 +21,13 @@ file(
 ###############################################################################
 
 add_library(
-    util-lib
-    ${UTIL_LIB_HEADERS}
+        util-lib
+        ${UTIL_LIB_HEADERS}
 )
 
 target_include_directories(
-    util-lib PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/
+        util-lib PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 set_target_properties(util-lib PROPERTIES LINKER_LANGUAGE CXX)

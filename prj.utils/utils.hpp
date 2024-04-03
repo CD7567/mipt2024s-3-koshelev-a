@@ -1,5 +1,5 @@
-#ifndef UTILS_LIB_UTILS_HXX
-#define UTILS_LIB_UTILS_HXX
+#ifndef MIPT2024S_3_KOSHELEV_A_UTILS_HPP
+#define MIPT2024S_3_KOSHELEV_A_UTILS_HPP
 
 #include <chrono>
 #include <format>
@@ -34,4 +34,4 @@ inline size_t timeit(Lambda&& lambda, Args&&... args) {
     return std::chrono::duration_cast<ChronoT>(end - start).count();
 }
 
-#endif  // UTILS_LIB_UTILS_HXX
+#endif  // MIPT2024S_3_KOSHELEV_A_UTILS_HPP
