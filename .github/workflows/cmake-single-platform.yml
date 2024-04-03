@@ -27,4 +27,4 @@ jobs:
       run: cmake --build ${{github.workspace}}/cmake-build-release
 
     - name: Run tests
-      run: cd ${{github.workspace}}/cmake-build-release/test && ./test-runner
+      run: cd ${{github.workspace}}/cmake-build-release/prj.tst && ./test-runner

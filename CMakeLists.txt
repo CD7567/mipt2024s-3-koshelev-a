@@ -22,15 +22,18 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(DO_AUTORUN_TESTS ON)
 endif()
 
+if(DO_JSON_SKIP_WRITING)
+    add_definitions(-DDO_JSON_SKIP_WRITING)
+endif()
+
 ###############################################################################
 ## dependencies ###############################################################
 ###############################################################################
 
 if(DO_COMPILE_TESTS)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.tst)
 endif()
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/task_1)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/task_2)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.app)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.lab)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.utils)
