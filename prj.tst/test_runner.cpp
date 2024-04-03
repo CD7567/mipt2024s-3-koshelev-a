@@ -2,7 +2,7 @@
 
 #include <doctest/doctest.h>
 
-#include "task_1/test_array_stack.cpp"
-#include "task_1/test_list_stack.cpp"
-#include "task_2/test_fullread_parser.cpp"
-#include "task_2/test_stream_parser.cpp"
+#include "stackarr/stackarr_test.cpp"
+#include "stackarrt/stackarrt_test.cpp"
+#include "stacklst/stacklst_test.cpp"
+#include "stacklstt/stacklstt_test.cpp"
