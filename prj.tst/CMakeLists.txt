@@ -36,7 +36,10 @@ find_package(doctest REQUIRED)
 target_link_libraries(
     test-runner PRIVATE
     doctest::doctest
-    stack-lib
+    stack-arr-lib
+    stack-arrt-lib
+    stack-lst-lib
+    stack-lstt-lib
     json-lib
     util-lib
 )
