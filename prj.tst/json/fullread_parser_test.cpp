@@ -3,14 +3,14 @@
 #include <nlohmann/json.hpp>
 
 #include "../common_definitions.hpp"
-#include "json-lib/fullread_parser.hxx"
+#include "fullread_parser.hpp"
 
 using json = nlohmann::json;
 
 TEST_SUITE("TestFullreadParser") {
     TEST_CASE("TestReadingCorrectness") {
         json data = json::parse(std::ifstream(TEST_JSON_PATH));
-        json_lib::FullreadParser parser(TEST_JSON_PATH);
+        FullreadParser parser(TEST_JSON_PATH);
         parser.Parse();
 
         REQUIRE_EQ(parser.GetData().size(), data.size());

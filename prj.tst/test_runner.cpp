@@ -6,3 +6,6 @@
 #include "stackarrt/stackarrt_test.cpp"
 #include "stacklst/stacklst_test.cpp"
 #include "stacklstt/stacklstt_test.cpp"
+
+#include "json/fullread_parser_test.cpp"
+#include "json/stream_parser_test.cpp"
