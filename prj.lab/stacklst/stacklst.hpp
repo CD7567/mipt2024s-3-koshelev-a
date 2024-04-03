@@ -33,9 +33,9 @@ class StackLst final {
      * Operators
      */
 
-    auto& operator=(const StackLst& other);
+    StackLst& operator=(const StackLst& other);
 
-    auto& operator=(StackLst&& other) noexcept;
+    StackLst& operator=(StackLst&& other) noexcept;
 
     /*
      * Member functions

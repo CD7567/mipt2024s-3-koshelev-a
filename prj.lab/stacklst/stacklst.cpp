@@ -30,7 +30,7 @@ StackLst::~StackLst() {
     }
 }
 
-auto& StackLst::operator=(const StackLst& other) {
+StackLst& StackLst::operator=(const StackLst& other) {
     while (top_ != nullptr) {
         Node* tmp = top_;
         top_ = top_->prev_;
@@ -56,7 +56,7 @@ auto& StackLst::operator=(const StackLst& other) {
     return *this;
 }
 
-auto& StackLst::operator=(StackLst&& other) noexcept {
+StackLst& StackLst::operator=(StackLst&& other) noexcept {
     while (top_ != nullptr) {
         Node* tmp = top_;
         top_ = top_->prev_;

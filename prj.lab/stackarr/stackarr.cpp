@@ -19,7 +19,7 @@ StackArr::StackArr(StackArr&& other) noexcept
 
 StackArr::~StackArr() { delete[] buffer_; }
 
-auto& StackArr::operator=(const StackArr& other) {
+StackArr& StackArr::operator=(const StackArr& other) {
     if (this != &other) {
         delete[] buffer_;
 
@@ -32,7 +32,7 @@ auto& StackArr::operator=(const StackArr& other) {
     return *this;
 }
 
-auto& StackArr::operator=(StackArr&& other) noexcept {
+StackArr& StackArr::operator=(StackArr&& other) noexcept {
     if (this != &other) {
         delete[] buffer_;
 

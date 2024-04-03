@@ -29,9 +29,9 @@ class StackArr final {
      * Operators
      */
 
-    auto& operator=(const StackArr& other);
+    StackArr& operator=(const StackArr& other);
 
-    auto& operator=(StackArr&& other) noexcept;
+    StackArr& operator=(StackArr&& other) noexcept;
 
     /*
      * Member functions
