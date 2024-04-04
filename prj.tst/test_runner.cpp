@@ -4,6 +4,7 @@
 
 #include "json/fullread_parser_test.hpp"
 #include "json/stream_parser_test.hpp"
+#include "movetester/move_semantics_test.hpp"
 #include "stackarr/stackarr_test.hpp"
 #include "stackarrt/stackarrt_test.hpp"
 #include "stacklst/stacklst_test.hpp"

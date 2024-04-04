@@ -2,6 +2,7 @@
 #define MIPT2024S_3_KOSHELEV_A_UTILS_HPP
 
 #include <chrono>
+#include <cmath>
 #include <format>
 
 /**
@@ -32,6 +33,44 @@ inline size_t timeit(Lambda&& lambda, Args&&... args) {
     auto end = std::chrono::high_resolution_clock::now();
 
     return std::chrono::duration_cast<ChronoT>(end - start).count();
+}
+
+/**
+ * Рассчитать среднее значение выборки
+ * @tparam SAMPLE_SIZE Размер выборки
+ * @param sample Выборка
+ * @return Среднее значение выборки
+ */
+template <size_t SAMPLE_SIZE>
+size_t calculate_mean(std::array<size_t, SAMPLE_SIZE>& sample) {
+    double sum = 0;
+
+    for (auto it : sample) {
+        sum += it;
+    }
+
+    return sum / (double) SAMPLE_SIZE;
+}
+
+/**
+ * Рассчитать стандартное отклонение выборки
+ * @tparam SAMPLE_SIZE Размер выборки
+ * @param sample Выборка
+ * @return Пара из среднего значения и стандартного отклонения выборки
+ */
+template <size_t SAMPLE_SIZE>
+std::pair<double, double> calculate_deviation(
+    std::array<size_t, SAMPLE_SIZE>& sample
+) {
+    double mean = calculate_mean(sample);
+    double dev_sum = 0;
+
+    for (auto it : sample) {
+        double dev = it - mean;
+        dev_sum += dev * dev;
+    }
+
+    return std::make_pair(mean, sqrt(dev_sum / (double) SAMPLE_SIZE));
 }
 
 #endif  // MIPT2024S_3_KOSHELEV_A_UTILS_HPP

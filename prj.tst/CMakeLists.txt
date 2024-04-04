@@ -3,28 +3,28 @@
 ###############################################################################
 
 file(
-    GLOB_RECURSE
-    TEST_RUNNER_HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+        GLOB_RECURSE
+        TEST_RUNNER_HEADERS
+        ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
 file(
-    GLOB_RECURSE
-    TEST_RUNNER_SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+        GLOB_RECURSE
+        TEST_RUNNER_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
 file(
-    COPY
-    ${CMAKE_CURRENT_SOURCE_DIR}/data
-    DESTINATION
-    ${CMAKE_CURRENT_BINARY_DIR}
+        COPY
+        ${CMAKE_CURRENT_SOURCE_DIR}/data
+        DESTINATION
+        ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 add_executable(
-    test-runner
-    ${TEST_RUNNER_HEADERS}
-    ${TEST_RUNNER_SOURCES}
+        test-runner
+        ${TEST_RUNNER_HEADERS}
+        ${TEST_RUNNER_SOURCES}
 )
 
 ###############################################################################
@@ -34,14 +34,15 @@ add_executable(
 find_package(doctest REQUIRED)
 
 target_link_libraries(
-    test-runner PRIVATE
-    doctest::doctest
-    stack-arr-lib
-    stack-arrt-lib
-    stack-lst-lib
-    stack-lstt-lib
-    json-lib
-    util-lib
+        test-runner PRIVATE
+        doctest::doctest
+        util-lib
+        stack-arr-lib
+        stack-arrt-lib
+        stack-lst-lib
+        stack-lstt-lib
+        json-lib
+        move-tester-lib
 )
 
 ###############################################################################
@@ -49,8 +50,8 @@ target_link_libraries(
 ###############################################################################
 
 if(DO_AUTORUN_TESTS)
-    add_custom_target(
-        run-tests ALL
-        COMMAND test-runner
-    )
+        add_custom_target(
+                run-tests ALL
+                COMMAND test-runner
+        )
 endif()
