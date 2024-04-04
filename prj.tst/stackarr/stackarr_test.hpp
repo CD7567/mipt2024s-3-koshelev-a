@@ -1,10 +1,13 @@
+#ifndef STACKARR_TEST_HPP
+#define STACKARR_TEST_HPP
+
 #include <doctest/doctest.h>
 
-#include "stacklst.hpp"
+#include "stackarr.hpp"
 
-TEST_SUITE("TestStackLst") {
+TEST_SUITE("TestStackArr") {
     TEST_CASE("TestPushSize") {
-        StackLst stack;
+        StackArr stack;
 
         REQUIRE(stack.IsEmpty());
 
@@ -16,7 +19,7 @@ TEST_SUITE("TestStackLst") {
     }
 
     TEST_CASE("TestPushTop") {
-        StackLst stack;
+        StackArr stack;
 
         for (size_t i = 1; i < 11; ++i) {
             stack.Push((float)i);
@@ -25,7 +28,7 @@ TEST_SUITE("TestStackLst") {
     }
 
     TEST_CASE("TestPushPop") {
-        StackLst stack;
+        StackArr stack;
 
         for (size_t i = 1; i < 11; ++i) {
             stack.Push((float)i);
@@ -41,33 +44,58 @@ TEST_SUITE("TestStackLst") {
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrException&);
     }
 
-    TEST_CASE("TestCopyConstructorEmpty") {
-        StackLst stack;
-        StackLst copied(stack);
+    TEST_CASE("TestShrink") {
+        StackArr stack;
+
+        for (size_t i = 1; i < 11; ++i) {
+            stack.Push((float)i);
+            REQUIRE_EQ(stack.Top(), i);
+        }
+
+        stack.Shrink();
+        REQUIRE_EQ(stack.Size(), stack.Capacity());
+        REQUIRE_FALSE(stack.IsEmpty());
+
+        for (size_t i = 10; i > 0; --i) {
+            REQUIRE_EQ(stack.Size(), i);
+            REQUIRE_FALSE(stack.IsEmpty());
+            REQUIRE_EQ(stack.Top(), (float)i);
+            stack.Pop();
+        }
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrException&);
+    }
+
+    TEST_CASE("TestCopyConstructorEmpty") {
+        StackArr stack;
+        StackArr copied(stack);
+
+        REQUIRE(stack.IsEmpty());
+        REQUIRE_EQ(stack.Size(), 0);
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrException&);
 
         REQUIRE(copied.IsEmpty());
         REQUIRE_EQ(copied.Size(), 0);
-        REQUIRE_THROWS_AS(copied.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(copied.Pop(), StackArrException&);
     }
 
     TEST_CASE("TestCopyConstructorNotEmpty") {
-        StackLst stack;
+        StackArr stack;
 
         for (size_t i = 1; i < 11; ++i) {
             stack.Push((float)i);
         }
 
-        StackLst copied(stack);
+        StackArr copied(stack);
 
         REQUIRE_EQ(stack.Size(), copied.Size());
         REQUIRE_EQ(stack.IsEmpty(), copied.IsEmpty());
+        REQUIRE_EQ(stack.Capacity(), copied.Capacity());
 
         for (size_t i = 10; i > 0; --i) {
             REQUIRE_EQ(copied.Top(), (float)i);
@@ -81,27 +109,27 @@ TEST_SUITE("TestStackLst") {
 
         REQUIRE(copied.IsEmpty());
         REQUIRE_EQ(copied.Size(), 0);
-        REQUIRE_THROWS_AS(copied.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(copied.Pop(), StackArrException&);
     }
 
     TEST_CASE("TestCopyAssignmentEmpty") {
-        StackLst stack;
-        StackLst copy_assigned;
+        StackArr stack;
+        StackArr copy_assigned;
 
         copy_assigned = stack;
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
-        REQUIRE_THROWS_AS(stack.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrException&);
 
         REQUIRE(copy_assigned.IsEmpty());
         REQUIRE_EQ(copy_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(copy_assigned.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(copy_assigned.Pop(), StackArrException&);
     }
 
     TEST_CASE("TestCopyAssignmentNotEmpty") {
-        StackLst stack;
-        StackLst copy_assigned;
+        StackArr stack;
+        StackArr copy_assigned;
 
         for (size_t i = 1; i < 11; ++i) {
             stack.Push((float)i);
@@ -112,6 +140,7 @@ TEST_SUITE("TestStackLst") {
 
         REQUIRE_EQ(stack.Size(), copy_assigned.Size());
         REQUIRE_EQ(stack.IsEmpty(), copy_assigned.IsEmpty());
+        REQUIRE_EQ(stack.Capacity(), copy_assigned.Capacity());
 
         for (size_t i = 10; i > 0; --i) {
             REQUIRE_EQ(copy_assigned.Top(), (float)i);
@@ -125,36 +154,36 @@ TEST_SUITE("TestStackLst") {
 
         REQUIRE(copy_assigned.IsEmpty());
         REQUIRE_EQ(copy_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(copy_assigned.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(copy_assigned.Pop(), StackArrException&);
     }
 
     TEST_CASE("TestMoveConstructorEmpty") {
-        StackLst stack;
-        StackLst moved(std::move(stack));
+        StackArr stack;
+        StackArr moved(std::move(stack));
 
         REQUIRE(stack.IsEmpty());     // NOLINT
         REQUIRE_EQ(stack.Size(), 0);  // NOLINT
         REQUIRE_THROWS_AS(stack.Pop(),
-                          StackLstException&);  // NOLINT
+                          StackArrException&);  // NOLINT
 
         REQUIRE(moved.IsEmpty());
         REQUIRE_EQ(moved.Size(), 0);
-        REQUIRE_THROWS_AS(moved.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(moved.Pop(), StackArrException&);
     }
 
     TEST_CASE("TestMoveConstructorNotEmpty") {
-        StackLst stack;
+        StackArr stack;
 
         for (size_t i = 1; i < 11; ++i) {
             stack.Push((float)i);
         }
 
-        StackLst moved(std::move(stack));
+        StackArr moved(std::move(stack));
 
         REQUIRE_EQ(stack.Size(), 0);  // NOLINT
         REQUIRE(stack.IsEmpty());     // NOLINT
         REQUIRE_THROWS_AS(stack.Pop(),
-                          StackLstException&);  // NOLINT
+                          StackArrException&);  // NOLINT
 
         REQUIRE_EQ(moved.Size(), 10);
         REQUIRE_FALSE(moved.IsEmpty());
@@ -166,28 +195,28 @@ TEST_SUITE("TestStackLst") {
 
         REQUIRE(moved.IsEmpty());
         REQUIRE_EQ(moved.Size(), 0);
-        REQUIRE_THROWS_AS(moved.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(moved.Pop(), StackArrException&);
     }
 
     TEST_CASE("TestMoveAssignmentEmpty") {
-        StackLst stack;
-        StackLst move_assigned;
+        StackArr stack;
+        StackArr move_assigned;
 
         move_assigned = std::move(stack);
 
         REQUIRE(stack.IsEmpty());     // NOLINT
         REQUIRE_EQ(stack.Size(), 0);  // NOLINT
         REQUIRE_THROWS_AS(stack.Pop(),
-                          StackLstException&);  // NOLINT
+                          StackArrException&);  // NOLINT
 
         REQUIRE(move_assigned.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(move_assigned.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(move_assigned.Pop(), StackArrException&);
     }
 
     TEST_CASE("TestMoveAssignmentNotEmpty") {
-        StackLst stack;
-        StackLst move_assigned;
+        StackArr stack;
+        StackArr move_assigned;
 
         for (size_t i = 1; i < 11; ++i) {
             stack.Push((float)i);
@@ -199,7 +228,7 @@ TEST_SUITE("TestStackLst") {
         REQUIRE_EQ(stack.Size(), 0);  // NOLINT
         REQUIRE(stack.IsEmpty());     // NOLINT
         REQUIRE_THROWS_AS(stack.Pop(),
-                          StackLstException&);  // NOLINT
+                          StackArrException&);  // NOLINT
 
         REQUIRE_EQ(move_assigned.Size(), 10);
         REQUIRE_FALSE(move_assigned.IsEmpty());
@@ -211,6 +240,8 @@ TEST_SUITE("TestStackLst") {
 
         REQUIRE(move_assigned.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 0);
-        REQUIRE_THROWS_AS(move_assigned.Pop(), StackLstException&);
+        REQUIRE_THROWS_AS(move_assigned.Pop(), StackArrException&);
     }
 }
+
+#endif  // STACKARR_TEST_HPP

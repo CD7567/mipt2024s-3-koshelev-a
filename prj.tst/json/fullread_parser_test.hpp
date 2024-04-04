@@ -1,16 +1,19 @@
+#ifndef FULLREAD_PARSER_TEST_HPP
+#define FULLREAD_PARSER_TEST_HPP
+
 #include <doctest/doctest.h>
 
 #include <nlohmann/json.hpp>
 
 #include "../common_definitions.hpp"
-#include "stream_parser.hpp"
+#include "fullread_parser.hpp"
 
 using json = nlohmann::json;
 
-TEST_SUITE("TestStreamParser") {
+TEST_SUITE("TestFullreadParser") {
     TEST_CASE("TestReadingCorrectness") {
         json data = json::parse(std::ifstream(TEST_JSON_PATH));
-        StreamParser parser(TEST_JSON_PATH);
+        FullreadParser parser(TEST_JSON_PATH);
         parser.Parse();
 
         REQUIRE_EQ(parser.GetData().size(), data.size());
@@ -25,3 +28,5 @@ TEST_SUITE("TestStreamParser") {
         }
     }
 }
+
+#endif  // FULLREAD_PARSER_TEST_HPP
