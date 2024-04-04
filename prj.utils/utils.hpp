@@ -4,6 +4,7 @@
 #include <chrono>
 #include <cmath>
 #include <format>
+#include <random>
 
 /**
  * Dynamically format string
@@ -71,6 +72,18 @@ std::pair<double, double> calculate_deviation(
     }
 
     return std::make_pair(mean, sqrt(dev_sum / (double) SAMPLE_SIZE));
+}
+
+/**
+ * Генератор случайного символа
+ * @return Случайный символ
+ */
+char genRandomChar() {
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<char> distribution;
+
+    return distribution(generator);
 }
 
 #endif  // MIPT2024S_3_KOSHELEV_A_UTILS_HPP
