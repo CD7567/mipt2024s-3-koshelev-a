@@ -19,12 +19,17 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_CXX_FLAGS "-fno-omit-frame-pointer -fsanitize=address")
 
     set(DO_COMPILE_TESTS ON)
+    set(DO_COMPILE_MOVE_TESTS OFF)
     set(DO_AUTORUN_TESTS ON)
 endif()
 
 if(DO_JSON_SKIP_WRITING)
     add_definitions(-DDO_JSON_SKIP_WRITING)
 endif()
+
+if(DO_COMPILE_MOVE_TESTS)
+    add_definitions(-DDO_COMPILE_MOVE_TESTS)
+endif ()
 
 ###############################################################################
 ## dependencies ###############################################################

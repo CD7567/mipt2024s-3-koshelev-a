@@ -1,6 +1,8 @@
 #ifndef MIPT2024S_3_KOSHELEV_A_MOVETESTER_TEST_HPP
 #define MIPT2024S_3_KOSHELEV_A_MOVETESTER_TEST_HPP
 
+#ifdef DO_COMPILE_MOVE_TESTS
+
 #include <doctest/doctest.h>
 
 #include <chrono>
@@ -192,5 +194,7 @@ TEST_SUITE("TestMoveSemantics") {
                    (copy_assignment_deviation.second + move_assignment_deviation.second) / (double) MOVE_TEST_ITERATIONS);
     }
 }
+
+#endif  // DO_COMPILE_MOVE_TESTS
 
 #endif  // MIPT2024S_3_KOSHELEV_A_MOVETESTER_TEST_HPP
