@@ -9,41 +9,41 @@
 #include "test_struct.hpp"
 
 TEST_SUITE("TestStackArrT") {
-    TEST_CASE("TestPushSize") {
-        StackArrT<TestStruct> stack;
+    TEST_CASE_TEMPLATE("TestPushSize", T, float, TestStruct) {
+        StackArrT<T> stack;
+        auto data = genData<T>();
 
         REQUIRE(stack.IsEmpty());
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
-            REQUIRE_EQ(stack.Size(), i);
+        for (size_t i = 0; i < TEST_SIZE; ++i) {
+            stack.Push(data[i]);
+            REQUIRE_EQ(stack.Size(), i + 1);
             REQUIRE_FALSE(stack.IsEmpty());
         }
     }
 
-    TEST_CASE("TestPushTop") {
-        StackArrT<TestStruct> stack;
+    TEST_CASE_TEMPLATE("TestPushTop", T, float, TestStruct) {
+        StackArrT<T> stack;
+        auto data = genData<T>();
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
-            REQUIRE_EQ(stack.Top().number_, i);
-            REQUIRE_EQ(stack.Top().string_, std::string("I am string"));
+        for (auto it : data) {
+            stack.Push(it);
+            REQUIRE_EQ(stack.Top(), it);
         }
     }
 
-    TEST_CASE("TestPushPop") {
-        StackArrT<TestStruct> stack;
+    TEST_CASE_TEMPLATE("TestPushPop", T, float, TestStruct) {
+        StackArrT<T> stack;
+        auto data = genData<T>();
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
-            REQUIRE_EQ(stack.Top().number_, i);
-            REQUIRE_EQ(stack.Top().string_, std::string("I am string"));
+        for (auto it : data) {
+            stack.Push(it);
         }
 
-        for (size_t i = 10; i > 0; --i) {
+        for (size_t i = TEST_SIZE; i > 0; --i) {
             REQUIRE_EQ(stack.Size(), i);
             REQUIRE_FALSE(stack.IsEmpty());
-            REQUIRE_EQ(stack.Top().number_, i);
+            REQUIRE_EQ(stack.Top(), data[i - 1]);
             stack.Pop();
         }
 
@@ -52,24 +52,22 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_THROWS_AS(stack.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestShrink") {
-        StackArrT<TestStruct> stack;
+    TEST_CASE_TEMPLATE("TestShrink", T, float, TestStruct) {
+        StackArrT<T> stack;
+        auto data = genData<T>();
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
-            REQUIRE_EQ(stack.Top().number_, i);
-            REQUIRE_EQ(stack.Top().string_, std::string("I am string"));
+        for (auto it : data) {
+            stack.Push(it);
         }
 
         stack.Shrink();
         REQUIRE_EQ(stack.Size(), stack.Capacity());
         REQUIRE_FALSE(stack.IsEmpty());
 
-        for (size_t i = 10; i > 0; --i) {
+        for (size_t i = TEST_SIZE; i > 0; --i) {
             REQUIRE_EQ(stack.Size(), i);
             REQUIRE_FALSE(stack.IsEmpty());
-            REQUIRE_EQ(stack.Top().number_, i);
-            REQUIRE_EQ(stack.Top().string_, std::string("I am string"));
+            REQUIRE_EQ(stack.Top(), data[i - 1]);
             stack.Pop();
         }
 
@@ -78,9 +76,9 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_THROWS_AS(stack.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestCopyConstructorEmpty") {
-        StackArrT<TestStruct> stack;
-        StackArrT<TestStruct> copied(stack);
+    TEST_CASE_TEMPLATE("TestCopyConstructorEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        StackArrT<T> copied(stack);
 
         REQUIRE(stack.IsEmpty());
         REQUIRE_EQ(stack.Size(), 0);
@@ -91,29 +89,29 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_THROWS_AS(copied.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestCopyConstructorNotEmpty") {
-        StackArrT<TestStruct> stack;
+    TEST_CASE_TEMPLATE("TestCopyConstructorNotEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        auto first_data = genData<T>();
+        auto second_data = genData<T>();
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
+        for (auto it : first_data) {
+            stack.Push(it);
         }
 
-        StackArrT<TestStruct> copied(stack);
+        StackArrT<T> copied(stack);
 
         REQUIRE_EQ(stack.Size(), copied.Size());
         REQUIRE_EQ(stack.IsEmpty(), copied.IsEmpty());
         REQUIRE_EQ(stack.Capacity(), copied.Capacity());
 
-        for (size_t i = 10; i > 0; --i) {
-            REQUIRE_EQ(copied.Top().number_, i);
-            copied.Top().string_ = "I am modified string";
-            copied.Pop();
+        for (size_t i = TEST_SIZE; i > 0; --i) {
+            stack.Top() = second_data[i - 1];
+            stack.Pop();
         }
 
-        for (size_t i = 10; i > 0; --i) {
-            REQUIRE_EQ(stack.Top().number_, i);
-            REQUIRE_EQ(stack.Top().string_, std::string("I am string"));
-            stack.Pop();
+        for (size_t i = TEST_SIZE; i > 0; --i) {
+            REQUIRE_EQ(copied.Top(), first_data[i - 1]);
+            copied.Pop();
         }
 
         REQUIRE(copied.IsEmpty());
@@ -121,9 +119,9 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_THROWS_AS(copied.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestCopyAssignmentEmpty") {
-        StackArrT<TestStruct> stack;
-        StackArrT<TestStruct> copy_assigned;
+    TEST_CASE_TEMPLATE("TestCopyAssignmentEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        StackArrT<T> copy_assigned;
 
         copy_assigned = stack;
 
@@ -136,13 +134,14 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_THROWS_AS(copy_assigned.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestCopyAssignmentNotEmpty") {
-        StackArrT<TestStruct> stack;
-        StackArrT<TestStruct> copy_assigned;
+    TEST_CASE_TEMPLATE("TestCopyAssignmentNotEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        StackArrT<T> copy_assigned;
+        auto first_data = genData<T>();
+        auto second_data = genData<T>();
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
-            copy_assigned.Push(TestStruct{i});
+        for (auto it : first_data) {
+            stack.Push(it);
         }
 
         copy_assigned = stack;
@@ -151,16 +150,14 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_EQ(stack.IsEmpty(), copy_assigned.IsEmpty());
         REQUIRE_EQ(stack.Capacity(), copy_assigned.Capacity());
 
-        for (size_t i = 10; i > 0; --i) {
-            REQUIRE_EQ(copy_assigned.Top().number_, i);
-            copy_assigned.Top().string_ = "I am modified string";
-            copy_assigned.Pop();
+        for (size_t i = TEST_SIZE; i > 0; --i) {
+            stack.Top() = second_data[i - 1];
+            stack.Pop();
         }
 
-        for (size_t i = 10; i > 0; --i) {
-            REQUIRE_EQ(stack.Top().number_, i);
-            REQUIRE_EQ(stack.Top().string_, std::string("I am string"));
-            stack.Pop();
+        for (size_t i = TEST_SIZE; i > 0; --i) {
+            REQUIRE_EQ(copy_assigned.Top(), first_data[i - 1]);
+            copy_assigned.Pop();
         }
 
         REQUIRE(copy_assigned.IsEmpty());
@@ -168,39 +165,38 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_THROWS_AS(copy_assigned.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestMoveConstructorEmpty") {
-        StackArrT<TestStruct> stack;
-        StackArrT<TestStruct> moved(std::move(stack));
+    TEST_CASE_TEMPLATE("TestMoveConstructorEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        StackArrT<T> moved(std::move(stack));
 
-        REQUIRE(stack.IsEmpty());     // NOLINT
-        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          StackArrTException&);  // NOLINT
+        REQUIRE(stack.IsEmpty());                                      // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);                                   // NOLINT
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrTException&);           // NOLINT
 
         REQUIRE(moved.IsEmpty());
         REQUIRE_EQ(moved.Size(), 0);
         REQUIRE_THROWS_AS(moved.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestMoveConstructorNotEmpty") {
-        StackArrT<TestStruct> stack;
+    TEST_CASE_TEMPLATE("TestMoveConstructorNotEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        auto data = genData<T>();
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
+        for (auto it : data) {
+            stack.Push(it);
         }
 
-        StackArrT<TestStruct> moved(std::move(stack));
+        StackArrT<T> moved(std::move(stack));
 
-        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
-        REQUIRE(stack.IsEmpty());     // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          StackArrTException&);  // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);                                   // NOLINT
+        REQUIRE(stack.IsEmpty());                                      // NOLINT
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrTException&);           // NOLINT
 
-        REQUIRE_EQ(moved.Size(), 10);
+        REQUIRE_EQ(moved.Size(), TEST_SIZE);
         REQUIRE_FALSE(moved.IsEmpty());
 
-        for (size_t i = 10; i > 0; --i) {
-            REQUIRE_EQ(moved.Top().number_, i);
+        for (size_t i = TEST_SIZE; i > 0; --i) {
+            REQUIRE_EQ(moved.Top(), data[i - 1]);
             moved.Pop();
         }
 
@@ -209,43 +205,41 @@ TEST_SUITE("TestStackArrT") {
         REQUIRE_THROWS_AS(moved.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestMoveAssignmentEmpty") {
-        StackArrT<TestStruct> stack;
-        StackArrT<TestStruct> move_assigned;
+    TEST_CASE_TEMPLATE("TestMoveAssignmentEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        StackArrT<T> move_assigned;
 
         move_assigned = std::move(stack);
 
-        REQUIRE(stack.IsEmpty());     // NOLINT
-        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          StackArrTException&);  // NOLINT
+        REQUIRE(stack.IsEmpty());                                      // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);                                   // NOLINT
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrTException&);           // NOLINT
 
         REQUIRE(move_assigned.IsEmpty());
         REQUIRE_EQ(move_assigned.Size(), 0);
         REQUIRE_THROWS_AS(move_assigned.Pop(), StackArrTException&);
     }
 
-    TEST_CASE("TestMoveAssignmentNotEmpty") {
-        StackArrT<TestStruct> stack;
-        StackArrT<TestStruct> move_assigned;
+    TEST_CASE_TEMPLATE("TestMoveAssignmentNotEmpty", T, float, TestStruct) {
+        StackArrT<T> stack;
+        StackArrT<T> move_assigned;
+        auto data = genData<T>();
 
-        for (size_t i = 1; i < 11; ++i) {
-            stack.Push(TestStruct{i});
-            move_assigned.Push(TestStruct{i});
+        for (auto it : data) {
+            stack.Push(it);
         }
 
         move_assigned = std::move(stack);
 
-        REQUIRE_EQ(stack.Size(), 0);  // NOLINT
-        REQUIRE(stack.IsEmpty());     // NOLINT
-        REQUIRE_THROWS_AS(stack.Pop(),
-                          StackArrTException&);  // NOLINT
+        REQUIRE_EQ(stack.Size(), 0);                                   // NOLINT
+        REQUIRE(stack.IsEmpty());                                      // NOLINT
+        REQUIRE_THROWS_AS(stack.Pop(), StackArrTException&);           // NOLINT
 
-        REQUIRE_EQ(move_assigned.Size(), 10);
+        REQUIRE_EQ(move_assigned.Size(), TEST_SIZE);
         REQUIRE_FALSE(move_assigned.IsEmpty());
 
-        for (size_t i = 10; i > 0; --i) {
-            REQUIRE_EQ(move_assigned.Top().number_, i);
+        for (size_t i = TEST_SIZE; i > 0; --i) {
+            REQUIRE_EQ(move_assigned.Top(), data[i - 1]);
             move_assigned.Pop();
         }
 
