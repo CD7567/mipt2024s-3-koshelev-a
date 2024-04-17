@@ -6,6 +6,14 @@
 #include <format>
 #include <random>
 
+#define TIME(funcCall, ChronoType, storage)                                    \
+    {                                                                          \
+        auto start = std::chrono::high_resolution_clock::now();                \
+        funcCall;                                                              \
+        auto end = std::chrono::high_resolution_clock::now();                  \
+        storage = std::chrono::duration_cast<ChronoType>(end - start).count(); \
+    }
+
 /**
  * Dynamically format string
  * @tparam Args Typenames of args
@@ -50,7 +58,7 @@ size_t calculate_mean(std::array<size_t, SAMPLE_SIZE>& sample) {
         sum += it;
     }
 
-    return sum / (double) SAMPLE_SIZE;
+    return sum / (double)SAMPLE_SIZE;
 }
 
 /**
@@ -61,8 +69,7 @@ size_t calculate_mean(std::array<size_t, SAMPLE_SIZE>& sample) {
  */
 template <size_t SAMPLE_SIZE>
 std::pair<double, double> calculate_deviation(
-    std::array<size_t, SAMPLE_SIZE>& sample
-) {
+    std::array<size_t, SAMPLE_SIZE>& sample) {
     double mean = calculate_mean(sample);
     double dev_sum = 0;
 
@@ -71,7 +78,7 @@ std::pair<double, double> calculate_deviation(
         dev_sum += dev * dev;
     }
 
-    return std::make_pair(mean, sqrt(dev_sum / (double) SAMPLE_SIZE));
+    return std::make_pair(mean, sqrt(dev_sum / (double)SAMPLE_SIZE));
 }
 
 /**
