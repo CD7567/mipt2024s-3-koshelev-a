@@ -29,14 +29,14 @@ inline void testStack(std::ofstream& out, std::string tag, const T& elem,
 
     for (size_t i = 0; i < test_max_size; ++i) {
         // Measuring push time
-        size_t push_time = timeit<std::chrono::nanoseconds>(
-            [&stack](const T& elem) { stack.Push(elem); }, elem);
+        size_t push_time;
+        TIME(stack.Push(elem), std::chrono::nanoseconds, push_time);
 
         out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", push_time) << "\n";
 
         // Measuring copy construction time
-        size_t cpy_c_time = timeit<std::chrono::nanoseconds>(
-            [&stack]() { const Stack _(stack); });  // NOLINT
+        size_t cpy_c_time;
+        TIME(Stack _(stack), std::chrono::nanoseconds, cpy_c_time);
 
         out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", cpy_c_time)
             << "\n";
@@ -55,18 +55,19 @@ inline void testStack(std::ofstream& out, std::string tag, const T& elem,
 template <typename T, typename C>
 inline void testSTL(std::ofstream& out, std::string tag, const T& elem,
                     const size_t test_max_size) {
-    std::stack<T, C> stack;
+    typedef std::stack<T, C> STLStack;
+    STLStack stack;
 
     for (size_t i = 0; i < test_max_size; ++i) {
         // Measuring push time
-        size_t push_time = timeit<std::chrono::nanoseconds>(
-            [&stack](const T& elem) { stack.push(elem); }, elem);
+        size_t push_time;
+        TIME(stack.push(elem), std::chrono::nanoseconds, push_time);
 
         out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", push_time) << "\n";
 
         // Measuring copy construction time
-        size_t cpy_c_time = timeit<std::chrono::nanoseconds>(
-            [&stack]() { const std::stack<T, C> _(stack); });  // NOLINT
+        size_t cpy_c_time;
+        TIME(STLStack _(stack), std::chrono::nanoseconds, cpy_c_time);
 
         out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", cpy_c_time)
             << "\n";
