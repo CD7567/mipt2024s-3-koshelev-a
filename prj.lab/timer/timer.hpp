@@ -3,24 +3,24 @@
 
 #include <chrono>
 #include <iostream>
+#include <unordered_map>
 
-template <typename ChronoT = std::chrono::nanoseconds>
+#include "timeranchor.hpp"
+#include "timingunit.hpp"
+
 class Timer {
   private:
-    const char* function_name;
+    TimerAnchor& anchor_;
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time_;
 
   public:
-    Timer(const char* calling_function)
-        : start_time_(std::chrono::high_resolution_clock::now()),
-          function_name(calling_function) {}
+    inline static auto map_ = std::unordered_map<const char*, TimingUnit>();
 
-    ~Timer() {
-        auto end_time = std::chrono::high_resolution_clock::now();
-        std::cout << function_name << " named at " << (void*)function_name << ": "
-                  << std::chrono::duration_cast<ChronoT>(end_time - start_time_)
-                  << "\n";
-    };
+    Timer(TimerAnchor& anchor);
+
+    ~Timer();
+
+    static void print();
 };
 
 #endif  // MIPT2024S_3_KOSHELEV_A_TIMER_HPP
