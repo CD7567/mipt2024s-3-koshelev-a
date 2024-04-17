@@ -8,12 +8,6 @@ file(
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
-file(
-        GLOB_RECURSE
-        STACK_ARR_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-)
-
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -21,7 +15,11 @@ file(
 add_library(
         stack-arr-lib
         ${STACK_ARR_HEADERS}
-        ${STACK_ARR_SOURCES}
+)
+
+target_link_libraries(
+        stack-arr-lib PUBLIC
+        stack-arrt-lib
 )
 
 target_include_directories(

@@ -8,12 +8,6 @@ file(
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
-file(
-        GLOB_RECURSE
-        STACK_LST_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-)
-
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -21,7 +15,11 @@ file(
 add_library(
         stack-lst-lib
         ${STACK_LST_HEADERS}
-        ${STACK_LST_SOURCES}
+)
+
+target_link_libraries(
+        stack-lst-lib PUBLIC
+        stack-lstt-lib
 )
 
 target_include_directories(
