@@ -24,6 +24,11 @@ add_library(
         ${STACK_ARRT_SOURCES}
 )
 
+target_link_libraries(
+        stack-arrt-lib PUBLIC
+        timer-lib
+)
+
 target_include_directories(
         stack-arrt-lib PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}

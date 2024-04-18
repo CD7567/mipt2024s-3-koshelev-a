@@ -26,6 +26,12 @@ file(
         ${CMAKE_CURRENT_SOURCE_DIR}/string-profiler/*.cpp
 )
 
+file(
+        GLOB_RECURSE
+        TIMER_PROFILER_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/timer-profiler/*.cpp
+)
+
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -44,6 +50,11 @@ add_executable(
 add_executable(
         string-profiler
         ${STRING_PROFILER_SOURCES}
+)
+
+add_executable(
+        timer-profiler
+        ${TIMER_PROFILER_SOURCES}
 )
 
 ###############################################################################
@@ -70,5 +81,13 @@ target_link_libraries(
 
 target_link_libraries(
         string-profiler PRIVATE
+        util-lib
+)
+
+target_link_libraries(
+        timer-profiler PRIVATE
+        stack-arrt-lib
+        stack-lstt-lib
+        timer-lib
         util-lib
 )

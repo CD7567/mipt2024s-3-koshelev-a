@@ -24,6 +24,8 @@ class StackLstT final {
     StackLstT() = default;
 
     StackLstT(const StackLstT& other) : size_(other.size_) {
+        PUT_ON_TIME("StackLstT_COPY_CONSTR")
+
         if (other.top_ != nullptr) {
             Node* other_it = other.top_;
             auto* this_it = new Node{other_it->elem_, nullptr};
@@ -40,6 +42,8 @@ class StackLstT final {
 
     StackLstT(StackLstT&& other) noexcept
         : top_(other.top_), size_(other.size_) {
+        PUT_ON_TIME("StackLstT_MOVE_CONSTR")
+
         other.size_ = 0;
         other.top_ = nullptr;
     }
@@ -58,6 +62,8 @@ class StackLstT final {
      */
 
     auto& operator=(const StackLstT& other) {
+        PUT_ON_TIME("StackLstT_COPY_ASSIGN")
+
         while (top_ != nullptr) {
             Node* tmp = top_;
             top_ = top_->prev_;
@@ -84,6 +90,8 @@ class StackLstT final {
     }
 
     auto& operator=(StackLstT&& other) noexcept {
+        PUT_ON_TIME("StackLstT_MOVE_ASSIGN")
+
         while (top_ != nullptr) {
             Node* tmp = top_;
             top_ = top_->prev_;
@@ -103,11 +111,19 @@ class StackLstT final {
      * Member functions
      */
 
-    [[nodiscard]] bool IsEmpty() const noexcept { return size_ == 0; }
+    [[nodiscard]] bool IsEmpty() const noexcept {
+        PUT_ON_TIME("StackLstT_IS_EMPTY")
+        return size_ == 0;
+    }
 
-    [[nodiscard]] std::size_t Size() const noexcept { return size_; }
+    [[nodiscard]] std::size_t Size() const noexcept {
+        PUT_ON_TIME("StackLstT_SIZE")
+        return size_;
+    }
 
     [[nodiscard]] T& Top() {
+        PUT_ON_TIME("StackLstT_TOP")
+
         if (size_ == 0) {
             throw StackLstTException("Cannot extract from empty stack!");
         }
@@ -116,6 +132,8 @@ class StackLstT final {
     }
 
     [[nodiscard]] const T& Top() const {
+        PUT_ON_TIME("StackLstT_TOP_CONST")
+
         if (size_ == 0) {
             throw StackLstTException("Cannot extract from empty stack!");
         }
@@ -124,16 +142,22 @@ class StackLstT final {
     }
 
     void Push(const T& elem) {
+        PUT_ON_TIME("StackLstT_PUSH")
+
         top_ = new Node{elem, top_};
         ++size_;
     }
 
     void Push(T&& elem) {
+        PUT_ON_TIME("StackLstT_PUSH_MOVE")
+
         top_ = new Node{elem, top_};
         ++size_;
     }
 
     void Pop() {
+        PUT_ON_TIME("StackLstT_POP")
+
         if (size_ == 0) {
             throw StackLstTException("Cannot extract from empty stack!");
         }

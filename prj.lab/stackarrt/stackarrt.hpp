@@ -5,6 +5,8 @@
 #include <cstddef>
 
 #include "stackarrtexception.hpp"
+#include "timer.hpp"
+#include "timeranchor.hpp"
 
 template <typename T>
 class StackArrT final {
@@ -25,6 +27,7 @@ class StackArrT final {
         : buffer_(new T[other.capacity_]),
           capacity_(other.capacity_),
           size_(other.size_) {
+        PUT_ON_TIME("StackArrT_COPY_CONSTR")
         std::copy(other.buffer_, other.buffer_ + other.size_, buffer_);
     }
 
@@ -32,6 +35,7 @@ class StackArrT final {
         : buffer_(other.buffer_),
           capacity_(other.capacity_),
           size_(other.size_) {
+        PUT_ON_TIME("StackArrT_MOVE_CONSTR")
         other.buffer_ = new T[1];
         other.size_ = 0;
         other.capacity_ = 1;
@@ -44,6 +48,8 @@ class StackArrT final {
      */
 
     auto& operator=(const StackArrT& other) {
+        PUT_ON_TIME("StackArrT_COPY_ASSIGN")
+
         if (this != &other) {
             delete[] buffer_;
 
@@ -57,6 +63,8 @@ class StackArrT final {
     }
 
     auto& operator=(StackArrT&& other) noexcept {
+        PUT_ON_TIME("StackArrT_MOVE_ASSIGN")
+
         if (this != &other) {
             delete[] buffer_;
 
@@ -76,13 +84,21 @@ class StackArrT final {
      * Member functions
      */
 
-    [[nodiscard]] bool IsEmpty() const noexcept { return size_ == 0; }
+    [[nodiscard]] bool IsEmpty() const noexcept {
+        PUT_ON_TIME("StackArrT_IS_EMPTY")
+        return size_ == 0;
+    }
 
-    [[nodiscard]] std::size_t Size() const noexcept { return size_; }
+    [[nodiscard]] std::size_t Size() const noexcept {
+        PUT_ON_TIME("StackArrT_SIZE")
+        return size_;
+    }
 
     [[nodiscard]] std::size_t Capacity() const noexcept { return capacity_; }
 
     [[nodiscard]] T& Top() {
+        PUT_ON_TIME("StackArrT_TOP")
+
         if (size_ == 0) {
             throw StackArrTException("Cannot extract from empty stack!");
         }
@@ -91,6 +107,8 @@ class StackArrT final {
     }
 
     [[nodiscard]] const T& Top() const {
+        PUT_ON_TIME("StackArrT_TOP_CONST")
+
         if (size_ == 0) {
             throw StackArrTException("Cannot extract from empty stack!");
         }
@@ -99,6 +117,8 @@ class StackArrT final {
     }
 
     void Push(const T& elem) {
+        PUT_ON_TIME("StackArrT_PUSH")
+
         if (size_ == capacity_) {
             T* new_buffer = new T[2 * capacity_];
 
@@ -115,6 +135,8 @@ class StackArrT final {
     }
 
     void Push(T&& elem) {
+        PUT_ON_TIME("StackArrT_PUSH_MOVE")
+
         if (size_ == capacity_) {
             T* new_buffer = new T[2 * capacity_];
 
@@ -131,6 +153,8 @@ class StackArrT final {
     }
 
     void Pop() {
+        PUT_ON_TIME("StackArrT_POP")
+
         if (size_ == 0) {
             throw StackArrTException("Cannot extract from empty stack!");
         }
