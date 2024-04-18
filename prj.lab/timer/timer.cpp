@@ -13,7 +13,9 @@ Timer::~Timer() {
 }
 
 void Timer::print() {
-    for (auto& it : map_) {
-        std::cout << it.first << ": " << it.second.sum_time_ << "/" << it.second.count_ << "=" << it.second.sum_time_ / it.second.count_ << "\n";
+    for (auto& entry : map_) {
+        std::cout << entry.first << ": " << entry.second.sum_time_ << "/"
+                  << entry.second.count_ << "="
+                  << entry.second.sum_time_ / entry.second.count_ << "\n";
     }
 }

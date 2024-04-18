@@ -8,6 +8,14 @@
 #include "timeranchor.hpp"
 #include "timingunit.hpp"
 
+#ifdef DO_ON_TIME
+#define PUT_ON_TIME(funcName)                                                  \
+    static auto anchor = TimerAnchor(funcName);                                \
+    Timer timer(anchor);
+#else
+#define PUT_ON_TIME(funcName)
+#endif
+
 class Timer {
   private:
     TimerAnchor& anchor_;
