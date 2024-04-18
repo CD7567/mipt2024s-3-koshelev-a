@@ -24,6 +24,11 @@ add_library(
         ${STACK_LSTT_SOURCES}
 )
 
+target_link_libraries(
+        stack-lstt-lib PUBLIC
+        timer-lib
+)
+
 target_include_directories(
         stack-lstt-lib PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
