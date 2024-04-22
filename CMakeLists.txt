@@ -44,5 +44,6 @@ if(DO_COMPILE_TESTS)
 endif()
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.app)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.cw)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.lab)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/prj.utils)
