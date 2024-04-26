@@ -24,3 +24,9 @@ add_executable(
 find_package(
         OpenCV REQUIRED
 )
+
+target_link_libraries(
+        app
+        PUBLIC
+        ${OpenCV_LIBS}
+)
