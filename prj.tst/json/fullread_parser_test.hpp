@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 
 #include "../common_definitions.hpp"
-#include "fullread_parser.hpp"
+#include "json/fullread_parser.hpp"
 
 using json = nlohmann::json;
 

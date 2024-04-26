@@ -5,8 +5,8 @@
 #include <cstddef>
 
 #include "stackarrtexception.hpp"
-#include "timer.hpp"
-#include "timeranchor.hpp"
+#include "timer/timer.hpp"
+#include "timer/timeranchor.hpp"
 
 template <typename T>
 class StackArrT final {

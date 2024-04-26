@@ -4,9 +4,9 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-#include "fullread_parser.hpp"
+#include "json/fullread_parser.hpp"
+#include "json/stream_parser.hpp"
 #include "sax_event_consumer.hpp"
-#include "stream_parser.hpp"
 #include "utils.hpp"
 
 using json = nlohmann::json;

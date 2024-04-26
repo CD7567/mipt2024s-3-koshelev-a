@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "stacklstt.hpp"
+#include "stacklstt/stacklstt.hpp"
 #include "test_struct.hpp"
 
 TEST_SUITE("TestStackLstT") {

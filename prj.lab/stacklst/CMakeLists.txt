@@ -20,7 +20,8 @@ add_library(
 target_include_directories(
         stacklst
         PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+        $<INSTALL_INTERFACE:include>
 )
 
 set_target_properties(

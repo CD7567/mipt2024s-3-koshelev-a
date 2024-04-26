@@ -1,7 +1,7 @@
 #ifndef MIPT2024S_3_KOSHELEV_A_STACKLST_HPP
 #define MIPT2024S_3_KOSHELEV_A_STACKLST_HPP
 
-#include "stacklstt.hpp"
+#include "stacklstt/stacklstt.hpp"
 
 using StackLst = StackLstT<float>;
 
