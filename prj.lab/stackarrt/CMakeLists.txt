@@ -4,13 +4,13 @@
 
 file(
         GLOB_RECURSE
-        STACK_ARRT_HEADERS
+        STACKARRT_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
 file(
         GLOB_RECURSE
-        STACK_ARRT_SOURCES
+        STACKARRT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
@@ -19,19 +19,30 @@ file(
 ###############################################################################
 
 add_library(
-        stack-arrt-lib
-        ${STACK_ARRT_HEADERS}
-        ${STACK_ARRT_SOURCES}
-)
-
-target_link_libraries(
-        stack-arrt-lib PUBLIC
-        timer-lib
+        stackarrt
+        ${STACKARRT_HEADERS}
+        ${STACKARRT_SOURCES}
 )
 
 target_include_directories(
-        stack-arrt-lib PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        stackarrt
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+        $<INSTALL_INTERFACE:include>
 )
 
-set_target_properties(stack-arrt-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        stackarrt
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)
+
+###############################################################################
+## dependencies ###############################################################
+###############################################################################
+
+target_link_libraries(
+        stackarrt
+        PUBLIC
+        timer
+)

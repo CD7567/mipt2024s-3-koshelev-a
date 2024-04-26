@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "stackarrt.hpp"
+#include "stackarrt/stackarrt.hpp"
 #include "test_struct.hpp"
 
 TEST_SUITE("TestStackArrT") {

@@ -36,13 +36,13 @@ find_package(doctest REQUIRED)
 target_link_libraries(
         test-runner PRIVATE
         doctest::doctest
-        util-lib
-        stack-arr-lib
-        stack-arrt-lib
-        stack-lst-lib
-        stack-lstt-lib
-        json-lib
-        move-tester-lib
+        utils
+        stackarr
+        stackarrt
+        stacklst
+        stacklstt
+        json
+        movetester
 )
 
 ###############################################################################
@@ -51,7 +51,9 @@ target_link_libraries(
 
 if(DO_AUTORUN_TESTS)
         add_custom_target(
-                run-tests ALL
-                COMMAND test-runner
+                run-tests
+                ALL
+                COMMAND
+                test-runner
         )
 endif()

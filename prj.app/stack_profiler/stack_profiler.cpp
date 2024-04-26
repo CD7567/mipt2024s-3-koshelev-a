@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "stackarrt.hpp"
-#include "stacklstt.hpp"
+#include "stackarrt/stackarrt.hpp"
+#include "stacklstt/stacklstt.hpp"
 #include "test_struct.hpp"
 #include "utils.hpp"
 

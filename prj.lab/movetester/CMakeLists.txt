@@ -4,7 +4,7 @@
 
 file(
         GLOB_RECURSE
-        MOVE_TESTER_HEADERS
+        MOVETESTER_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
@@ -13,13 +13,29 @@ file(
 ###############################################################################
 
 add_library(
-        move-tester-lib
-        ${MOVE_TESTER_HEADERS}
+        movetester
+        ${MOVETESTER_HEADERS}
 )
 
 target_include_directories(
-        move-tester-lib PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        movetester
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+        $<INSTALL_INTERFACE:include>
 )
 
-set_target_properties(move-tester-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        movetester
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)
+
+###############################################################################
+## dependencies ###############################################################
+###############################################################################
+
+target_link_libraries(
+        movetester
+        PUBLIC
+        utils
+)

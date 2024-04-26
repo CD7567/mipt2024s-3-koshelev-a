@@ -4,13 +4,13 @@
 
 file(
         GLOB_RECURSE
-        JSON_LIB_HEADERS
+        JSON_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
 file(
         GLOB_RECURSE
-        JSON_LIB_SOURCES
+        JSON_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
@@ -19,14 +19,20 @@ file(
 ###############################################################################
 
 add_library(
-        json-lib
-        ${JSON_LIB_HEADERS}
-        ${JSON_LIB_SOURCES}
+        json
+        ${JSON_HEADERS}
+        ${JSON_SOURCES}
 )
 
 target_include_directories(
-        json-lib PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        json
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+        $<INSTALL_INTERFACE:include>
 )
 
-set_target_properties(json-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        json
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)

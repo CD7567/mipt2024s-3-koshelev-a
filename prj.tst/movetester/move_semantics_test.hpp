@@ -7,11 +7,11 @@
 
 #include <chrono>
 
-#include "movetester.hpp"
-#include "stackarr.hpp"
-#include "stackarrt.hpp"
-#include "stacklst.hpp"
-#include "stacklstt.hpp"
+#include "movetester/movetester.hpp"
+#include "stackarr/stackarr.hpp"
+#include "stackarrt/stackarrt.hpp"
+#include "stacklst/stacklst.hpp"
+#include "stacklstt/stacklstt.hpp"
 #include "type_pair.hpp"
 #include "utils.hpp"
 

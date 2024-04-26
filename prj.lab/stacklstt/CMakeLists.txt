@@ -4,13 +4,13 @@
 
 file(
         GLOB_RECURSE
-        STACK_LSTT_HEADERS
+        STACKLSTT_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
 file(
         GLOB_RECURSE
-        STACK_LSTT_SOURCES
+        STACKLSTT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
@@ -19,19 +19,30 @@ file(
 ###############################################################################
 
 add_library(
-        stack-lstt-lib
-        ${STACK_LSTT_HEADERS}
-        ${STACK_LSTT_SOURCES}
-)
-
-target_link_libraries(
-        stack-lstt-lib PUBLIC
-        timer-lib
+        stacklstt
+        ${STACKLSTT_HEADERS}
+        ${STACKLSTT_SOURCES}
 )
 
 target_include_directories(
-        stack-lstt-lib PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        stacklstt
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+        $<INSTALL_INTERFACE:include>
 )
 
-set_target_properties(stack-lstt-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        stacklstt
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)
+
+###############################################################################
+## dependencies ###############################################################
+###############################################################################
+
+target_link_libraries(
+        stacklstt
+        PUBLIC
+        timer
+)

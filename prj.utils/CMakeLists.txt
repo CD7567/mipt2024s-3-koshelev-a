@@ -1,18 +1,10 @@
-cmake_minimum_required(VERSION 3.5)
-
-###############################################################################
-## project definition #########################################################
-###############################################################################
-
-project(util-lib LANGUAGES CXX)
-
 ###############################################################################
 ## sources definitions ########################################################
 ###############################################################################
 
 file(
         GLOB_RECURSE
-        UTIL_LIB_HEADERS
+        UTILS_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
@@ -21,13 +13,19 @@ file(
 ###############################################################################
 
 add_library(
-        util-lib
-        ${UTIL_LIB_HEADERS}
+        utils
+        ${UTILS_HEADERS}
 )
 
 target_include_directories(
-        util-lib PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        utils
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include>
 )
 
-set_target_properties(util-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        utils
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)
