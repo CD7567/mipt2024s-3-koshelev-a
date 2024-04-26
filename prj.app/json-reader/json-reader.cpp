@@ -24,12 +24,12 @@ template <typename Parser>
 inline void testCustomParser(std::ofstream& out, std::string tag,
                              const char* json_path) {
     Parser parser(json_path);
+    size_t time = 0;
 
     // Measure parsing time
-    size_t parsing_time;
-    TIME(parser.Parse(), std::chrono::nanoseconds, parsing_time);
+    TIME(parser.Parse(), std::chrono::nanoseconds, time);
 
-    out << dyn_format(PRINT_FORMAT, tag, parsing_time) << "\n";
+    out << dyn_format(PRINT_FORMAT, tag, time) << "\n";
 }
 
 /**
@@ -39,12 +39,12 @@ inline void testCustomParser(std::ofstream& out, std::string tag,
  */
 inline void testLibraryDOM(std::ofstream& out, const char* json_path) {
     std::ifstream f_json(json_path);
+    size_t time = 0;
 
     // Measure parsing time
-    size_t parsing_time;
-    TIME(json parsed = json::parse(f_json), std::chrono::nanoseconds, parsing_time);
+    TIME(json parsed = json::parse(f_json), std::chrono::nanoseconds, time);    // NOLINT
 
-    out << dyn_format(PRINT_FORMAT, "DOM", parsing_time) << "\n";
+    out << dyn_format(PRINT_FORMAT, "DOM", time) << "\n";
 }
 
 /**
@@ -55,12 +55,12 @@ inline void testLibraryDOM(std::ofstream& out, const char* json_path) {
 inline void testLibrarySAX(std::ofstream& out, const char* json_path) {
     std::ifstream f_json(json_path);
     SAXEventConsumer consumer;
+    size_t time = 0;
 
     // Measure parsing time
-    size_t parsing_time;
-    TIME(json::sax_parse(f_json, &consumer), std::chrono::nanoseconds, parsing_time);
+    TIME(json::sax_parse(f_json, &consumer), std::chrono::nanoseconds, time);
 
-    out << dyn_format(PRINT_FORMAT, "SAX", parsing_time) << "\n";
+    out << dyn_format(PRINT_FORMAT, "SAX", time) << "\n";
 }
 
 /**
