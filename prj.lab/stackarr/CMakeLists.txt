@@ -4,7 +4,7 @@
 
 file(
         GLOB_RECURSE
-        STACK_ARR_HEADERS
+        STACKARR_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
@@ -13,18 +13,28 @@ file(
 ###############################################################################
 
 add_library(
-        stack-arr-lib
-        ${STACK_ARR_HEADERS}
-)
-
-target_link_libraries(
-        stack-arr-lib PUBLIC
-        stack-arrt-lib
+        stackarr
+        ${STACKARR_HEADERS}
 )
 
 target_include_directories(
-        stack-arr-lib PUBLIC
+        stackarr
+        PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set_target_properties(stack-arr-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        stackarr
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)
+
+###############################################################################
+## dependencies ###############################################################
+###############################################################################
+
+target_link_libraries(
+        stackarr
+        PUBLIC
+        stackarrt
+)

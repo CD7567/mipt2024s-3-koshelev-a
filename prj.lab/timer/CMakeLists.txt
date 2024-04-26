@@ -4,13 +4,13 @@
 
 file(
         GLOB_RECURSE
-        TIMER_LIB_HEADERS
+        TIMER_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
 file(
         GLOB_RECURSE
-        TIMER_LIB_SOURCES
+        TIMER_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
@@ -19,14 +19,19 @@ file(
 ###############################################################################
 
 add_library(
-        timer-lib
-        ${TIMER_LIB_HEADERS}
-        ${TIMER_LIB_SOURCES}
+        timer
+        ${TIMER_HEADERS}
+        ${TIMER_SOURCES}
 )
 
 target_include_directories(
-        timer-lib PUBLIC
+        timer
+        PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set_target_properties(timer-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        timer
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)

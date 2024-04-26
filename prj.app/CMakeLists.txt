@@ -67,27 +67,27 @@ find_package(
 
 target_link_libraries(
         stack-profiler PRIVATE
-        stack-arrt-lib
-        stack-lstt-lib
-        util-lib
+        stackarrt
+        stacklstt
+        utils
 )
 
 target_link_libraries(
         json-reader PRIVATE
         nlohmann_json::nlohmann_json
-        json-lib
-        util-lib
+        json
+        utils
 )
 
 target_link_libraries(
         string-profiler PRIVATE
-        util-lib
+        utils
 )
 
 target_link_libraries(
         timer-profiler PRIVATE
-        stack-arrt-lib
-        stack-lstt-lib
-        timer-lib
-        util-lib
+        stackarrt
+        stacklstt
+        timer
+        utils
 )

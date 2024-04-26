@@ -4,7 +4,7 @@
 
 file(
         GLOB_RECURSE
-        STACK_LST_HEADERS
+        STACKLST_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
 )
 
@@ -13,18 +13,28 @@ file(
 ###############################################################################
 
 add_library(
-        stack-lst-lib
-        ${STACK_LST_HEADERS}
-)
-
-target_link_libraries(
-        stack-lst-lib PUBLIC
-        stack-lstt-lib
+        stacklst
+        ${STACKLST_HEADERS}
 )
 
 target_include_directories(
-        stack-lst-lib PUBLIC
+        stacklst
+        PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set_target_properties(stack-lst-lib PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(
+        stacklst
+        PROPERTIES
+        LINKER_LANGUAGE CXX
+)
+
+###############################################################################
+## dependencies ###############################################################
+###############################################################################
+
+target_link_libraries(
+        stacklst
+        PUBLIC
+        stacklstt
+)
