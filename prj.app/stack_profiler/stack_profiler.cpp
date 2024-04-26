@@ -26,19 +26,18 @@ template <typename T, typename Stack>
 inline void testStack(std::ofstream& out, std::string tag, const T& elem,
                       const size_t test_max_size) {
     Stack stack;
+    size_t time = 0;
 
     for (size_t i = 0; i < test_max_size; ++i) {
         // Measuring push time
-        size_t push_time;
-        TIME(stack.Push(elem), std::chrono::nanoseconds, push_time);
+        TIME(stack.Push(elem), std::chrono::nanoseconds, time);
 
-        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", push_time) << "\n";
+        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", time) << "\n";
 
         // Measuring copy construction time
-        size_t cpy_c_time;
-        TIME(Stack _(stack), std::chrono::nanoseconds, cpy_c_time);
+        TIME(Stack _(stack), std::chrono::nanoseconds, time);                   // NOLINT
 
-        out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", cpy_c_time)
+        out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", time)
             << "\n";
     }
 }
@@ -57,19 +56,18 @@ inline void testSTL(std::ofstream& out, std::string tag, const T& elem,
                     const size_t test_max_size) {
     typedef std::stack<T, C> STLStack;
     STLStack stack;
+    size_t time = 0;
 
     for (size_t i = 0; i < test_max_size; ++i) {
         // Measuring push time
-        size_t push_time;
-        TIME(stack.push(elem), std::chrono::nanoseconds, push_time);
+        TIME(stack.push(elem), std::chrono::nanoseconds, time);
 
-        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", push_time) << "\n";
+        out << dyn_format(PRINT_FORMAT, tag, i, "PUSH", time) << "\n";
 
         // Measuring copy construction time
-        size_t cpy_c_time;
-        TIME(STLStack _(stack), std::chrono::nanoseconds, cpy_c_time);
+        TIME(STLStack _(stack), std::chrono::nanoseconds, time);                // NOLINT
 
-        out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", cpy_c_time)
+        out << dyn_format(PRINT_FORMAT, tag, i, "COPY_CONSTRUCTOR", time)
             << "\n";
     }
 }

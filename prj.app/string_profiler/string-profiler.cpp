@@ -16,15 +16,15 @@ void testString(std::ofstream& out, const size_t test_max_size) {
     std::string str;
 
     for (size_t i = 0; i < test_max_size; ++i) {
-        size_t copy_construction_time;
-        TIME(std::string copy_constructed(str), std::chrono::nanoseconds, copy_construction_time);
+        size_t copy_construction_time = 0;
+        TIME(std::string copy_constructed(str), std::chrono::nanoseconds, copy_construction_time);                          // NOLINT
 
         out << dyn_format(PRINT_FORMAT, "COPY", i, "CONSTRUCTION",
                           copy_construction_time)
             << "\n";
 
-        size_t copy_assignment_time;
-        TIME(std::string copy_assigned; copy_assigned = str, std::chrono::nanoseconds, copy_assignment_time);
+        size_t copy_assignment_time = 0;
+        TIME(std::string copy_assigned; copy_assigned = str, std::chrono::nanoseconds, copy_assignment_time);               // NOLINT
 
         out << dyn_format(PRINT_FORMAT, "COPY", i, "ASSIGNMENT",
                           copy_assignment_time)
@@ -32,8 +32,8 @@ void testString(std::ofstream& out, const size_t test_max_size) {
 
         std::string tmp = str;
 
-        size_t move_construction_time;
-        TIME(std::string move_constructed(std::move(tmp)), std::chrono::nanoseconds, move_construction_time);
+        size_t move_construction_time = 0;
+        TIME(std::string move_constructed(std::move(tmp)), std::chrono::nanoseconds, move_construction_time);               // NOLINT
 
         out << dyn_format(PRINT_FORMAT, "MOVE", i, "CONSTRUCTION",
                           move_construction_time)
@@ -41,8 +41,8 @@ void testString(std::ofstream& out, const size_t test_max_size) {
 
         tmp = str;
 
-        size_t move_assignment_time;
-        TIME(std::string move_assigned; move_assigned = std::move(tmp), std::chrono::nanoseconds, move_assignment_time);
+        size_t move_assignment_time = 0;
+        TIME(std::string move_assigned; move_assigned = std::move(tmp), std::chrono::nanoseconds, move_assignment_time);    // NOLINT
 
         out << dyn_format(PRINT_FORMAT, "MOVE", i, "ASSIGNMENT",
                           move_assignment_time)

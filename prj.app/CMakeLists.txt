@@ -5,31 +5,31 @@
 file(
         GLOB_RECURSE
         STACK_PROFILER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/stack-profiler/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/stack_profiler/*.cpp
 )
 
 file(
         GLOB_RECURSE
         JSON_READER_HEADERS
-        ${CMAKE_CURRENT_SOURCE_DIR}/json-reader/*.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/jsonreader/*.hpp
 )
 
 file(
         GLOB_RECURSE
         JSON_READER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/json-reader/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/jsonreader/*.cpp
 )
 
 file(
         GLOB_RECURSE
         STRING_PROFILER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/string-profiler/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/string_profiler/*.cpp
 )
 
 file(
         GLOB_RECURSE
         TIMER_PROFILER_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/timer-profiler/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/timer_profiler/*.cpp
 )
 
 ###############################################################################
