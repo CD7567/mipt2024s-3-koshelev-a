@@ -4,8 +4,14 @@
 
 file(
         GLOB_RECURSE
+        APP_HEADERS
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp
+)
+
+file(
+        GLOB_RECURSE
         APP_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/app/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
 )
 
 ###############################################################################
@@ -14,7 +20,15 @@ file(
 
 add_executable(
         app
+        ${APP_HEADERS}
         ${APP_SOURCES}
+)
+
+target_include_directories(
+        app
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
 )
 
 ###############################################################################
