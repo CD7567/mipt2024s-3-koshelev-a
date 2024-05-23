@@ -37,12 +37,16 @@ target_link_libraries(
         test-runner PRIVATE
         doctest::doctest
         utils
-        stackarr
         stackarrt
-        stacklst
         stacklstt
         json
         movetester
+)
+
+target_link_libraries(
+        test-runner INTERFACE
+        stackarr
+        stacklst
 )
 
 ###############################################################################
