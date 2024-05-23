@@ -5,6 +5,7 @@
 #include <cmath>
 #include <format>
 #include <random>
+#include <climits>
 
 #define TIME(funcCall, ChronoType, storage)                                    \
     {                                                                          \
@@ -70,9 +71,9 @@ std::pair<double, double> calculate_deviation(
 char genRandomChar() {
     std::random_device random_device;
     std::mt19937 generator(random_device());
-    std::uniform_int_distribution<char> distribution;
+    std::uniform_int_distribution<int> distribution;
 
-    return distribution(generator);
+    return distribution(generator) % CHAR_MAX;
 }
 
 #endif  // MIPT2024S_3_KOSHELEV_A_UTILS_HPP
