@@ -1,5 +1,4 @@
-CHECK: 20240520-183425
-ERROR: path prj.app/jsonreader/jsonreader.cpp does not exist
+CHECK: 20240523-155059
 ERROR: lab stackarr - test build failed
 STATUS: lab stackarrt - test-ok
 ERROR: lab stacklst - test build failed
