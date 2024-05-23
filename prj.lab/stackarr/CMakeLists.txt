@@ -1,25 +1,15 @@
 ###############################################################################
-## sources definitions ########################################################
-###############################################################################
-
-file(
-        GLOB_RECURSE
-        STACKARR_HEADERS
-        ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
-)
-
-###############################################################################
 ## target definitions #########################################################
 ###############################################################################
 
 add_library(
         stackarr
-        ${STACKARR_HEADERS}
+        INTERFACE
 )
 
 target_include_directories(
         stackarr
-        PUBLIC
+        INTERFACE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
         $<INSTALL_INTERFACE:include>
 )
@@ -36,6 +26,6 @@ set_target_properties(
 
 target_link_libraries(
         stackarr
-        PUBLIC
+        INTERFACE
         stackarrt
 )
