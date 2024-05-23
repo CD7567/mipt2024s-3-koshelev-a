@@ -25,8 +25,13 @@ find_package(
         OpenCV REQUIRED
 )
 
+find_package(
+        spdlog REQUIRED
+)
+
 target_link_libraries(
         app
         PUBLIC
         ${OpenCV_LIBS}
+        spdlog::spdlog
 )
