@@ -1,0 +1,28 @@
+#ifndef MIPT2024S_3_KOSHELEV_A_CONFIG_MANAGER_HPP
+#define MIPT2024S_3_KOSHELEV_A_CONFIG_MANAGER_HPP
+
+#include <filesystem>
+#include <toml++/toml.hpp>
+
+class ConfigManager {
+  private:
+    using path = std::filesystem::path;
+
+    ConfigManager() = default;
+    ConfigManager(const ConfigManager&) = default;
+    ConfigManager& operator=(const ConfigManager&) = delete;
+
+    toml::table config;
+
+  public:
+    static ConfigManager& getInstance();
+
+    void setConfig(const char* filepath);
+
+    path getDataDir() const;
+    path getOutDirSuffix() const;
+
+    double getSmoothingFactor();
+};
+
+#endif  // MIPT2024S_3_KOSHELEV_A_CONFIG_MANAGER_HPP
