@@ -3,19 +3,22 @@
 #include <string>
 
 #include "app_exception.hpp"
+#include "config_manager.hpp"
 
 IOHandler::IOHandler(int argc, const char **argv)
     : logger(spdlog::default_logger()) {
     logger->info("Parsing command line arguments");
 
-    if (argc < 4) {
-        logger->error("Expected {} arguments but got {}", 4, argc);
+    if (argc < 2) {
+        logger->error("Expected {} arguments but got {}", 2, argc);
         throw AppException("Incorrect amount of arguments");
     }
 
-    dataDir = std::filesystem::path(argv[1]);
-    outDir = std::filesystem::path(argv[2]);
-    inFile = std::filesystem::path(argv[3]);
+    auto& config = ConfigManager::getInstance();
+    auto dataDir = config.getDataDir();
+
+    outDir = config.getOutDirSuffix();
+    inFile = std::filesystem::path(argv[1]);
 
     inFile = dataDir / inFile;
     outDir = dataDir / outDir;

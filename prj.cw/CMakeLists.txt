@@ -27,8 +27,13 @@ add_executable(
 target_include_directories(
         app
         PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/config.toml
+        ${CMAKE_CURRENT_BINARY_DIR}
+        COPYONLY
 )
 
 ###############################################################################

@@ -1,5 +1,7 @@
 #include "transformer.hpp"
 
+#include "config_manager.hpp"
+
 Transformer::Transformer() : logger(spdlog::default_logger()) {}
 
 cv::Mat Transformer::makeBinary(const cv::Mat& src) {
@@ -15,9 +17,10 @@ cv::Mat Transformer::makeBinary(const cv::Mat& src) {
 }
 
 std::vector<std::vector<cv::Point>> Transformer::makeSmooth(
-    const std::vector<std::vector<cv::Point>>& contours,
-    double smoothingFactor) {
+    const std::vector<std::vector<cv::Point>>& contours) {
     std::vector<std::vector<cv::Point>> smoothed{contours.size()};
+
+    double smoothingFactor = ConfigManager::getInstance().getSmoothingFactor();
 
     for (size_t i = 0; i < contours.size(); i++) {
         approxPolyDP(contours[i], smoothed[i],

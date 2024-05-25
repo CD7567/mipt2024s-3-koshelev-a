@@ -8,7 +8,6 @@
 
 class IOHandler {
   private:
-    std::filesystem::path dataDir;
     std::filesystem::path inFile;
     std::filesystem::path outDir;
 

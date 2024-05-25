@@ -16,8 +16,7 @@ class Transformer {
     cv::Mat makeBinary(const cv::Mat& src);
 
     std::vector<std::vector<cv::Point>> makeSmooth(
-        const std::vector<std::vector<cv::Point>>& contours,
-        double smoothingFactor);
+        const std::vector<std::vector<cv::Point>>& contours);
 };
 
 #endif  // MIPT2024S_3_KOSHELEV_A_TRANSFORMER_HPP

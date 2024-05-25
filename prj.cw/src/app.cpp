@@ -5,11 +5,12 @@
 #include <filesystem>
 #include <opencv2/opencv.hpp>
 
+#include "config_manager.hpp"
 #include "iohandler.hpp"
 #include "transformer.hpp"
 
 int main(int argc, const char** argv) {
-    // Configure sinks
+    // Setup sinks
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     console_sink->set_level(spdlog::level::debug);
 
@@ -17,12 +18,16 @@ int main(int argc, const char** argv) {
         "logs/log.log", 1024 * 1024 * 10, 3);
     file_sink->set_level(spdlog::level::debug);
 
-    // Configure logger
+    // Setup logger
     spdlog::logger logger("prj.cw", {console_sink, file_sink});
     logger.set_level(spdlog::level::debug);
     spdlog::set_default_logger(std::make_unique<spdlog::logger>(logger));
 
     logger.info("===== [Starting new run] =====");
+
+    // Setup config manager
+    auto& config = ConfigManager::getInstance();
+    config.setConfig("config.toml");
 
     // Handle input
     IOHandler handler{argc, argv};
@@ -51,7 +56,7 @@ int main(int argc, const char** argv) {
     }
     handler.writeImage(rawContourImage, "raw");
 
-    auto smoothedContours = transformer.makeSmooth(contours, 0.00075);
+    auto smoothedContours = transformer.makeSmooth(contours);
 
     logger.info("Creating smooth contour image");
     cv::Mat smoothContourImage(binary.size(), CV_8UC3, cv::Scalar(0, 0, 0));
