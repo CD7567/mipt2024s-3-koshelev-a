@@ -19,6 +19,11 @@ set(
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 
+set(
+        GEN_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/gen.cpp
+)
+
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
@@ -39,6 +44,11 @@ target_include_directories(
 add_executable(
         main
         ${MAIN_SOURCES}
+)
+
+add_executable(
+        gen
+        ${GEN_SOURCES}
 )
 
 
@@ -74,6 +84,14 @@ target_link_libraries(
 
 target_link_libraries(
         main
+        PUBLIC
+        ${OpenCV_LIBS}
+        spdlog::spdlog
+        cw-lib
+)
+
+target_link_libraries(
+        gen
         PUBLIC
         ${OpenCV_LIBS}
         spdlog::spdlog
