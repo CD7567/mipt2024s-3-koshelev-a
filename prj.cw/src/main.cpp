@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <opencv2/opencv.hpp>
 
+#include "app_exception.hpp"
 #include "config_manager.hpp"
 #include "iohandler.hpp"
 #include "transform.hpp"
@@ -29,9 +30,14 @@ int main(int argc, const char** argv) {
     auto& config = ConfigManager::getInstance();
     config.setConfig("config.toml");
 
+    if (argc < 2) {
+        logger.error("Expected at least {} arguments, but got {}!", 2, argc);
+        throw AppException("Incorrect number of arguments!");
+    }
+
     // Handle input
-    IOHandler handler{argc, argv};
-    cv::Mat input = handler.readInput();
+    IOHandler handler{};
+    cv::Mat input = handler.readInput(argv[1]);
 
     // Initialize transformer
     Transformer transformer{};
@@ -54,7 +60,7 @@ int main(int argc, const char** argv) {
     for (size_t i = 0; i < contours.size(); i++) {
         cv::drawContours(rawContourImage, contours, i, colors[i % 3]);
     }
-    handler.writeImage(rawContourImage, "raw");
+    handler.writeOutput(rawContourImage, argv[1], "raw");
 
     auto smoothedContours = transformer.makeSmooth(contours);
 
@@ -64,7 +70,7 @@ int main(int argc, const char** argv) {
         cv::drawContours(smoothContourImage, smoothedContours, i,
                          colors[i % 3]);
     }
-    handler.writeImage(smoothContourImage, "smooth");
+    handler.writeOutput(smoothContourImage, argv[1], "smooth");
 
     /*
     cv::namedWindow("Img show");

@@ -21,8 +21,9 @@ class ConfigManager {
 
     path getDataDir() const;
     path getOutDirSuffix() const;
+    path getGenDirSuffix() const;
 
-    double getSmoothingFactor();
+    double getSmoothingFactor() const;
 };
 
 #endif  // MIPT2024S_3_KOSHELEV_A_CONFIG_MANAGER_HPP

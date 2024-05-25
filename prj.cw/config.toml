@@ -1,6 +1,10 @@
 [io]
 dataDir = "data"
 outDirSuffix = "out"
+genDirSuffix = "gen"
 
-[transform]
+[main]
 smoothingFactor = 0.00075
+
+[generator]
+

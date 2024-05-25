@@ -8,17 +8,19 @@
 
 class IOHandler {
   private:
-    std::filesystem::path inFile;
+    std::filesystem::path dataDir;
     std::filesystem::path outDir;
+    std::filesystem::path genDir;
 
     std::shared_ptr<spdlog::logger> logger;
 
   public:
-    IOHandler(int argc, const char** argv);
+    IOHandler();
 
-    cv::Mat readInput();
+    cv::Mat readInput(const char* filename);
 
-    void writeImage(cv::Mat& img, const char* suffix);
+    void writeOutput(cv::Mat& img, const char* filename, const char* suffix);
+    void writeGenerated(cv::Mat& img, const char* filename, const char* suffix);
 };
 
 #endif  // MIPT2024S_3_KOSHELEV_A_IOHANDLER_HPP

@@ -10,15 +10,17 @@ void ConfigManager::setConfig(const char *filepath) {
 }
 
 ConfigManager::path ConfigManager::getDataDir() const {
-    return std::filesystem::path(
-        config["io"]["dataDir"].value<std::string>().value());
+    return {config["io"]["dataDir"].value<std::string>().value()};
 }
 
 ConfigManager::path ConfigManager::getOutDirSuffix() const {
-    return std::filesystem::path(
-        config["io"]["outDirSuffix"].value<std::string>().value());
+    return {config["io"]["outDirSuffix"].value<std::string>().value()};
 }
 
-double ConfigManager::getSmoothingFactor() {
-    return config["transform"]["smoothingFactor"].value<double>().value();
+ConfigManager::path ConfigManager::getGenDirSuffix() const {
+    return {config["io"]["genDirSuffix"].value<std::string>().value()};
+}
+
+double ConfigManager::getSmoothingFactor() const {
+    return config["main"]["smoothingFactor"].value<double>().value();
 }
