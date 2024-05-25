@@ -4,31 +4,43 @@
 
 file(
         GLOB_RECURSE
-        APP_HEADERS
+        CW_LIB_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp
 )
 
 file(
         GLOB_RECURSE
+        CW_LIB_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/include/*.cpp
+)
+
+set(
         APP_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/app.cpp
 )
 
 ###############################################################################
 ## target definitions #########################################################
 ###############################################################################
 
-add_executable(
-        app
-        ${APP_HEADERS}
-        ${APP_SOURCES}
+add_library(
+        cw-lib
+        ${CW_LIB_HEADERS}
+        ${CW_LIB_SOURCES}
 )
 
 target_include_directories(
-        app
+        cw-lib
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+
+add_executable(
+        app
+        ${APP_SOURCES}
+)
+
 
 configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/config.toml
@@ -53,9 +65,18 @@ find_package(
 )
 
 target_link_libraries(
+        cw-lib
+        PUBLIC
+        ${OpenCV_LIBS}
+        spdlog::spdlog
+        tomlplusplus
+)
+
+target_link_libraries(
         app
         PUBLIC
         ${OpenCV_LIBS}
         spdlog::spdlog
         tomlplusplus
+        cw-lib
 )
