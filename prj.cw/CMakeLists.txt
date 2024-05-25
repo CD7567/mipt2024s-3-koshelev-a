@@ -43,9 +43,14 @@ find_package(
         spdlog REQUIRED
 )
 
+find_package(
+        tomlplusplus REQUIRED
+)
+
 target_link_libraries(
         app
         PUBLIC
         ${OpenCV_LIBS}
         spdlog::spdlog
+        tomlplusplus
 )
