@@ -1,5 +1,8 @@
-#include "config_manager.hpp"
 #include "transform.hpp"
+
+#include "config_manager.hpp"
+
+namespace cw {
 
 Transformer::Transformer() : logger(spdlog::default_logger()) {}
 
@@ -28,3 +31,5 @@ std::vector<std::vector<cv::Point>> Transformer::makeSmooth(
 
     return smoothed;
 }
+
+}  // namespace cw

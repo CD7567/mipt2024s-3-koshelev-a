@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <opencv2/opencv.hpp>
 
+namespace cw {
+
 class IOHandler {
   private:
     std::filesystem::path dataDir;
@@ -22,5 +24,7 @@ class IOHandler {
     void writeOutput(cv::Mat& img, const char* filename, const char* suffix);
     void writeGenerated(cv::Mat& img, const char* filename, const char* suffix);
 };
+
+}  // namespace cw
 
 #endif  // MIPT2024S_3_KOSHELEV_A_IOHANDLER_HPP

@@ -2,7 +2,13 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
 
+#include <vector>
+
+#include "app_exception.hpp"
 #include "config_manager.hpp"
+#include "iohandler.hpp"
+
+using namespace cw;
 
 int main(int argc, const char** argv) {
     // Setup sinks

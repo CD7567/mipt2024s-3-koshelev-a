@@ -2,8 +2,9 @@
 
 #include <string>
 
-#include "app_exception.hpp"
 #include "config_manager.hpp"
+
+namespace cw {
 
 IOHandler::IOHandler() : logger(spdlog::default_logger()) {
     logger->info("Parsing command line arguments");
@@ -54,3 +55,5 @@ void IOHandler::writeGenerated(cv::Mat &img, const char *filename,
     logger->info("Writing output file: {}", imagePath.string());
     cv::imwrite(imagePath, img);
 }
+
+}  // namespace cw

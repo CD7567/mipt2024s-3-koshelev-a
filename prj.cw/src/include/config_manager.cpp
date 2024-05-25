@@ -1,5 +1,7 @@
 #include "config_manager.hpp"
 
+namespace cw {
+
 ConfigManager &ConfigManager::getInstance() {
     static ConfigManager manager;
     return manager;
@@ -24,3 +26,5 @@ ConfigManager::path ConfigManager::getGenDirSuffix() const {
 double ConfigManager::getSmoothingFactor() const {
     return config["main"]["smoothingFactor"].value<double>().value();
 }
+
+}  // namespace cw

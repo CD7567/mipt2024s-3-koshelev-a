@@ -10,6 +10,8 @@
 #include "iohandler.hpp"
 #include "transform.hpp"
 
+using namespace cw;
+
 int main(int argc, const char** argv) {
     // Setup sinks
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();

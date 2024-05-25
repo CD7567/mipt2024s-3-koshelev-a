@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <toml++/toml.hpp>
 
+namespace cw {
+
 class ConfigManager {
   private:
     using path = std::filesystem::path;
@@ -25,5 +27,7 @@ class ConfigManager {
 
     double getSmoothingFactor() const;
 };
+
+}  // namespace cw
 
 #endif  // MIPT2024S_3_KOSHELEV_A_CONFIG_MANAGER_HPP
