@@ -15,11 +15,11 @@ int main(int argc, const char** argv) {
     console_sink->set_level(spdlog::level::debug);
 
     auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-        "logs/log.log", 1024 * 1024 * 10, 3);
+        "logs/main.log", 1024 * 1024 * 10, 3);
     file_sink->set_level(spdlog::level::debug);
 
     // Setup logger
-    spdlog::logger logger("prj.cw", {console_sink, file_sink});
+    spdlog::logger logger("cw/main", {console_sink, file_sink});
     logger.set_level(spdlog::level::debug);
     spdlog::set_default_logger(std::make_unique<spdlog::logger>(logger));
 

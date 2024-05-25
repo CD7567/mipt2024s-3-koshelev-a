@@ -15,8 +15,8 @@ file(
 )
 
 set(
-        APP_SOURCES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/app.cpp
+        MAIN_SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 
 ###############################################################################
@@ -37,8 +37,8 @@ target_include_directories(
 
 
 add_executable(
-        app
-        ${APP_SOURCES}
+        main
+        ${MAIN_SOURCES}
 )
 
 
@@ -73,10 +73,9 @@ target_link_libraries(
 )
 
 target_link_libraries(
-        app
+        main
         PUBLIC
         ${OpenCV_LIBS}
         spdlog::spdlog
-        tomlplusplus
         cw-lib
 )
