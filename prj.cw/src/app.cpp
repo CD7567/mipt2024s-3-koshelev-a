@@ -7,7 +7,7 @@
 
 #include "config_manager.hpp"
 #include "iohandler.hpp"
-#include "transformer.hpp"
+#include "transform.hpp"
 
 int main(int argc, const char** argv) {
     // Setup sinks
