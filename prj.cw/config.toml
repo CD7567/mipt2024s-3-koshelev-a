@@ -1,0 +1,6 @@
+[io]
+dataDir = "data"
+outDirSuffix = "out"
+
+[transform]
+smoothingFactor = 0.00075
