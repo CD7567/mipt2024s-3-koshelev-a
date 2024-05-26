@@ -12,4 +12,15 @@
 -- Check for working CXX compiler: C:/Programs/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.39.33519/bin/Hostx64/x64/cl.exe - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
+-- Found nlohmann_json: D:/programs/vcpkg/installed/x64-windows/share/nlohmann_json/nlohmann_jsonConfig.cmake (found suitable version "3.11.3", minimum required is "3.10.5") 
+-- Found Protobuf: D:/programs/vcpkg/installed/x64-windows/tools/protobuf/protoc.exe (found version "3.21.12.0") 
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - not found
+-- Found Threads: TRUE  
+-- Found TIFF: optimized;D:/programs/vcpkg/installed/x64-windows/lib/tiff.lib;debug;D:/programs/vcpkg/installed/x64-windows/debug/lib/tiffd.lib (found version "4.6.0")  
+-- Found OpenCV: D:/programs/vcpkg/installed/x64-windows (found version "4.8.0") 
 -- Configuring incomplete, errors occurred!
