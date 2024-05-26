@@ -1,5 +1,5 @@
-CHECK: 20240523-175020
-STATUS: lab stackarr - test-failed
-STATUS: lab stackarrt - test-ok
-STATUS: lab stacklst - test-failed
+CHECK: 20240526-212513
+ERROR: lab stackarr - test build failed
+ERROR: lab stackarrt - test build failed
+ERROR: lab stacklst - test build failed
 ERROR: lab stacklstt - test build failed
