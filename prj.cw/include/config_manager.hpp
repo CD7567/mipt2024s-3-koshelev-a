@@ -26,6 +26,10 @@ class ConfigManager {
     path getGenDirSuffix() const;
 
     double getSmoothingFactor() const;
+
+    double getGenStep() const;
+    double getGenFOV() const;
+    double getGenInitialBound() const;
 };
 
 }  // namespace cw

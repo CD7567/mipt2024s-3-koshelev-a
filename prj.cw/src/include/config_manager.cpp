@@ -27,4 +27,16 @@ double ConfigManager::getSmoothingFactor() const {
     return config["main"]["smoothingFactor"].value<double>().value();
 }
 
+double ConfigManager::getGenStep() const {
+    return config["generator"]["step"].value<double>().value();
+}
+
+double ConfigManager::getGenFOV() const {
+    return config["generator"]["fov"].value<double>().value();
+}
+
+double ConfigManager::getGenInitialBound() const {
+    return config["generator"]["initialBound"].value<double>().value();
+}
+
 }  // namespace cw
