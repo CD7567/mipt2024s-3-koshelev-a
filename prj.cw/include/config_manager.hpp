@@ -30,6 +30,7 @@ class ConfigManager {
     double getGenStep() const;
     double getGenFOV() const;
     double getGenInitialBound() const;
+    double getGenTensionFactor() const;
 };
 
 }  // namespace cw

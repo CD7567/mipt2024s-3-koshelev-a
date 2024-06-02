@@ -39,4 +39,8 @@ double ConfigManager::getGenInitialBound() const {
     return config["generator"]["initialBound"].value<double>().value();
 }
 
+double ConfigManager::getGenTensionFactor() const {
+    return config["generator"]["tensionFactor"].value<double>().value();
+}
+
 }  // namespace cw
