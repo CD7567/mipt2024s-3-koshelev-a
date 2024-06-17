@@ -1,0 +1,2 @@
+     3>D:\projects\mipt2024s-3-check\mipt2024s-3-koshelev-a\prj.cw\src\app.cpp(50,53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data [D:\projects\mipt2024s-3-check\mipt2024s-3-koshelev-a\build.check\prj.cw\app.vcxproj]
+     3>D:\projects\mipt2024s-3-check\mipt2024s-3-koshelev-a\prj.cw\src\app.cpp(59,64): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data [D:\projects\mipt2024s-3-check\mipt2024s-3-koshelev-a\build.check\prj.cw\app.vcxproj]
