@@ -61,6 +61,7 @@ int main(int argc, const char** argv) {
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][0], cv::Scalar(255, 0, 0), 2);
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][1], cv::Scalar(0, 255, 0), 2);
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][2], cv::Scalar(0, 0, 255), 2);
+        cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][3], cv::Scalar(255, 0, 255), 2);
     }
 
     handler.writeGenerated(generatedImage, argv[4], "gen");

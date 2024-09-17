@@ -7,8 +7,9 @@ genDirSuffix = "gen"
 smoothingFactor = 0.00075
 
 [generator]
-strokeWidth = 5
+strokeWidth = 10
 step = 40.0
 fov = 0.3
 initialBound = 0.25
 tensionFactor = 1.0
+repelFactor = 1.0

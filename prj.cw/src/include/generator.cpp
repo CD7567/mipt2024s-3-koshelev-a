@@ -36,9 +36,9 @@ inline double getTensionMagnitude(cv::Point2d point, int width, int height) {
     // Center point
     point -= cv::Point2d(width / 2, height / 2);
 
-    return std::min(ConfigManager::getInstance().getGenTensionFactor() *
-                        (4 * point.x * point.x / (width * width) +
-                         4 * point.y * point.y / (height * height)),
+    return std::min(ConfigManager::getInstance().getGenTensionFactor(), 1.0) *
+           std::min((4 * point.x * point.x / (width * width) +
+                    4 * point.y * point.y / (height * height)),
                     1.0);
 }
 
@@ -56,6 +56,26 @@ inline cv::Point2d getTensionVector(const cv::Point2d& point, int width,
     double centeredY = point.y - height / 2;
 
     return {-centeredX / (width * width), -centeredY / (height * height)};
+}
+
+/**
+ * Calculate repel vector for direction correction
+ *
+ * @param points Current points
+ * @return Repel direction
+ */
+inline cv::Point2d getRepelVector(const std::vector<cv::Point2d>& points) {
+    auto last = --points.cend();
+    cv::Point2d result;
+
+    for (auto it = points.cbegin(); it < last; ++it) {
+        cv::Point2d tmp = *last - *it;
+        double norm = cv::norm(tmp);
+
+        result += tmp / (norm * norm);
+    }
+
+    return result /= cv::norm(result);
 }
 
 void generateLine(std::vector<cv::Point2d>& dest,
@@ -83,27 +103,32 @@ void generateLine(std::vector<cv::Point2d>& dest,
     dest.push_back(dest.back() + cv::Point2d(step * cos(initialAngle),
                                              step * sin(initialAngle)));
 
+    double repel = std::min(config.getGenRepelFactor(), 1.0);
+
     for (int i = 2; i < number; ++i) {
         spdlog::default_logger()->info("Generating section {}", i);
 
         cv::Point2d prevPoint = dest[i - 1];
+
         double prevAngle = angle(prevPoint - dest[i - 2]);
         double tensionAngle = angle(
             getTensionVector(prevPoint, maxWidth, maxHeight));
+        double repelAngle = angle(getRepelVector(dest));
+
         double tension = getTensionMagnitude(prevPoint, maxWidth, maxHeight);
-        double newAngle = (1 - tension) * prevAngle + tension * tensionAngle;
+
+        double newAngle = (prevAngle + tension * tensionAngle + repel * repelAngle) / (1 + tension + repel);
 
         spdlog::default_logger()->debug("tension {}", tension);
 
-        std::vector<cv::Point2d> curr(3);
+        std::vector<cv::Point2d> curr(4);
 
         curr[0] = {cos(prevAngle), sin(prevAngle)};
-        curr[1] = {cos(newAngle), sin(newAngle)};
-        curr[2] = {cos(tensionAngle), sin(tensionAngle)};
+        curr[1] = {cos(tensionAngle), sin(tensionAngle)};
+        curr[2] = {cos(repelAngle), sin(repelAngle)};
+        curr[3] = {cos(newAngle), sin(newAngle)};
 
         dir.emplace_back(curr);
-
-        // Не дать слишком изломаться?
 
         std::uniform_real_distribution<double> dynAngleDistribution(
             newAngle - fov, newAngle + fov);
