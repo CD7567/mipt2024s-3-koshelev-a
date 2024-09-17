@@ -27,13 +27,14 @@ class ConfigManager {
 
     double getSmoothingFactor() const;
 
-    double getGenStrokeWidth() const;
+    int getGenStrokeWidth() const;
     double getGenStep() const;
     double getGenFOV() const;
     double getGenInitialBound() const;
     double getGenMomentumFactor() const;
     double getGenTensionFactor() const;
     double getGenRepelFactor() const;
+    double getGenImperfectionFactor() const;
 };
 
 }  // namespace cw

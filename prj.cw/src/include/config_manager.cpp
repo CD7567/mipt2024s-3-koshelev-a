@@ -27,7 +27,7 @@ double ConfigManager::getSmoothingFactor() const {
     return config["main"]["smoothingFactor"].value<double>().value();
 }
 
-double ConfigManager::getGenStrokeWidth() const {
+int ConfigManager::getGenStrokeWidth() const {
     return config["generator"]["strokeWidth"].value<double>().value();
 }
 
@@ -53,6 +53,10 @@ double ConfigManager::getGenTensionFactor() const {
 
 double ConfigManager::getGenRepelFactor() const {
     return config["generator"]["repelFactor"].value<double>().value();
+}
+
+double ConfigManager::getGenImperfectionFactor() const {
+    return config["generator"]["imperfectionFactor"].value<double>().value();
 }
 
 }  // namespace cw

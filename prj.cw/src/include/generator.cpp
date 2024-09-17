@@ -5,6 +5,7 @@
 #include <random>
 
 #include "config_manager.hpp"
+#include "transform.hpp"
 
 namespace cw {
 
@@ -148,6 +149,34 @@ void generateLine(std::vector<cv::Point2d>& dest,
         dest.push_back(prevPoint +
                        cv::Point2d(step * cos(angle), step * sin(angle)));
     }
+}
+
+void makeImperfections(cv::Mat& image) {
+    auto& config = ConfigManager::getInstance();
+    Transformer transformer{};
+
+    cv::Mat binary = transformer.makeBinary(image);
+
+    std::vector<std::vector<cv::Point>> contours;
+    cv::findContours(binary, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
+
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+
+    int stroke = config.getGenStrokeWidth();
+    int shift = config.getGenImperfectionFactor() * stroke;
+
+    std::uniform_int_distribution<int> distribution(-shift, shift);
+
+    std::vector<cv::Point> randomized{contours[0].size()};
+
+    for (auto vertex : contours[0]) {
+        randomized.push_back(vertex + cv::Point{distribution(generator), distribution(generator)});
+    }
+
+    contours.push_back(randomized);
+
+    cv::drawContours(image, contours, 2, cv::Scalar(0, 0, 0), 2 * shift);
 }
 
 }  // namespace cw
