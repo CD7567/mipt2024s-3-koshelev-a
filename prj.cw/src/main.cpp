@@ -5,28 +5,41 @@
 #include <filesystem>
 #include <opencv2/opencv.hpp>
 
+#include "app_exception.hpp"
+#include "config_manager.hpp"
 #include "iohandler.hpp"
-#include "transformer.hpp"
+#include "transform.hpp"
+
+using namespace cw;
 
 int main(int argc, const char** argv) {
-    // Configure sinks
+    // Setup sinks
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     console_sink->set_level(spdlog::level::debug);
 
     auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-        "logs/log.log", 1024 * 1024 * 10, 3);
+        "logs/main.log", 1024 * 1024 * 10, 3);
     file_sink->set_level(spdlog::level::debug);
 
-    // Configure logger
-    spdlog::logger logger("prj.cw", {console_sink, file_sink});
+    // Setup logger
+    spdlog::logger logger("cw/main", {console_sink, file_sink});
     logger.set_level(spdlog::level::debug);
     spdlog::set_default_logger(std::make_unique<spdlog::logger>(logger));
 
     logger.info("===== [Starting new run] =====");
 
+    // Setup config manager
+    auto& config = ConfigManager::getInstance();
+    config.setConfig("config.toml");
+
+    if (argc < 2) {
+        logger.error("Expected at least {} arguments, but got {}!", 2, argc);
+        throw AppException("Incorrect number of arguments!");
+    }
+
     // Handle input
-    IOHandler handler{argc, argv};
-    cv::Mat input = handler.readInput();
+    IOHandler handler{};
+    cv::Mat input = handler.readInput(argv[1]);
 
     // Initialize transformer
     Transformer transformer{};
@@ -49,9 +62,9 @@ int main(int argc, const char** argv) {
     for (size_t i = 0; i < contours.size(); i++) {
         cv::drawContours(rawContourImage, contours, i, colors[i % 3]);
     }
-    handler.writeImage(rawContourImage, "raw");
+    handler.writeOutput(rawContourImage, argv[1], "raw");
 
-    auto smoothedContours = transformer.makeSmooth(contours, 0.00075);
+    auto smoothedContours = transformer.makeSmooth(contours);
 
     logger.info("Creating smooth contour image");
     cv::Mat smoothContourImage(binary.size(), CV_8UC3, cv::Scalar(0, 0, 0));
@@ -59,7 +72,7 @@ int main(int argc, const char** argv) {
         cv::drawContours(smoothContourImage, smoothedContours, i,
                          colors[i % 3]);
     }
-    handler.writeImage(smoothContourImage, "smooth");
+    handler.writeOutput(smoothContourImage, argv[1], "smooth");
 
     /*
     cv::namedWindow("Img show");

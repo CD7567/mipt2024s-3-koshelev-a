@@ -1,0 +1,17 @@
+[io]
+dataDir = "data"
+outDirSuffix = "out"
+genDirSuffix = "gen"
+
+[main]
+smoothingFactor = 0.00075
+
+[generator]
+strokeWidth = 50
+step = 80.0
+fov = 0.125
+initialBound = 0.25
+momentumFactor = 0.8
+tensionFactor = 0.8
+repelFactor = 1.0
+imperfectionFactor = 0.1
