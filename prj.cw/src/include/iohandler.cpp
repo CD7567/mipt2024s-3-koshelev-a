@@ -17,12 +17,12 @@ IOHandler::IOHandler() : logger(spdlog::default_logger()) {
 
     if (!exists(outDir)) {
         logger->debug("No output directory found, creating");
-        create_directory(outDir);
+        create_directories(outDir);
     }
 
     if (!exists(genDir)) {
         logger->debug("No generated directory found, creating");
-        create_directory(genDir);
+        create_directories(genDir);
     }
 }
 
