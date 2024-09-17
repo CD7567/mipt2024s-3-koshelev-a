@@ -43,4 +43,8 @@ double ConfigManager::getGenTensionFactor() const {
     return config["generator"]["tensionFactor"].value<double>().value();
 }
 
+double ConfigManager::getGenStrokeWidth() const {
+    return config["generator"]["strokeWidth"].value<double>().value();
+}
+
 }  // namespace cw

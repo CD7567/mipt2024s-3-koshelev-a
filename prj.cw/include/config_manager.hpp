@@ -31,6 +31,7 @@ class ConfigManager {
     double getGenFOV() const;
     double getGenInitialBound() const;
     double getGenTensionFactor() const;
+    double getGenStrokeWidth() const;
 };
 
 }  // namespace cw

@@ -5,8 +5,9 @@
 
 namespace cw {
 
-void generateLine(std::vector<cv::Point>& dest, int maxWidth,
-                           int maxHeight, int number);
+void generateLine(std::vector<cv::Point2d>& dest,
+                  std::vector<std::vector<cv::Point2d>>& dir, int maxWidth,
+                  int maxHeight, int number);
 
 }  // namespace cw
 
