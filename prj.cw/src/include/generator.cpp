@@ -34,7 +34,7 @@ inline double angle(const cv::Point2d& vector) {
  */
 inline double getTensionMagnitude(cv::Point2d point, int width, int height) {
     // Center point
-    point -= cv::Point2d(width / 2, height / 2);
+    point -= {width / 2.0, height / 2.0};
 
     return std::min(ConfigManager::getInstance().getGenTensionFactor(), 1.0) *
            std::min((4 * point.x * point.x / (width * width) +
@@ -50,12 +50,13 @@ inline double getTensionMagnitude(cv::Point2d point, int width, int height) {
  * @param height Image height
  * @return Tension direction
  */
-inline cv::Point2d getTensionVector(const cv::Point2d& point, int width,
+inline cv::Point2d getTensionVector(cv::Point2d point, int width,
                                     int height) {
-    double centeredX = point.x - width / 2;
-    double centeredY = point.y - height / 2;
+    point -= {width / 2.0, height / 2.0};
 
-    return {-centeredX / (width * width), -centeredY / (height * height)};
+    cv::Point2d result = {- point.x / (width * width), - point.y / (height * height)};
+
+    return result /= cv::norm(result);
 }
 
 /**
@@ -111,18 +112,26 @@ void generateLine(std::vector<cv::Point2d>& dest,
 
         cv::Point2d prevPoint = dest[i - 1];
 
-        double prevAngle = angle(prevPoint - dest[i - 2]);
-        double tensionAngle = angle(
-            getTensionVector(prevPoint, maxWidth, maxHeight));
-        double repelAngle = angle(getRepelVector(dest));
+        cv::Point2d prevVector = prevPoint - dest[i - 2];
+        prevVector /= cv::norm(prevVector);
+
+        cv::Point2d tensionVector = getTensionVector(prevPoint, maxWidth, maxHeight);
+        cv::Point2d repelVector = getRepelVector(dest);
 
         double tension = getTensionMagnitude(prevPoint, maxWidth, maxHeight);
 
-        double newAngle = (momentum * prevAngle + tension * tensionAngle + repel * repelAngle) / (momentum + tension + repel);
+        cv::Point2d newVector = (momentum * prevVector + repel * repelVector) / (momentum + repel);
+        newVector = (1 - tension) * newVector + tension * tensionVector;
 
         spdlog::default_logger()->debug("tension {}", tension);
 
         std::vector<cv::Point2d> curr(4);
+
+        double newAngle = angle(newVector);
+
+        double prevAngle = angle(prevVector);
+        double tensionAngle = angle(tensionVector);
+        double repelAngle = angle(repelVector);
 
         curr[0] = {cos(prevAngle), sin(prevAngle)};
         curr[1] = {cos(tensionAngle), sin(tensionAngle)};
