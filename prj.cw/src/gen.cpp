@@ -24,7 +24,13 @@ int main(int argc, const char** argv) {
 
     // Setup logger
     spdlog::logger logger("cw/gen", {console_sink, file_sink});
+
+#ifndef NDEBUG
     logger.set_level(spdlog::level::debug);
+#else
+    logger.set_level(spdlog::level::info);
+#endif
+
     spdlog::set_default_logger(std::make_unique<spdlog::logger>(logger));
 
     logger.info("===== [Starting new run] =====");
@@ -57,12 +63,14 @@ int main(int argc, const char** argv) {
         cv::line(generatedImage, points[i - 1], points[i], cv::Scalar(255, 255, 255), config.getGenStrokeWidth());
     }
 
+#ifndef NDEBUG
     for (int i = 0; i < trace.size(); ++i) {
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][0], cv::Scalar(255, 0, 0), 2);
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][1], cv::Scalar(0, 255, 0), 2);
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][2], cv::Scalar(0, 0, 255), 2);
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][3], cv::Scalar(255, 0, 255), 2);
     }
+#endif
 
     handler.writeGenerated(generatedImage, argv[4], "gen");
 }

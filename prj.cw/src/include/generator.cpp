@@ -129,6 +129,7 @@ void generateLine(std::vector<cv::Point2d>& dest,
 
         double newAngle = angle(newVector);
 
+#ifndef NDEBUG
         double prevAngle = angle(prevVector);
         double tensionAngle = angle(tensionVector);
         double repelAngle = angle(repelVector);
@@ -137,6 +138,7 @@ void generateLine(std::vector<cv::Point2d>& dest,
         curr[1] = {cos(tensionAngle), sin(tensionAngle)};
         curr[2] = {cos(repelAngle), sin(repelAngle)};
         curr[3] = {cos(newAngle), sin(newAngle)};
+#endif
 
         dir.emplace_back(curr);
 
