@@ -103,6 +103,7 @@ void generateLine(std::vector<cv::Point2d>& dest,
     dest.push_back(dest.back() + cv::Point2d(step * cos(initialAngle),
                                              step * sin(initialAngle)));
 
+    double momentum = std::min(config.getGenMomentumFactor(), 1.0);
     double repel = std::min(config.getGenRepelFactor(), 1.0);
 
     for (int i = 2; i < number; ++i) {
@@ -117,7 +118,7 @@ void generateLine(std::vector<cv::Point2d>& dest,
 
         double tension = getTensionMagnitude(prevPoint, maxWidth, maxHeight);
 
-        double newAngle = (prevAngle + tension * tensionAngle + repel * repelAngle) / (1 + tension + repel);
+        double newAngle = (momentum * prevAngle + tension * tensionAngle + repel * repelAngle) / (momentum + tension + repel);
 
         spdlog::default_logger()->debug("tension {}", tension);
 

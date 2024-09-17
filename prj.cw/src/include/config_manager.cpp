@@ -27,6 +27,10 @@ double ConfigManager::getSmoothingFactor() const {
     return config["main"]["smoothingFactor"].value<double>().value();
 }
 
+double ConfigManager::getGenStrokeWidth() const {
+    return config["generator"]["strokeWidth"].value<double>().value();
+}
+
 double ConfigManager::getGenStep() const {
     return config["generator"]["step"].value<double>().value();
 }
@@ -39,16 +43,16 @@ double ConfigManager::getGenInitialBound() const {
     return config["generator"]["initialBound"].value<double>().value();
 }
 
+double ConfigManager::getGenMomentumFactor() const {
+    return config["generator"]["momentumFactor"].value<double>().value();
+}
+
 double ConfigManager::getGenTensionFactor() const {
     return config["generator"]["tensionFactor"].value<double>().value();
 }
 
 double ConfigManager::getGenRepelFactor() const {
     return config["generator"]["repelFactor"].value<double>().value();
-}
-
-double ConfigManager::getGenStrokeWidth() const {
-    return config["generator"]["strokeWidth"].value<double>().value();
 }
 
 }  // namespace cw
