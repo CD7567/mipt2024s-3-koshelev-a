@@ -55,25 +55,28 @@ int main(int argc, const char** argv) {
 
     generateLine(points, trace, width, height, numberOfPoints);
 
-    cv::Mat generatedImage(cv::Size(width, height), CV_8UC3, cv::Scalar(0, 0, 0));
+    cv::Mat clear(cv::Size(width, height), CV_8UC3, cv::Scalar(0, 0, 0));
     cv::Scalar white{255, 255, 255};
 
     for (size_t i = 1; i < numberOfPoints; ++i) {
-        cv::line(generatedImage, points[i - 1], points[i], cv::Scalar(255, 255, 255), config.getGenStrokeWidth());
+        cv::line(clear, points[i - 1], points[i], cv::Scalar(255, 255, 255), config.getGenStrokeWidth());
     }
 
-    makeImperfections(generatedImage);
+    cv::Mat distorted = clear.clone();
+    makeImperfections(distorted);
 
 #ifndef NDEBUG
+    handler.writeGenerated(clear, argv[4], "clear");
+
     for (int i = 0; i < trace.size(); ++i) {
-        cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][0], cv::Scalar(255, 0, 0), 2);
-        cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][1], cv::Scalar(0, 255, 0), 2);
-        cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][2], cv::Scalar(0, 0, 255), 2);
-        cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][3], cv::Scalar(255, 0, 255), 2);
+        cv::line(clear, points[i + 1], points[i + 1] + 20 * trace[i][0], cv::Scalar(255, 0, 0), 2);
+        cv::line(clear, points[i + 1], points[i + 1] + 20 * trace[i][1], cv::Scalar(0, 255, 0), 2);
+        cv::line(clear, points[i + 1], points[i + 1] + 20 * trace[i][2], cv::Scalar(0, 0, 255), 2);
+        cv::line(clear, points[i + 1], points[i + 1] + 20 * trace[i][3], cv::Scalar(255, 0, 255), 2);
     }
 
-    handler.writeGenerated(generatedImage, argv[4], "gen_clear");
+    handler.writeGenerated(clear, argv[4], "trace");
 #endif
 
-    handler.writeGenerated(generatedImage, argv[4]);
+    handler.writeGenerated(distorted, argv[4]);
 }
