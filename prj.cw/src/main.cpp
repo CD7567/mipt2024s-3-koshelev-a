@@ -59,15 +59,12 @@ int main(int argc, const char** argv) {
 
 #ifndef NDEBUG
     handler.writeOutput(smooth, argv[1], "smooth");
+    handler.writeOutput(binary, argv[1], "binary");
 #endif
 
     logger.info("Detecting smoothed contour");
     auto contours = transformer.findContour(binary);
-    cv::fillPoly(binary, contours[0], cv::Scalar(0, 0, 0));
-
-#ifndef NDEBUG
-    handler.writeOutput(binary, argv[1], "binary");
-#endif
+    cv::fillPoly(binary, contours[0], cv::Scalar(255, 255, 255));
 
     logger.info("Performing thinning");
     cv::Mat thinned;

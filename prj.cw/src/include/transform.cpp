@@ -14,7 +14,7 @@ cv::Mat Transformer::makeBinary(const cv::Mat& src) {
 
     logger->info("Transforming to binary image");
     cv::Mat binary;
-    cv::threshold(grayScale, binary, 127, 255, cv::THRESH_BINARY_INV);
+    cv::threshold(grayScale, binary, 127, 255, cv::THRESH_BINARY);
 
     return binary;
 }
