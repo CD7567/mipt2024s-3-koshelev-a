@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <opencv2/opencv.hpp>
+#include <opencv2/ximgproc.hpp>
 
 #include "app_exception.hpp"
 #include "config_manager.hpp"
@@ -50,14 +51,37 @@ int main(int argc, const char** argv) {
     // Initialize transformer
     Transformer transformer{};
 
+    logger.info("Performing smoothing");
     cv::Mat smooth = transformer.makeImageSmooth(input);
+
+    logger.info("Extracting binary image");
     cv::Mat binary = transformer.makeBinary(smooth);
 
+#ifndef NDEBUG
     handler.writeOutput(smooth, argv[1], "smooth");
+#endif
 
+    logger.info("Detecting smoothed contour");
     auto contours = transformer.findContour(binary);
+    cv::fillPoly(binary, contours[0], cv::Scalar(0, 0, 0));
+
+#ifndef NDEBUG
+    handler.writeOutput(binary, argv[1], "binary");
+#endif
+
+    logger.info("Performing thinning");
+    cv::Mat thinned;
+    cv::ximgproc::thinning(binary, thinned);
+
+#ifndef NDEBUG
+    handler.writeOutput(thinned, argv[1], "thin");
+#endif
+
+    logger.info("Detecting middle line");
+    auto middleLine = transformer.findContour(thinned);
 
     cv::drawContours(input, contours, 0, cv::Scalar(0, 0, 255), config.getStrokeWidth());
+    cv::drawContours(input, middleLine, 0, cv::Scalar(0, 255, 0, config.getStrokeWidth()));
 
-    handler.writeOutput(input, argv[1], "raw");
+    handler.writeOutput(input, argv[1]);
 }
