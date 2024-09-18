@@ -21,8 +21,8 @@ class IOHandler {
 
     cv::Mat readInput(const char* filename);
 
-    void writeOutput(cv::Mat& img, const char* filename, const char* suffix);
-    void writeGenerated(cv::Mat& img, const char* filename, const char* suffix);
+    void writeOutput(cv::Mat& img, const char* filename, const char* suffix = nullptr);
+    void writeGenerated(cv::Mat& img, const char* filename, const char* suffix = nullptr);
 };
 
 }  // namespace cw

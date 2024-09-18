@@ -37,9 +37,13 @@ cv::Mat IOHandler::readInput(const char *filename) {
 void IOHandler::writeOutput(cv::Mat &img, const char *filename,
                             const char *suffix) {
     std::filesystem::path inFilename{filename};
-    std::filesystem::path imagePath =
-        outDir / (inFilename.stem().string() + "_" + suffix +
-                  inFilename.extension().string());
+    std::filesystem::path imagePath = outDir;
+
+    if (suffix == nullptr) {
+        imagePath /= inFilename;
+    } else {
+        imagePath /= inFilename.stem().string() + "_" + suffix + inFilename.extension().string();
+    }
 
     logger->info("Writing output file: {}", imagePath.string());
     cv::imwrite(imagePath, img);
@@ -48,9 +52,13 @@ void IOHandler::writeOutput(cv::Mat &img, const char *filename,
 void IOHandler::writeGenerated(cv::Mat &img, const char *filename,
                                const char *suffix) {
     std::filesystem::path inFilename{filename};
-    std::filesystem::path imagePath =
-        genDir / (inFilename.stem().string() + "_" + suffix +
-                  inFilename.extension().string());
+    std::filesystem::path imagePath = genDir;
+
+    if (suffix == nullptr) {
+        imagePath /= inFilename;
+    } else {
+        imagePath /= inFilename.stem().string() + "_" + suffix + inFilename.extension().string();
+    }
 
     logger->info("Writing output file: {}", imagePath.string());
     cv::imwrite(imagePath, img);

@@ -75,5 +75,5 @@ int main(int argc, const char** argv) {
     handler.writeGenerated(generatedImage, argv[4], "gen_clear");
 #endif
 
-    handler.writeGenerated(generatedImage, argv[4], "gen");
+    handler.writeGenerated(generatedImage, argv[4]);
 }
