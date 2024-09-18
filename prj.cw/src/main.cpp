@@ -78,7 +78,7 @@ int main(int argc, const char** argv) {
     auto middleLine = transformer.findContour(thinned);
 
     cv::drawContours(input, contours, 0, cv::Scalar(0, 0, 255), config.getStrokeWidth());
-    cv::drawContours(input, middleLine, 0, cv::Scalar(0, 255, 0, config.getStrokeWidth()));
+    cv::drawContours(input, middleLine, 0, cv::Scalar(0, 255, 0), config.getStrokeWidth());
 
     handler.writeOutput(input, argv[1]);
 }
