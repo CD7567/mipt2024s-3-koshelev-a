@@ -31,7 +31,7 @@ cv::Mat IOHandler::readInput(const char *filename) {
 
     logger->info("Reading input file: {}", inFile.string());
 
-    return cv::imread(inFile);
+    return cv::imread(inFile.string());
 }
 
 void IOHandler::writeOutput(cv::Mat &img, const char *filename,
@@ -46,7 +46,7 @@ void IOHandler::writeOutput(cv::Mat &img, const char *filename,
     }
 
     logger->info("Writing output file: {}", imagePath.string());
-    cv::imwrite(imagePath, img);
+    cv::imwrite(imagePath.string(), img);
 }
 
 void IOHandler::writeGenerated(cv::Mat &img, const char *filename,
@@ -61,7 +61,7 @@ void IOHandler::writeGenerated(cv::Mat &img, const char *filename,
     }
 
     logger->info("Writing output file: {}", imagePath.string());
-    cv::imwrite(imagePath, img);
+    cv::imwrite(imagePath.string(), img);
 }
 
 }  // namespace cw
