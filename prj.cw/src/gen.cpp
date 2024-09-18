@@ -62,6 +62,8 @@ int main(int argc, const char** argv) {
         cv::line(generatedImage, points[i - 1], points[i], cv::Scalar(255, 255, 255), config.getGenStrokeWidth());
     }
 
+    makeImperfections(generatedImage);
+
 #ifndef NDEBUG
     for (int i = 0; i < trace.size(); ++i) {
         cv::line(generatedImage, points[i + 1], points[i + 1] + 20 * trace[i][0], cv::Scalar(255, 0, 0), 2);
@@ -72,8 +74,6 @@ int main(int argc, const char** argv) {
 
     handler.writeGenerated(generatedImage, argv[4], "gen_clear");
 #endif
-
-    makeImperfections(generatedImage);
 
     handler.writeGenerated(generatedImage, argv[4], "gen");
 }
