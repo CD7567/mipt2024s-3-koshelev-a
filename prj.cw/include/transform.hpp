@@ -17,8 +17,9 @@ class Transformer {
 
     cv::Mat makeBinary(const cv::Mat& src);
 
-    std::vector<std::vector<cv::Point>> makeSmooth(
-        const std::vector<std::vector<cv::Point>>& contours);
+    cv::Mat makeImageSmooth(const cv::Mat& src);
+
+    std::vector<std::vector<cv::Point>> findContour(const cv::Mat& src);
 };
 
 }  // namespace cw

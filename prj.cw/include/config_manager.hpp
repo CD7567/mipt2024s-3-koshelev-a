@@ -21,12 +21,16 @@ class ConfigManager {
 
     void setConfig(const char* filepath);
 
+    // Common settings
     path getDataDir() const;
     path getOutDirSuffix() const;
     path getGenDirSuffix() const;
 
-    double getSmoothingFactor() const;
+    // Main specific config
+    int getStrokeWidth() const;
+    int getKernelSize() const;
 
+    // Gen specific config
     int getGenStrokeWidth() const;
     double getGenStep() const;
     double getGenFOV() const;

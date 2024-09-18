@@ -3,11 +3,12 @@ dataDir = "data"
 outDirSuffix = "out"
 genDirSuffix = "gen"
 
-[main]
-smoothingFactor = 0.00075
+[main] # Defaults for minimum of 128x128 resolution
+strokeWidth = 1
+kernelSize = 9
 
-[generator]
-strokeWidth = 50
+[generator] # Defaults for 1024x1024 with 20 sections
+strokeWidth = 80
 step = 80.0
 fov = 0.125
 initialBound = 0.25

@@ -156,9 +156,7 @@ void makeImperfections(cv::Mat& image) {
     Transformer transformer{};
 
     cv::Mat binary = transformer.makeBinary(image);
-
-    std::vector<std::vector<cv::Point>> contours;
-    cv::findContours(binary, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
+    auto contours = transformer.findContour(binary);
 
     std::random_device random_device;
     std::mt19937 generator(random_device());
@@ -174,9 +172,9 @@ void makeImperfections(cv::Mat& image) {
         randomized.push_back(vertex + cv::Point{distribution(generator), distribution(generator)});
     }
 
-    contours.push_back(randomized);
+    contours[0] = randomized;
 
-    cv::drawContours(image, contours, 2, cv::Scalar(0, 0, 0), 2 * shift);
+    cv::drawContours(image, contours, 0, cv::Scalar(0, 0, 0), 2 * shift);
 }
 
 }  // namespace cw
