@@ -23,7 +23,13 @@ int main(int argc, const char** argv) {
 
     // Setup logger
     spdlog::logger logger("cw/main", {console_sink, file_sink});
+
+#ifndef NDEBUG
     logger.set_level(spdlog::level::debug);
+#else
+    logger.set_level(spdlog::level::info);
+#endif
+
     spdlog::set_default_logger(std::make_unique<spdlog::logger>(logger));
 
     logger.info("===== [Starting new run] =====");
