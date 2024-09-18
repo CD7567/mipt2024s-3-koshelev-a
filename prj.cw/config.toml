@@ -4,7 +4,8 @@ outDirSuffix = "out"
 genDirSuffix = "gen"
 
 [main]
-smoothingFactor = 0.00075
+strokeWidth = 1
+kernelSize = 11
 
 [generator]
 strokeWidth = 50

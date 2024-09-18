@@ -23,8 +23,12 @@ ConfigManager::path ConfigManager::getGenDirSuffix() const {
     return {config["io"]["genDirSuffix"].value<std::string>().value()};
 }
 
-double ConfigManager::getSmoothingFactor() const {
-    return config["main"]["smoothingFactor"].value<double>().value();
+int ConfigManager::getStrokeWidth() const {
+    return config["main"]["strokeWidth"].value<double>().value();
+}
+
+int ConfigManager::getKernelSize() const {
+    return config["main"]["kernelSize"].value<double>().value();
 }
 
 int ConfigManager::getGenStrokeWidth() const {

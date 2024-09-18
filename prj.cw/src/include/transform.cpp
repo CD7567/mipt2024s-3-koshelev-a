@@ -1,5 +1,6 @@
 #include "transform.hpp"
 
+#include "app_exception.hpp"
 #include "config_manager.hpp"
 
 namespace cw {
@@ -18,18 +19,25 @@ cv::Mat Transformer::makeBinary(const cv::Mat& src) {
     return binary;
 }
 
-std::vector<std::vector<cv::Point>> Transformer::makeSmooth(
-    const std::vector<std::vector<cv::Point>>& contours) {
-    std::vector<std::vector<cv::Point>> smoothed{contours.size()};
+cv::Mat Transformer::makeImageSmooth(const cv::Mat& src) {
+    auto& config = ConfigManager::getInstance();
+    cv::Mat result;
 
-    double smoothingFactor = ConfigManager::getInstance().getSmoothingFactor();
+    cv::medianBlur(src, result, config.getKernelSize());
 
-    for (size_t i = 0; i < contours.size(); i++) {
-        approxPolyDP(contours[i], smoothed[i],
-                     arcLength(contours[i], true) * smoothingFactor, true);
-    }
+    return result;
+}
 
-    return smoothed;
+std::vector<std::vector<cv::Point>> Transformer::findContour(const cv::Mat& src) {
+    logger->info("Detecting contours");
+    std::vector<std::vector<cv::Point>> contours;
+
+    cv::findContours(src, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
+
+    logger->debug("Detected amount of contours: {}", contours.size());
+
+    contours.resize(1);
+    return contours;
 }
 
 }  // namespace cw
