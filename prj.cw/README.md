@@ -73,17 +73,17 @@ imperfectionFactor = 0.1
 Приведем сразу примеры работы алгоритма на сгенерированных упомянутым ранее генератором изображениях.
 Показаны пары до и после обработки с разрешениями 128x128, 256x256, 512x512, 1024x1024.
 
-<img src="data/128.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/128_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/128.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/128_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
-<img src="data/256.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/256_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/256.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/256_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
-<img src="data/512.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/512_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/512.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/512_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
-<img src="data/1024.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/1024_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/1024.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/1024_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
 ### Описание
 
