@@ -13,8 +13,13 @@ cv::Mat Transformer::makeBinary(const cv::Mat& src) {
     cv::cvtColor(src, grayScale, cv::COLOR_BGR2GRAY);
 
     logger->info("Transforming to binary image");
+
     cv::Mat binary;
     cv::threshold(grayScale, binary, 127, 255, cv::THRESH_BINARY);
+
+    if (binary.at<uchar>(0, 0) == 255) {
+        cv::threshold(grayScale, binary, 127, 255, cv::THRESH_BINARY_INV);
+    }
 
     return binary;
 }
