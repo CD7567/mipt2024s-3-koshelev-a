@@ -8,11 +8,11 @@ strokeWidth = 1
 kernelSize = 9
 
 [generator] # Defaults for 1024x1024 with 20 sections
-strokeWidth = 80
-step = 80.0
-fov = 0.125
+strokeWidth = 60
+step = 10.0
+fov = 0.25
 initialBound = 0.25
 momentumFactor = 0.8
-tensionFactor = 0.8
-repelFactor = 1.0
+tensionFactor = 1.0
+repelFactor = 0.4
 imperfectionFactor = 0.1
