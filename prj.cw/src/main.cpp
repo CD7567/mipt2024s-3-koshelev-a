@@ -10,6 +10,7 @@
 #include "config_manager.hpp"
 #include "iohandler.hpp"
 #include "transform.hpp"
+#include "generator.hpp"
 
 using namespace cw;
 
@@ -75,10 +76,34 @@ int main(int argc, const char** argv) {
 #endif
 
     logger.info("Detecting middle line");
-    auto middleLine = transformer.findContour(thinned);
+    auto middleLine = transformer.findContour(thinned)[0];
+
+    middleLine.resize(middleLine.size() / 2);
+
+    std::vector<cv::Point> approximated;
+    cv::approxPolyDP(middleLine, approximated, cv::arcLength(middleLine, false) * 0.0005, false);
+    middleLine = std::move(approximated);
 
     cv::drawContours(input, contours, 0, cv::Scalar(0, 0, 255), config.getStrokeWidth());
-    cv::drawContours(input, middleLine, 0, cv::Scalar(0, 255, 0), config.getStrokeWidth());
+
+    auto begin = middleLine[0];
+    auto end = middleLine[middleLine.size() - 1];
+
+    double dist = std::max(
+        cv::pointPolygonTest(contours[0], begin, true),
+        cv::pointPolygonTest(contours[0], end, true)
+    );
+
+    auto beginAngle = angle(begin - middleLine[1]);
+    auto endAngle = angle(end - middleLine[middleLine.size() - 2]);
+
+    middleLine.insert(middleLine.begin(), begin + cv::Point(dist * cos(beginAngle), dist * sin(beginAngle)));
+    middleLine.push_back(end + cv::Point(dist * cos(endAngle), dist * sin(endAngle)));
+
+    int size = middleLine.size();
+    for (int i = 1; i < size; ++i) {
+        cv::line(input, middleLine[i - 1], middleLine[i], cv::Scalar(0, 255, 0), config.getStrokeWidth());
+    }
 
     handler.writeOutput(input, argv[1]);
 }

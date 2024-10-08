@@ -37,7 +37,7 @@ std::vector<std::vector<cv::Point>> Transformer::findContour(const cv::Mat& src)
     logger->info("Detecting contours");
     std::vector<std::vector<cv::Point>> contours;
 
-    cv::findContours(src, contours, cv::RETR_LIST, cv::CHAIN_APPROX_NONE);
+    cv::findContours(src, contours, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
 
     logger->debug("Detected amount of contours: {}", contours.size());
 

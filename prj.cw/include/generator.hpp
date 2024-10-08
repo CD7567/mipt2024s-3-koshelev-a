@@ -5,6 +5,8 @@
 
 namespace cw {
 
+double angle(const cv::Point2d& vector);
+
 void generateLine(std::vector<cv::Point2d>& dest,
                   std::vector<std::vector<cv::Point2d>>& dir, int maxWidth,
                   int maxHeight, int number);
