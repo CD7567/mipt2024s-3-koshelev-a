@@ -14,6 +14,45 @@
 
 using namespace cw;
 
+std::vector<int> detectEnds(const std::vector<cv::Point>& points) {
+    std::vector<int> ends;
+
+    if (points.size() > 2) {
+        cv::Point prevVector = points[0] - points[points.size() - 1];
+        cv::Point nextVector = points[0] - points[1];
+
+        if ((prevVector.x * nextVector.x + prevVector.y * nextVector.y) /
+                (cv::norm(prevVector) * cv::norm(nextVector)) >
+            0.99) {
+            ends.push_back(0);
+        }
+    }
+
+    for (auto i = ++points.begin(); i + 1 < points.end(); ++i) {
+        cv::Point prevVector = *i - *(i - 1);
+        cv::Point nextVector = *i - *(i + 1);
+
+        if ((prevVector.x * nextVector.x + prevVector.y * nextVector.y) /
+                (cv::norm(prevVector) * cv::norm(nextVector)) >
+            0.99) {
+            ends.push_back(i - points.begin());
+        }
+    }
+
+    if (points.size() > 2) {
+        cv::Point prevVector = points[points.size() - 1] - points[points.size() - 2];
+        cv::Point nextVector = points[points.size() - 1] - points[0];
+
+        if ((prevVector.x * nextVector.x + prevVector.y * nextVector.y) /
+                (cv::norm(prevVector) * cv::norm(nextVector)) >
+            0.99) {
+            ends.push_back(points.size() - 1);
+        }
+    }
+
+    return ends;
+}
+
 int main(int argc, const char** argv) {
     // Setup sinks
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
@@ -78,10 +117,36 @@ int main(int argc, const char** argv) {
     logger.info("Detecting middle line");
     auto middleLine = transformer.findContour(thinned)[0];
 
-    middleLine.resize(middleLine.size() / 2);
+#ifndef NDEBUG
+    int size = middleLine.size();
+    for (int i = 1; i < size; ++i) {
+        cv::line(input, middleLine[i - 1], middleLine[i], cv::Scalar(0, 255, 255), config.getStrokeWidth());
+    }
+#endif
+
+    auto ends = detectEnds(middleLine);
+
+    if (ends.size() < 2) {
+        throw AppException("Failed to find median ends");
+    }
+
+    std::vector<cv::Point> filtered;
+    int min = std::min(ends[0], ends[1]);
+    int max = std::max(ends[0], ends[1]);
+    for (int i = min; i <= max; ++i) {
+        filtered.push_back(middleLine[i]);
+    }
+
+    middleLine = std::move(filtered);
+
+#ifndef NDEBUG
+    cv::drawMarker(input, middleLine[0], cv::Scalar(255, 255, 0), cv::MARKER_DIAMOND);
+    cv::drawMarker(input, middleLine[middleLine.size() - 1], cv::Scalar(255, 255, 0), cv::MARKER_DIAMOND);
+
+#endif
 
     std::vector<cv::Point> approximated;
-    cv::approxPolyDP(middleLine, approximated, cv::arcLength(middleLine, false) * 0.0005, false);
+    cv::approxPolyDP(middleLine, approximated, cv::arcLength(middleLine, false) * 0.001, false);
     middleLine = std::move(approximated);
 
     cv::drawContours(input, contours, 0, cv::Scalar(0, 0, 255), config.getStrokeWidth());
