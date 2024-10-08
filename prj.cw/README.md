@@ -93,8 +93,40 @@ imperfectionFactor = 0.1
 3) Дополнение исходной фигуры по внутренности контура
 4) Скелетонизация изображения алгоритмом Чанг-Суэна (Zhang-Suen)
 5) Детектирование контура на скелетонизированном изображении для нахождения средней линии
-6) Отрисовка сглаженного контура и средней линии
-7) Сохранение результата обработки
+6) Нахождение концов контура и обрезка по ним, чтобы оставить незамкнутую ломаную
+7) Пересэмплирование ломаной
+8) Интерполяция ломаной до границ контура прямым продолжением
+8) Отрисовка сглаженного контура и средней линии
+9) Сохранение результата обработки
+
+### Основные методы
+
+Методы детектирования вынесены в отдельный файл `detect.hpp`. Приведем сигнатуры методов с описанием:
+
+```cpp
+// Метод детектирования сглаженного контура протяженной фигуры
+
+/**
+ * Detect smoothed contour of an elongated shape
+ * 
+ * @param src Source image
+ * @return Detected contours
+ */
+std::vector<std::vector<cv::Point>> detectSmoothedContour(const cv::Mat& src);
+```
+
+```cpp
+// Метод детектирования средней линии протяженной фигуры
+
+/**
+ * Detect median line of an elongated shape
+ * 
+ * @param src Source image
+ * @param contours Contour[0] is used as a shape border
+ * @return Detected median line
+ */
+std::vector<cv::Point> detectMedian(const cv::Mat& src, const std::vector<std::vector<cv::Point>> contours)
+```
 
 ### Конфигурация
 
