@@ -15,7 +15,7 @@ namespace cw {
  * @param vector Source vector
  * @return Polar angle in radians
  */
-inline double angle(const cv::Point2d& vector) {
+double angle(const cv::Point2d& vector) {
     double angle = acos(vector.x / cv::norm(vector));
 
     if (vector.y < 0) {

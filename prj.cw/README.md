@@ -73,17 +73,17 @@ imperfectionFactor = 0.1
 Приведем сразу примеры работы алгоритма на сгенерированных упомянутым ранее генератором изображениях.
 Показаны пары до и после обработки с разрешениями 128x128, 256x256, 512x512, 1024x1024.
 
-<img src="data/128.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/128_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/128.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/128_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
-<img src="data/256.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/256_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/256.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/256_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
-<img src="data/512.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/512_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/512.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/512_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
-<img src="data/1024.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
-<img src="data/1024_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/1024.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/regular/1024_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
 
 ### Описание
 
@@ -123,3 +123,68 @@ kernelSize = 9
 
 #### Debug
 Уровень логгинга ограничен `DEBUG` сообщениями, сохраняются отладочные изображения.
+
+### Исследование работы алгоритма
+
+#### Более суровая генерация
+
+Были подобраны значения гиперпараметров генератора таким образом, чтобы генерация данных была более агрессивной. Имеется в виду повышение вероятности (и количества) ситуаций почти самопересечения фигуры. Приведем результаты:
+
+<img src="data/aggressive/128-1.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/128-1_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/128-2.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/128-2_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/128-3.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/128-3_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/256-1.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/256-1_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/256-2.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/256-2_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/256-3.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/256-3_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/512-1.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/512-1_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/512-2.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/512-2_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/aggressive/512-3.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/aggressive/512-3_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+Приведены данные по разным размерам изображения. Видно, что он достаточно хорошо справляется со своей задачей на типичном виде данных генератора.
+
+#### Нарисованные вручную фигуры
+
+Для того, чтобы проверить работу при разных фонах и разных цветах фигуры были вручную в `gimp` нарисованы несколько изображений.
+
+<img src="data/gimp/512-1.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/gimp/512-1_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/gimp/512-2.png" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/gimp/512-2_proc.png" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+Как видно, и тут алгоритм справляется с задачей. Стоит отметить, что алгоритм работает проблемно на слишком маленьких расстояниях сближения (~1 пикселя).
+
+#### Реальные данные
+
+Наиболее интересно посмотреть, как отработает алгоритм на реальной фотографии фигуры на бумаге. И такое тоже было проверено:
+
+<img src="data/real/real-1.jpg" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/real/real-1_proc.jpg" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+<img src="data/real/real-2.jpg" alt="Исходное изображение" style="width: 49%; height: auto;"/>
+<img src="data/real/real-2_proc.jpg" alt="Обработанное изображение" style="width: 49%; height: auto;"/>
+
+И в этом случае алгоритм удачно и верно срабатывает.
+
+#### Итог
+
+Алгоритм успешно работает на разнообразных входных данных. Однако можно отметить несколько ограничений:
+- Слишком близкие почти самопересечения (~1 пикселя)
+- Слишком низкая контрастность изображения из-за использования thresholding в детекции фигуры
