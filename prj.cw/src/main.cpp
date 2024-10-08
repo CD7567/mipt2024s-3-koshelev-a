@@ -126,6 +126,7 @@ int main(int argc, const char** argv) {
     auto ends = detectEnds(middleLine);
 
     if (ends.size() < 2) {
+        logger.error("Failed to find median ends");
         throw AppException("Failed to find median ends");
     }
 
