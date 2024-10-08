@@ -118,8 +118,7 @@ int main(int argc, const char** argv) {
     auto middleLine = transformer.findContour(thinned)[0];
 
 #ifndef NDEBUG
-    int size = middleLine.size();
-    for (int i = 1; i < size; ++i) {
+    for (int i = 1; i < middleLine.size(); ++i) {
         cv::line(input, middleLine[i - 1], middleLine[i], cv::Scalar(0, 255, 255), config.getStrokeWidth());
     }
 #endif
@@ -142,7 +141,6 @@ int main(int argc, const char** argv) {
 #ifndef NDEBUG
     cv::drawMarker(input, middleLine[0], cv::Scalar(255, 255, 0), cv::MARKER_DIAMOND);
     cv::drawMarker(input, middleLine[middleLine.size() - 1], cv::Scalar(255, 255, 0), cv::MARKER_DIAMOND);
-
 #endif
 
     std::vector<cv::Point> approximated;
